@@ -7,6 +7,7 @@ class Interface :
         #initialisation pygame (interface graphique) 
         pygame.init()
         pygame.display.set_caption("Tableau de bord Kart") #changement du titre de la fenêtre
+        pygame.mouse.set_visible(False)
 
         #Ouverture de la fenêtre Pygame
         self.largeur_ecran, self.hauteur_ecran = 800, 480
@@ -20,7 +21,8 @@ class Interface :
         # self.images["background_affichage_light"] = import_image("/assets/images/affichage/background_affichage_light.png")
 
         #importation des fonts
-        self.fonts["font_normal"] = import_font("/assets/fonts/Roboto-Bold.ttf", 30)
+        self.fonts["font_normal"] = import_font("/assets/fonts/Roboto-Bold.ttf", 37)
+        self.fonts["font_mode_conduite"] = import_font("/assets/fonts/Roboto-Bold.ttf", 24)
         self.fonts["font_nombres"] = import_font("/assets/fonts/Seven-Segment.ttf", 50)
         self.fonts["font_vitesse"] = import_font("/assets/fonts/7-segment-bold.ttf", 160)
 
@@ -49,14 +51,11 @@ class Interface :
                     if event.type == QUIT or keys[K_ESCAPE] :     #Si on ferme le jeu, on sort des 2 boucles (principal et menu) ce qui ferme le jeu
                         main_loop = False
                         affichage_loop = False
-                    if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.type == pygame.FINGERUP :
                         self.test_clic(X, Y)   
 
                 #event clic
                 
-                 
-
-                pygame.draw.rect(self.window, self.dark_mode["color"], (0,0, self.largeur_ecran, self.hauteur_ecran))
                 #affichage des images
                 self.window.blit(self.dark_mode["etat"], (0,0)) #image du background
                 affichage_etat_wifi(self)
@@ -70,6 +69,9 @@ class Interface :
                 #affichag temperature
                 affichage_texte(self.window, f"{self.temperature}", self.fonts["font_nombres"], (698, 215), self.dark_mode["anti_color"])
                 affichage_texte(self.window, f"°C", self.fonts["font_normal"], (740, 212), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"ECO", self.fonts["font_mode_conduite"], (92, 65), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"NORMAL", self.fonts["font_mode_conduite"], (270, 65), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"SPORT", self.fonts["font_mode_conduite"], (451, 65), self.dark_mode["anti_color"])
 
 
                 #Rafraîchissement de l'écran
@@ -78,15 +80,15 @@ class Interface :
 
 
     def test_clic(self, x, y) :
-        #test clic dark mode
-        if 15 < x < 67 and 15 < y < 67 and pygame.MOUSEBUTTONDOWN :
-            if self.dark_mode["etat"] == self.images["background_affichage_dark"]:
-                self.dark_mode = {"etat" : self.images["background_affichage_light"], "color" : (255,255,255), "anti_color" : (0,0,0)}
-            else :
-                self.dark_mode = {"etat" : self.images["background_affichage_dark"], "color" : (0,0,0), "anti_color" : (255,255,255)}
+        # # test clic dark mode
+        # if 15 < x < 67 and 15 < y < 67 and pygame.MOUSEBUTTONDOWN :
+        #     if self.dark_mode["etat"] == self.images["background_affichage_dark"]:
+        #         self.dark_mode = {"etat" : self.images["background_affichage_light"], "color" : (255,255,255), "anti_color" : (0,0,0)}
+        #     else :
+        #         self.dark_mode = {"etat" : self.images["background_affichage_dark"], "color" : (0,0,0), "anti_color" : (255,255,255)}
 
         #test clic mode conduite
         for info_mode_item in info_mode_conduite.items() : #boucle pour les 3 boutons. La dernière condition est pour éviter d'envoyer un rechanger au même mode de conduite
-            if info_mode_item[1] < x < info_mode_item[1] + 72 and 90 < y < 112 and pygame.MOUSEBUTTONDOWN and self.mode_conduite != info_mode_item[0]:
+            if info_mode_item[1] < x < info_mode_item[1] + 134 and 36 < y < 93 and pygame.MOUSEBUTTONDOWN and self.mode_conduite != info_mode_item[0]:
                 self.mode_conduite = info_mode_item[0]
                 print(f"nouveau mode de conduite : {self.mode_conduite} (info envoyé)")

@@ -19,7 +19,7 @@ affichage_loop = True
 
 fps = 20
 #coordonées des boutons des différent mode en x
-info_mode_conduite = {"eco" : 281, "normal" : 375, "sport" : 469}
+info_mode_conduite = {"eco" : 25, "normal" : 203, "sport" : 384}
 #listes pour avoir les dégradé de couleur
 # color_green_to_red = list(Color("#61ff01").range_to(Color("#ccff01"),15))
 # color_green_to_red.extend(list(Color("#ccff01").range_to(Color("#fff001"),15)))
