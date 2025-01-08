@@ -17,16 +17,20 @@ class Interface :
 
         #importation des images
         self.images["background_affichage_dark"] = import_image("/assets/images/affichage/background_affichage_dark.png")
-        self.images["background_affichage_light"] = import_image("/assets/images/affichage/background_affichage_light.png")
+        # self.images["background_affichage_light"] = import_image("/assets/images/affichage/background_affichage_light.png")
 
         #importation des fonts
-        self.fonts["font_heure"] = import_font("/assets/fonts/Roboto-Bold.ttf", 30)
-        self.fonts["font_vitesse"] = import_font("/assets/fonts/7-segment-bold.ttf", 170)
+        self.fonts["font_normal"] = import_font("/assets/fonts/Roboto-Bold.ttf", 30)
+        self.fonts["font_nombres"] = import_font("/assets/fonts/Seven-Segment.ttf", 50)
+        self.fonts["font_vitesse"] = import_font("/assets/fonts/7-segment-bold.ttf", 160)
 
         self.dark_mode = {"etat" : self.images["background_affichage_dark"], "color" : (0,0,0), "anti_color" : (255,255,255)}
 
         #variable importé des autre partie du projet SAE
         self.vitesse = 17
+        self.wifi_etat = True #true = connecté
+        self.mode_conduite = "normal"
+        self.temperature = 70
 
 
     def start(self) :
@@ -54,12 +58,18 @@ class Interface :
 
                 pygame.draw.rect(self.window, self.dark_mode["color"], (0,0, self.largeur_ecran, self.hauteur_ecran))
                 #affichage des images
-                self.window.blit(self.dark_mode["etat"], (0,0))
-
+                self.window.blit(self.dark_mode["etat"], (0,0)) #image du background
+                affichage_etat_wifi(self)
+                affichage_mode_conduite(self)
+                
+               
                 #affichage des textes
                 affichage_heure(self)
                 #affichag vitesse
-                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 120), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 130), self.dark_mode["anti_color"])
+                #affichag temperature
+                affichage_texte(self.window, f"{self.temperature}", self.fonts["font_nombres"], (698, 215), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"°C", self.fonts["font_normal"], (740, 212), self.dark_mode["anti_color"])
 
 
                 #Rafraîchissement de l'écran
@@ -74,3 +84,9 @@ class Interface :
                 self.dark_mode = {"etat" : self.images["background_affichage_light"], "color" : (255,255,255), "anti_color" : (0,0,0)}
             else :
                 self.dark_mode = {"etat" : self.images["background_affichage_dark"], "color" : (0,0,0), "anti_color" : (255,255,255)}
+
+        #test clic mode conduite
+        for info_mode_item in info_mode_conduite.items() : #boucle pour les 3 boutons. La dernière condition est pour éviter d'envoyer un rechanger au même mode de conduite
+            if info_mode_item[1] < x < info_mode_item[1] + 72 and 90 < y < 112 and pygame.MOUSEBUTTONDOWN and self.mode_conduite != info_mode_item[0]:
+                self.mode_conduite = info_mode_item[0]
+                print(f"nouveau mode de conduite : {self.mode_conduite} (info envoyé)")
