@@ -1,7 +1,11 @@
 #import des modules
 from pygame.locals import *
+from colour import Color
+from random import choice, randint
+from time import sleep, time, localtime
 import pygame
-import time
+import threading
+import socket
 import os
 
 
@@ -17,14 +21,16 @@ main_loop = True
 affichage_loop = True
 
 
-fps = 20
+fps = 15
 #coordonées des boutons des différent mode en x
 info_mode_conduite = {"eco" : 25, "normal" : 203, "sport" : 384}
-#listes pour avoir les dégradé de couleur
-# color_green_to_red = list(Color("#61ff01").range_to(Color("#ccff01"),15))
-# color_green_to_red.extend(list(Color("#ccff01").range_to(Color("#fff001"),15)))
-# color_green_to_red.extend(list(Color("#fff001").range_to(Color("#ffae01"),15)))
-# color_green_to_red.extend(list(Color("#ffae01").range_to(Color("#ff6101"),15)))
-# color_green_to_red.extend(list(Color("#ff6101").range_to(Color("#ff0101"),15)))
+# listes pour avoir les dégradé de couleur
+color_green_to_red = list(Color("#61ff01").range_to(Color("#ccff01"),15))
+color_green_to_red.extend(list(Color("#ccff01").range_to(Color("#fff001"),15)))
+color_green_to_red.extend(list(Color("#fff001").range_to(Color("#ffae01"),15)))
+color_green_to_red.extend(list(Color("#ffae01").range_to(Color("#ff6101"),15)))
+color_green_to_red.extend(list(Color("#ff6101").range_to(Color("#ff0101"),15)))
+#queue des messages de prévention
+prevention_queue = []
 
 

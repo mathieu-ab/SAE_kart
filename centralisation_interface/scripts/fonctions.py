@@ -7,6 +7,13 @@ def import_image(chemin) :
 def import_font(chemin, size) :
     return pygame.font.Font(CURRENT_PATH+chemin, size)
 
+def hex_to_rgb(hex_color):
+    # Supprime le caractère '#' si présent
+    hex_color = str(hex_color).replace("#", "")
+    # Convertit en trois entiers (rouge, vert, bleu)
+    rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+    return rgb
+
 
 #fonction qui va afficher du texte selon les critères en paramètres
 def affichage_texte(window, text, font, pos, color) :
@@ -18,11 +25,11 @@ def affichage_texte(window, text, font, pos, color) :
 def affichage_heure(self) :
     #calcule de l'heure actuelle
     # Obtenir l'heure actuel en seconde
-    local_time = time.localtime()
+    local_time = localtime()
     heure = f"{local_time.tm_hour:02}"  # Heure locale (avec deux chiffres)
     minutes = f"{local_time.tm_min:02}"  # Minutes locales (avec deux chiffres)
     #affichage d l'heure actuelle
-    if int(time.time()) % 2 == 0 : 
+    if int(time()) % 2 == 0 : 
         warning = ":"
     else :
         warning = " "
@@ -47,3 +54,53 @@ def affichage_mode_conduite(self) :
         pygame.draw.rect(self.window, color, pygame.Rect(info_mode_item[1], 36, 134, 57), border_radius=11)
 
         
+def affichage_batterie(self) :
+     #calcule de la couleur en fonction du poursentage de charge de la batterie
+     pygame.draw.rect(
+         self.window,
+         hex_to_rgb(color_green_to_red[int((1-self.batterie)*len(color_green_to_red))]),
+         pygame.Rect(144, 150+int((1-self.batterie)*150), 72, int(self.batterie*150)),
+         border_radius=5)
+
+def affichage_clignotant(self) :
+    if self.clignotant_info["allume"] != None and self.clignotant_info["start"]+self.clignotant_info["cligno"] == int(time()) :
+        self.clignotant_info["etat"] = not self.clignotant_info["etat"] 
+        self.clignotant_info["cligno"]+=1
+        if self.clignotant_info["cligno"] == 6 :
+            self.clignotant_info["allume"] = None
+            print(f"clignotant eteint (info envoyé)")
+
+    if self.clignotant_info["etat"] and self.clignotant_info["allume"] == "gauche" :
+        self.window.blit(self.images["clignotant_droit_allume_gauche"], (56, 329))
+        self.window.blit(self.images["clignotant_droit_eteint_droit"], (655, 327))
+    elif self.clignotant_info["etat"] and self.clignotant_info["allume"] == "droite" :
+        self.window.blit(self.images["clignotant_droit_eteint_gauche"], (56, 329))
+        self.window.blit(self.images["clignotant_droit_allume_droit"], (655, 327))
+    elif self.clignotant_info["etat"] == False or self.clignotant_info["allume"] == None:
+        self.window.blit(self.images["clignotant_droit_eteint_droit"], (655, 327))
+        self.window.blit(self.images["clignotant_droit_eteint_gauche"], (56, 329))
+
+
+
+def affichage_prevention(self) :
+    i = 0
+    for message in prevention_queue :
+        affichage_message = True
+        if message["end"] != None and message["start"]+message["end"] < int(time()) :
+            affichage_message = False
+            prevention_queue.pop(i)
+        if affichage_message :
+            self.window.blit(self.images["bg_prevention"], (247, 363-35*i))
+            pygame.draw.rect(self.window, (251, 44, 44), pygame.Rect(247, 363-35*i, 363, 30), border_radius=6)
+            affichage_texte(self.window, message["message"], self.fonts["font_prevention"], (428, 363-35*i+15), (255,255,255))
+        i+=1
+
+
+
+def is_connected():
+    try:
+        # Tente de se connecter à un site web public connu
+        socket.create_connection(("8.8.8.8", 53), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
+        return True
+    except OSError:
+        return False
