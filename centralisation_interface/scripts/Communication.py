@@ -11,7 +11,7 @@ class Communication(threading.Thread) :
         #test avec 3 messages de prevention qui arrive avec 3-7 secondes d'intervale 
         #le choice permet de choisir entre un message qui s'arrête tout seul ou qui attent un message d'arêt
         for k in range(3) : 
-            prevention_queue.append({"message" : f"Moteur trop chaud k={k}", "start" : int(time()), "end" : choice([None])})
+            prevention_queue.append({"message" : f"Moteur trop chaud k={k}", "start" : int(time()), "end" : choice([None, 7])})
             print(prevention_queue)
             sleep(randint(3, 7))
         

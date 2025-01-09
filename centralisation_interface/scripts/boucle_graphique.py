@@ -101,6 +101,7 @@ class Interface :
                         self.wifi_etat = True
                     else :
                         self.wifi_etat = False
+                    self.index = 0
 
 
 
