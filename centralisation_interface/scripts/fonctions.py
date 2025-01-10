@@ -14,6 +14,16 @@ def hex_to_rgb(hex_color):
     rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
     return rgb
 
+def is_connected():
+    try:
+        # Tente de se connecter à un site web public connu
+        socket.create_connection(("8.8.8.8", 53), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
+        return True
+    except OSError:
+        return False
+
+##------------Fonction d'affichage--------------------##
+
 
 #fonction qui va afficher du texte selon les critères en paramètres
 def affichage_texte(window, text, font, pos, color) :
@@ -95,12 +105,76 @@ def affichage_prevention(self) :
             affichage_texte(self.window, message["message"], self.fonts["font_prevention"], (428, 363-35*i+15), (255,255,255))
         i+=1
 
+def affichage_bouton_regulateur_limitateur(self) :
+    for signe in info_regulateur_limitateur.items() :
+        if signe[1]["etat"] :#on est en train d'appuyer sur le bouton
+            self.window.blit(self.images["pressed_"+signe[0]], (signe[1]["position"][0]+5 ,signe[1]["position"][1]+5))
+        else :
+            self.window.blit(self.images["default_"+signe[0]], signe[1]["position"])
 
 
-def is_connected():
-    try:
-        # Tente de se connecter à un site web public connu
-        socket.create_connection(("8.8.8.8", 53), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
-        return True
-    except OSError:
-        return False
+
+def affichage_switch(self, position, etat, position_x_rond) :
+    # Vitesse d'animation
+    ANIMATION_SPEED = 10
+
+    # Initial state
+    control_position_x = position_x_rond[0]
+    # Déterminer la couleur de fond du switch
+    toggle_bg_color = (30, 144, 255) if etat else (169, 169, 169)
+    pygame.draw.rect(self.window, toggle_bg_color, (position[0], position[1], 71, 36), border_radius=25)
+    
+    # Calculer la position cible du contrôle
+    target_position_x = position[0] + 3 if etat else position[0] + 71 - 30 - 3
+    
+    # Animation de transition
+    distance_control_target = abs(control_position_x - target_position_x)
+    if distance_control_target > ANIMATION_SPEED:
+        if control_position_x < target_position_x:
+            control_position_x += ANIMATION_SPEED
+        else:
+            control_position_x -= ANIMATION_SPEED
+    else:
+        control_position_x = target_position_x
+
+    # Dessiner le contrôle
+    pygame.draw.ellipse(self.window, (255, 255, 255), (control_position_x, position[1] + 3+distance_control_target//8, 30+distance_control_target//3, 30-distance_control_target//4))
+    position_x_rond[0] = control_position_x
+
+
+
+def affichage_switch_3_etat(self, position, etat, position_x_rond) :
+    # Vitesse d'animation
+    ANIMATION_SPEED = 20
+
+    # Initial state
+    control_position_x = position_x_rond[0]
+
+    # Calculer la position cible du contrôle et couleur du bg
+    if etat == "neutre" : 
+        target_position_x = position[0] + 220//3 + 5
+        toggle_bg_color = (169, 169, 169)
+    elif etat == "limitateur" :
+        target_position_x = position[0] + 5
+        toggle_bg_color = (255, 171, 30)
+    elif etat == "regulateur" :
+        target_position_x = position[0] + 2*220//3 - 5
+        toggle_bg_color = (74, 255, 45)
+    # Déterminer la couleur de fond du switch
+    pygame.draw.rect(self.window, toggle_bg_color, (position[0], position[1], 220, 80), border_radius=40)
+    
+
+    
+    # Animation de transition
+    distance_control_target = abs(control_position_x - target_position_x)
+    if distance_control_target > ANIMATION_SPEED:
+        if control_position_x < target_position_x:
+            control_position_x += ANIMATION_SPEED
+        else:
+            control_position_x -= ANIMATION_SPEED
+    else:
+        control_position_x = target_position_x
+
+    # Dessiner le contrôle
+    pygame.draw.ellipse(self.window, (255, 255, 255), (control_position_x, position[1] + 5+distance_control_target//8, 70+distance_control_target//3, 70-distance_control_target//4))
+    position_x_rond[0] = control_position_x
