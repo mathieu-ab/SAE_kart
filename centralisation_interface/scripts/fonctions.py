@@ -25,11 +25,11 @@ def is_connected():
 
 def redirection_effet_bouton(self, sw) :
     if sw[0] == "detection_ligne_blanche" :
-        print(f"{'activation' if sw[1]["etat"] else 'desactivation'} du mode detection ligne blanche")
+        print(f"{is_activate(sw[1]["etat"])} du mode detection ligne blanche")
     elif sw[0] == "detection_obstacle" :
-        print(f"{'activation' if sw[1]["etat"] else 'desactivation'} du mode detection d'obstacle")
+        print(f"{is_activate(sw[1]["etat"])} du mode detection d'obstacle")
     elif sw[0] == "endormissement" :
-        print(f"{'activation' if sw[1]["etat"] else 'desactivation'} du mode d'endormissement")
+        print(f"{is_activate(sw[1]["etat"])} du mode d'endormissement")
     elif sw[0] == "syst_heure" :
         if self.format_heure == "24h" :
             self.format_heure = "12h" 
@@ -51,6 +51,11 @@ def test_convertion_Celsius_to_Fahrenheit(temperature_c, unite) :
         return int((temperature_c*1.8) + 32)
     else :
         return temperature_c
+
+def is_activate(etat) :
+    if etat :
+        return "activation"
+    return "desactivation"
 
 ##------------Fonction d'affichage--------------------##
 
