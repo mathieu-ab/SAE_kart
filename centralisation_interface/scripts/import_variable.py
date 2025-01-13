@@ -46,7 +46,7 @@ prevention_queue = []
 switch_dict = {"detection_ligne_blanche" : {"etat" : True,
                             "position" : [292, 27],
                             "position_x_rond" : [297]},
-                "d  etection_obstacle" : {"etat" : True,
+                "detection_obstacle" : {"etat" : True,
                             "position" : [292, 92],
                             "position_x_rond" : [297]},
                 "endormissement" : {"etat" : True,
@@ -63,5 +63,12 @@ switch_dict = {"detection_ligne_blanche" : {"etat" : True,
                             "position_x_rond" : [575]},
 
                 }
-#information pour les boutons de régulateur pour savoir quand un bouton est appuyé ou non
-info_regulateur_limitateur = {"plus" : {"etat" : False, "position" : (670, 277)}, "moins" : {"etat" : False, "position" : (363, 277)}}
+
+VITESSE_MAX = 30
+COLOR_MODE_CONDUITE = {"dark" : {
+                            "selected" : (89, 10, 220),
+                            "not selected" : (12, 20, 31)},
+                        "light" : {
+                            "selected" : (176, 128, 255),
+                            "not selected" : (178, 210, 255)}
+                        }

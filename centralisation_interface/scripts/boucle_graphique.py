@@ -18,10 +18,14 @@ class Interface :
         self.fonts = {} #dictionnaire qui va contenir les objects des images
 
         #importation des images
-        #images des backgrounds
+        #images des backgrounds dark mode
         self.images["background_affichage_dark"] = import_image("/assets/images/affichage/background_affichage_dark.png")
         self.images["background_navigation_dark"] = import_image("/assets/images/navigation/background_navigation_dark.png")
         self.images["background_systeme_dark"] = import_image("/assets/images/systeme/background_systeme_dark.png")
+        #images des backgrounds light mode
+        self.images["background_affichage_light"] = import_image("/assets/images/affichage/background_affichage_light.png")
+        self.images["background_navigation_light"] = import_image("/assets/images/navigation/background_navigation_light.png")
+        self.images["background_systeme_light"] = import_image("/assets/images/systeme/background_systeme_light.png")
         #image des clignotant
         self.images["clignotant_droit_eteint_droit"] = import_image("/assets/images/clignotant/clignotant_droit_eteint.png")
         self.images["clignotant_droit_allume_droit"] = import_image("/assets/images/clignotant/clignotant_droit_allume.png")
@@ -36,7 +40,7 @@ class Interface :
         self.images["bg_prevention"] = import_image("/assets/images/affichage/bg_prevention.png")    
 
         #importation des fonts
-        self.fonts["font_normal"] = import_font("/assets/fonts/Roboto-Bold.ttf", 37)
+        self.fonts["font_normal"] = import_font("/assets/fonts/Roboto-Bold.ttf", 33)
         self.fonts["font_mode_conduite"] = import_font("/assets/fonts/Roboto-Bold.ttf", 24)
         self.fonts["font_nombres"] = import_font("/assets/fonts/Roboto-Bold.ttf", 50)
         self.fonts["font_prevention"] = import_font("/assets/fonts/Roboto-Bold.ttf", 20)
@@ -47,8 +51,20 @@ class Interface :
         self.clignotant_info = {"cligno" : 1, "etat" : False, "allume" : None, "start" : None} #allume deviens "droite" ou "gauche" quand un clignotant est allumé. Sinon il reste en None
         self.index = 0
         self.vitesse_consigne = 20
-        self.vitesse_consigne_max = 30
-        self.info_switch_3_etat_regulateur = {"etat" : "neutre", "position" : (80, 280), "position_x_rond" : [70]} #etat possible ["regulateur", "neutre", "limitateur"]
+        self.info_switch_3_etat_regulateur = {"etat" : "neutre", "position" : (80, 280), "position_x_rond" : [148]} #etat possible ["regulateur", "neutre", "limitateur"]
+        #information pour les boutons de régulateur pour savoir quand un bouton est appuyé ou non
+        self.info_regulateur_limitateur = {"boutons" : {
+                "plus" : {
+                    "etat" : False,
+                    "position" : (670, 277)},
+                "moins" : {
+                    "etat" : False,
+                    "position" : (363, 277)}
+            },
+            "affichage" : False}
+        #variable des parametres
+        self.format_heure = "24h"
+        self.temperature_unite = "°C"
 
         #variable importé des autre partie du projet SAE
         self.vitesse = 17
@@ -73,15 +89,14 @@ class Interface :
                 affichage_batterie(self)
                 affichage_clignotant(self)
                 affichage_prevention(self)
-                
                
                 #affichage des textes
                 affichage_heure(self)
                 #affichag vitesse
                 affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 117), self.dark_mode["anti_color"])
                 #affichag temperature
-                affichage_texte(self.window, f"{self.temperature}", self.fonts["font_nombres"], (690, 215), self.dark_mode["anti_color"])
-                affichage_texte(self.window, f"°C", self.fonts["font_normal"], (740, 212), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature, self.temperature_unite)}", self.fonts["font_nombres"], (685, 215), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 212), self.dark_mode["anti_color"])
                 #affichage mode conduite texte
                 affichage_texte(self.window, f"ECO", self.fonts["font_mode_conduite"], (92, 65), self.dark_mode["anti_color"])
                 affichage_texte(self.window, f"NORMAL", self.fonts["font_mode_conduite"], (270, 65), self.dark_mode["anti_color"])
@@ -133,9 +148,10 @@ class Interface :
                 #afichage des switchs
                 for sw in switch_dict.values() :
                     affichage_switch(self, sw["position"], sw["etat"], sw["position_x_rond"])
-                #affichage des boutçons plus et moins du limitateur et régulateur
-                affichage_bouton_regulateur_limitateur(self)
-                affichage_texte(self.window, f"{self.vitesse_consigne}", self.fonts["font_vitesse_consigne"], (570, 270), self.dark_mode["anti_color"])
+                if self.info_regulateur_limitateur["affichage"] :
+                    #affichage des boutçons plus et moins du limitateur et régulateur
+                    affichage_bouton_regulateur_limitateur(self)
+                    affichage_texte(self.window, f"{self.vitesse_consigne}", self.fonts["font_vitesse_consigne"], (570, 270), self.dark_mode["anti_color"])
                 affichage_switch_3_etat(self, self.info_switch_3_etat_regulateur["position"], self.info_switch_3_etat_regulateur["etat"], self.info_switch_3_etat_regulateur["position_x_rond"])
                 #Rafraîchissement de l'écran
                 pygame.display.flip()
@@ -165,13 +181,6 @@ class Interface :
 
     def test_clic(self, x, y) :
         global main_loop, affichage_loop, navigation_loop, systeme_loop
-        # # test clic dark mode
-        # if 15 < x < 67 and 15 < y < 67 and pygame.MOUSEBUTTONDOWN :
-        #     if self.dark_mode["etat"] == self.images["background_affichage_dark"]:
-        #         self.dark_mode = {"etat" : self.images["background_affichage_light"], "color" : (255,255,255), "anti_color" : (0,0,0)}
-        #     else :
-        #         self.dark_mode = {"etat" : self.images["background_affichage_dark"], "color" : (0,0,0), "anti_color" : (255,255,255)}
-
         #test sur l'onglet affichage
         if affichage_loop :
             #test clic mode conduite
@@ -201,20 +210,28 @@ class Interface :
 
         #si on est sur l'onglet systeme
         if systeme_loop :
-            for sw in switch_dict.values() :
-                if sw["position"][0] <= x <= sw["position"][0] + 100 and sw["position"][1] <= y <= sw["position"][1] + 50:
-                    sw["etat"] = not sw["etat"]
-            print(self.info_switch_3_etat_regulateur["position"][0] , x , self.info_switch_3_etat_regulateur["position"][0] + 220//3 , self.info_switch_3_etat_regulateur["position"][1] , y , self.info_switch_3_etat_regulateur["position"][1] + 80)
+            for sw in switch_dict.items() :
+                if sw[1]["position"][0] <= x <= sw[1]["position"][0] + 100 and sw[1]["position"][1] <= y <= sw[1]["position"][1] + 50:
+                    sw[1]["etat"] = not sw[1]["etat"]
+                    redirection_effet_bouton(self, sw)
+            
             if self.info_switch_3_etat_regulateur["position"][0] < x < self.info_switch_3_etat_regulateur["position"][0] + 220//3 and self.info_switch_3_etat_regulateur["position"][1] < y < self.info_switch_3_etat_regulateur["position"][1] + 80 :
-                self.info_switch_3_etat_regulateur["etat"] = "limitateur"
+                self.info_switch_3_etat_regulateur["etat"] = "regulateur"
+                self.info_regulateur_limitateur["affichage"] = True
+                self.vitesse_consigne = self.vitesse
+                print("activation régulateur (info envoyé)") #on n'envoi pas la vitesse de consigne car à l'activation du mode, la vitesse de consigne est éguale à la vitesse
             elif self.info_switch_3_etat_regulateur["position"][0] + 220//3 < x < self.info_switch_3_etat_regulateur["position"][0] + 2*220//3 and self.info_switch_3_etat_regulateur["position"][1] < y < self.info_switch_3_etat_regulateur["position"][1] + 80 :
                 self.info_switch_3_etat_regulateur["etat"] = "neutre"
+                self.info_regulateur_limitateur["affichage"] = False
             elif self.info_switch_3_etat_regulateur["position"][0] + 2*220//3 < x < self.info_switch_3_etat_regulateur["position"][0] + 220 and self.info_switch_3_etat_regulateur["position"][1] < y < self.info_switch_3_etat_regulateur["position"][1] + 80 :
-                self.info_switch_3_etat_regulateur["etat"] = "regulateur"
+                self.info_switch_3_etat_regulateur["etat"] = "limitateur"
+                self.info_regulateur_limitateur["affichage"] = True
+                self.vitesse_consigne = self.vitesse
+                print("activation limitateur (info envoyé)") 
             
         
 
-        #test clic pour les boutons toujours allumés
+        #test clic pour les boutons toujours allumés en bas de l'ecran
         #clic bouton affichage
         if 0 < x < 272 and 403 < y < 470 and affichage_loop == False :
             affichage_loop = True
@@ -233,12 +250,12 @@ class Interface :
         
 
     def test_clic_bouton_regulateur_limitateur(self, event_type, x, y) :
-        for signe in info_regulateur_limitateur.items() :
+        for signe in self.info_regulateur_limitateur["boutons"].items() :
             if signe[1]["etat"] == False and event_type == MOUSEBUTTONDOWN and signe[1]["position"][0] < x < signe[1]["position"][0]+88 and signe[1]["position"][1] < y < signe[1]["position"][1]+88:
                 signe[1]["etat"] = True
             elif signe[1]["etat"] and event_type == MOUSEBUTTONUP :
                 signe[1]["etat"] = False
-                if signe[0] == "plus" and self.vitesse_consigne < self.vitesse_consigne_max:
+                if signe[0] == "plus" and self.vitesse_consigne < VITESSE_MAX:
                     self.vitesse_consigne+=1
                 elif signe[0] == "moins" and self.vitesse_consigne > 1 :
                     self.vitesse_consigne-=1

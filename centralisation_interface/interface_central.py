@@ -41,8 +41,8 @@ from scripts.Communication import *
 
 
 if __name__ == "__main__" :
-    communication = Communication()
-    communication.start()
+    # communication = Communication()
+    # communication.start()
     interface = Interface()
     interface.start()
     
