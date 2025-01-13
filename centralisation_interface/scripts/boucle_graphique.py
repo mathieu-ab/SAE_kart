@@ -46,11 +46,12 @@ class Interface :
         self.fonts["font_prevention"] = import_font("/assets/fonts/Roboto-Bold.ttf", 20)
         self.fonts["font_vitesse"] = import_font("/assets/fonts/7-segment-bold.ttf", 160)
         self.fonts["font_vitesse_consigne"] = import_font("/assets/fonts/7-segment-bold.ttf", 110)
+        self.fonts["font_vitesse_navigation"] = import_font("/assets/fonts/7-segment-bold.ttf", 70)
 
         self.dark_mode = {"etat" : "dark", "color" : (0,0,0), "anti_color" : (255,255,255)}
         self.clignotant_info = {"cligno" : 1, "etat" : False, "allume" : None, "start" : None} #allume deviens "droite" ou "gauche" quand un clignotant est allumé. Sinon il reste en None
         self.index = 0
-        self.vitesse_consigne = 20
+        self.vitesse_consigne = 0
         self.info_switch_3_etat_regulateur = {"etat" : "neutre", "position" : (80, 280), "position_x_rond" : [148]} #etat possible ["regulateur", "neutre", "limitateur"]
         #information pour les boutons de régulateur pour savoir quand un bouton est appuyé ou non
         self.info_regulateur_limitateur = {"boutons" : {
@@ -71,7 +72,8 @@ class Interface :
         self.wifi_etat = True #true = connecté
         self.mode_conduite = "normal"
         self.temperature = 70
-        self.batterie = 0.81
+        self.batterie = 0.25
+
 
 
     def start(self) :
@@ -116,12 +118,15 @@ class Interface :
                     else :
                         self.wifi_etat = False
                     self.index = 0
+                if self.index%(fps//2) == 0 :
+                    changement_etat_clignotant(self)
                 
 
 
 
             #boucle d'affichage de l'onglet navigation
             while navigation_loop :
+                self.index+=1
                 self.event_window()
                 #Limitation de vitesse de la boucle
                 self.clock.tick(fps) 
@@ -129,8 +134,12 @@ class Interface :
                 #affichage des images
                 self.window.blit(self.images["background_navigation_"+self.dark_mode["etat"]], (0,0)) #image du background
                 affichage_clignotant(self)
+                #affichage vitesse
+                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse_navigation"], (388, 330), self.dark_mode["anti_color"])
 
-
+                if self.index%(fps//2) == 0 :
+                    changement_etat_clignotant(self)
+                    self.index = 0
                 #Rafraîchissement de l'écran
                 pygame.display.flip()
 
@@ -176,7 +185,8 @@ class Interface :
                 systeme_loop = False
             if event.type == MOUSEBUTTONUP : # fonctionnement avec souris
                 self.test_clic(X, Y)
-            self.test_clic_bouton_regulateur_limitateur(event.type, X, Y)
+            if systeme_loop :
+                self.test_clic_bouton_regulateur_limitateur(event.type, X, Y)
 
 
     def test_clic(self, x, y) :

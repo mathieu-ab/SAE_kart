@@ -6,6 +6,7 @@ import pygame
 import threading
 import socket
 import os
+import paho.mqtt.client as mqtt
 
 
 
@@ -16,7 +17,7 @@ import os
 CURRENT_PATH = os.getcwd()
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = True
+tactile = False
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN

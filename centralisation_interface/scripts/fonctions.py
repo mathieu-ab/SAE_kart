@@ -120,14 +120,15 @@ def affichage_batterie(self) :
          pygame.Rect(144, 150+int((1-self.batterie)*150), 72, int(self.batterie*150)),
          border_radius=5)
 
-def affichage_clignotant(self) :
-    if self.clignotant_info["allume"] != None and self.clignotant_info["start"]+self.clignotant_info["cligno"] == int(time()) :
+def changement_etat_clignotant(self) :
+    if self.clignotant_info["allume"] != None  :
         self.clignotant_info["etat"] = not self.clignotant_info["etat"] 
         self.clignotant_info["cligno"]+=1
         if self.clignotant_info["cligno"] == 6 :
             self.clignotant_info["allume"] = None
             print(f"clignotant eteint (info envoyé)")
 
+def affichage_clignotant(self) :
     if self.clignotant_info["etat"] and self.clignotant_info["allume"] == "gauche" :
         self.window.blit(self.images["clignotant_droit_allume_gauche"], (56, 329))
         self.window.blit(self.images["clignotant_droit_eteint_droit"], (655, 327))
@@ -226,6 +227,5 @@ def affichage_switch_3_etat(self, position, etat, position_x_rond) :
     # Dessiner le contrôle
     pygame.draw.ellipse(self.window, (255, 255, 255), (control_position_x, position[1] + 5+distance_control_target//8, 70+distance_control_target//3, 70-distance_control_target//4))
     position_x_rond[0] = control_position_x
-
 
 
