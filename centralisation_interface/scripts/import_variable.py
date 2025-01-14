@@ -16,7 +16,7 @@ import paho.mqtt.client as mqtt
 CURRENT_PATH = os.getcwd()
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = False
+tactile = True
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN

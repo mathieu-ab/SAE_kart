@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Chemin vers le script Python
-PYTHON_SCRIPT="interface_central.py"
+PYTHON_SCRIPT="/home/SAE_kart/centralisation_interface/interface_central.py"
 
-# Lancer X avec le script Python
-xinit python3 "$PYTHON_SCRIPT" -- :0
+# Lancer X et attendre la fin du script Python
+xinit /bin/bash -c "python3 '$PYTHON_SCRIPT'" -- :0
 
-# Une fois que le script Python se termine, arrêter X
-pkill X
+# Attendre un instant pour s'assurer que X est arrêté proprement
+sleep 1
