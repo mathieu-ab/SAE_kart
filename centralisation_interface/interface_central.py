@@ -38,17 +38,20 @@ from scripts.boucle_graphique import *
 from scripts.MQTTMessageHandler import *
 
 topics = [
-    "moteur/vitesse",
-    "moteur/temperature",
-    "moteur/mode",
-
-    "bms/batterie",
-
-    "message/prevention",
-
-    "aide/clignotant",
-    "aide/reg_lim",
-    "aide/vitesse_consigne"
+    "moteur/vitesse",       #--reçois
+    "moteur/temperature",   #--reçois
+    "moteur/mode",          #envoi
+                            #
+    "bms/batterie",         #--reçois
+                            #
+    "message/prevention",   #--reçois
+                            #
+    "aide/clignotant",      #envoi
+    "aide/reg_lim",         #envoi
+    "aide/vitesse_consigne",#envoi
+    "aide/ligne_blanche",   #envoi
+    "aide/endormissement",  #envoi
+    "aide/obstacle"         #envoi
 ]
 
 

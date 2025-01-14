@@ -2,10 +2,10 @@ from scripts.import_variable import *
 #--|--# fonctions
 
 def import_image(chemin) :
-    return pygame.image.load(CURRENT_PATH+chemin).convert_alpha()
+    return pygame.image.load(chemin).convert_alpha()
 
 def import_font(chemin, size) :
-    return pygame.font.Font(CURRENT_PATH+chemin, size)
+    return pygame.font.Font(chemin, size)
 
 def hex_to_rgb(hex_color):
     # Supprime le caractère '#' si présent
@@ -25,12 +25,11 @@ def is_connected():
 
 def redirection_effet_bouton(self, sw) :
     if sw[0] == "detection_ligne_blanche" :
-        print(f"{is_activate(sw[1]['etat'])} du mode detection ligne blanche")
-        
+        self.mqtt_thread_handler.add_message("aide/ligne_blanche", is_activate(sw[1]['etat']))
     elif sw[0] == "detection_obstacle" :
-        print(f"{is_activate(sw[1]['etat'])} du mode detection d'obstacle")
+        self.mqtt_thread_handler.add_message("aide/obstacle", is_activate(sw[1]['etat']))
     elif sw[0] == "endormissement" :
-        print(f"{is_activate(sw[1]['etat'])} du mode d'endormissement")
+        self.mqtt_thread_handler.add_message("aide/endormissement", is_activate(sw[1]['etat']))
     elif sw[0] == "syst_heure" :
         if self.format_heure == "24h" :
             self.format_heure = "12h" 
@@ -55,8 +54,8 @@ def test_convertion_Celsius_to_Fahrenheit(temperature_c, unite) :
 
 def is_activate(etat) :
     if etat :
-        return "activation"
-    return "desactivation"
+        return "a"
+    return "d"
 
 ##------------Fonction d'affichage--------------------##
 
