@@ -2,10 +2,10 @@ from scripts.import_variable import *
 #--|--# fonctions
 
 def import_image(chemin) :
-    return pygame.image.load(CURRENT_PATH+chemin).convert_alpha()
+    return pygame.image.load(os.path.abspath(chemin)).convert_alpha()
 
 def import_font(chemin, size) :
-    return pygame.font.Font(CURRENT_PATH+chemin, size)
+    return pygame.font.Font(os.path.abspath(chemin), size)
 
 def hex_to_rgb(hex_color):
     # Supprime le caractère '#' si présent

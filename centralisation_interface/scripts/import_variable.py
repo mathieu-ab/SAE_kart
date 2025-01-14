@@ -6,6 +6,7 @@ import pygame
 import threading
 import socket
 import os
+from pathlib import Path
 import paho.mqtt.client as mqtt
 
 
@@ -13,7 +14,7 @@ import paho.mqtt.client as mqtt
 
 
 #--|--# lists/variables
-CURRENT_PATH = os.getcwd()
+CURRENT_PATH = script_dir = Path(__file__).parent
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
 tactile = False
