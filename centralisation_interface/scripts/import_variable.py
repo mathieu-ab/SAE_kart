@@ -14,7 +14,7 @@ import paho.mqtt.client as mqtt
 
 
 #--|--# lists/variables
-CURRENT_PATH = script_dir = Path(__file__).parent
+CURRENT_PATH = Path("").resolve()
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
 tactile = False
