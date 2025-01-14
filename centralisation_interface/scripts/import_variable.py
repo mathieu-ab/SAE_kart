@@ -7,7 +7,7 @@ import threading
 import socket
 import os
 import paho.mqtt.client as mqtt
-
+import json
 
 
 
@@ -43,6 +43,8 @@ color_green_to_red.extend(list(Color("#ffae01").range_to(Color("#ff6101"),15)))
 color_green_to_red.extend(list(Color("#ff6101").range_to(Color("#ff0101"),15)))
 #queue des messages de prévention
 prevention_queue = []
+#file pour envoyer des messages. Les messages sont sous la forme {"topic" : "nom/topic", "message" : message}
+envoi_mqtt_msg = []
 #dictionnaire des switchs
 switch_dict = {"detection_ligne_blanche" : {"etat" : True,
                             "position" : [292, 27],

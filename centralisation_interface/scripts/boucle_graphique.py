@@ -4,6 +4,7 @@ from scripts.import_variable import *
 
 class Interface :
     def __init__(self):
+        self.mqtt_thread_handler = None
         #initialisation pygame (interface graphique) 
         pygame.init()
         pygame.display.set_caption("Tableau de bord Kart") #changement du titre de la fenêtre
@@ -95,7 +96,7 @@ class Interface :
                 #affichage des textes
                 affichage_heure(self)
                 #affichag vitesse
-                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 117), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 113), self.dark_mode["anti_color"])
                 #affichag temperature
                 affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature, self.temperature_unite)}", self.fonts["font_nombres"], (685, 215), self.dark_mode["anti_color"])
                 affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 212), self.dark_mode["anti_color"])
@@ -197,7 +198,7 @@ class Interface :
             for info_mode_item in info_mode_conduite.items() : #boucle pour les 3 boutons. La dernière condition est pour éviter d'envoyer un rechanger au même mode de conduite
                 if info_mode_item[1] < x < info_mode_item[1] + 134 and 36 < y < 93 and self.mode_conduite != info_mode_item[0]:
                     self.mode_conduite = info_mode_item[0]
-                    print(f"nouveau mode de conduite : {self.mode_conduite} (info envoyé)")
+                    self.mqtt_thread_handler.add_message("moteur/mode", self.mode_conduite)
             #test clic clognotant gauche
             if 56 < x < 148 and 329 < y < 391 :
                 self.clignotant_info = {"cligno" : 1, "etat" : True, "allume" : "gauche", "start" : int(time())}
