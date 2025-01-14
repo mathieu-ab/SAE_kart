@@ -198,26 +198,31 @@ class Interface :
             for info_mode_item in info_mode_conduite.items() : #boucle pour les 3 boutons. La dernière condition est pour éviter d'envoyer un rechanger au même mode de conduite
                 if info_mode_item[1] < x < info_mode_item[1] + 134 and 36 < y < 93 and self.mode_conduite != info_mode_item[0]:
                     self.mode_conduite = info_mode_item[0]
+                    #permet d'envoyer l'information via mqtt
                     self.mqtt_thread_handler.add_message("moteur/mode", self.mode_conduite)
             #test clic clognotant gauche
             if 56 < x < 148 and 329 < y < 391 :
                 self.clignotant_info = {"cligno" : 1, "etat" : True, "allume" : "gauche", "start" : int(time())}
-                print(f"clignotant gauche allumé (info envoyé)")
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/clignotant", "ga")
             #test clic clognotant droit
             elif 655 < x < 752 and 329 < y < 391 :
                 self.clignotant_info = {"cligno" : 1, "etat" : True, "allume" : "droite", "start" : int(time())} 
-                print(f"clignotant droit allumé (info envoyé)")
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/clignotant", "da")
 
         #si on est sur l'onglet navigation
         if navigation_loop :
             #test clic clognotant gauche
             if 56 < x < 148 and 329 < y < 391 :
                 self.clignotant_info = {"cligno" : 1, "etat" : True, "allume" : "gauche", "start" : int(time())}
-                print(f"clignotant gauche allumé (info envoyé)")
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/clignotant", "ga")
             #test clic clognotant droit
             elif 655 < x < 752 and 329 < y < 391 :
                 self.clignotant_info = {"cligno" : 1, "etat" : True, "allume" : "droite", "start" : int(time())} 
-                print(f"clignotant droit allumé (info envoyé)")
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/clignotant", "da")
 
         #si on est sur l'onglet systeme
         if systeme_loop :
@@ -230,15 +235,19 @@ class Interface :
                 self.info_switch_3_etat_regulateur["etat"] = "regulateur"
                 self.info_regulateur_limitateur["affichage"] = True
                 self.vitesse_consigne = self.vitesse
-                print("activation régulateur (info envoyé)") #on n'envoi pas la vitesse de consigne car à l'activation du mode, la vitesse de consigne est éguale à la vitesse
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/reg_lim", "ra") #on n'envoi pas la vitesse de consigne car à l'activation du mode, la vitesse de consigne est éguale à la vitesse
             elif self.info_switch_3_etat_regulateur["position"][0] + 220//3 < x < self.info_switch_3_etat_regulateur["position"][0] + 2*220//3 and self.info_switch_3_etat_regulateur["position"][1] < y < self.info_switch_3_etat_regulateur["position"][1] + 80 :
                 self.info_switch_3_etat_regulateur["etat"] = "neutre"
                 self.info_regulateur_limitateur["affichage"] = False
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/reg_lim", "e")
             elif self.info_switch_3_etat_regulateur["position"][0] + 2*220//3 < x < self.info_switch_3_etat_regulateur["position"][0] + 220 and self.info_switch_3_etat_regulateur["position"][1] < y < self.info_switch_3_etat_regulateur["position"][1] + 80 :
                 self.info_switch_3_etat_regulateur["etat"] = "limitateur"
                 self.info_regulateur_limitateur["affichage"] = True
                 self.vitesse_consigne = self.vitesse
-                print("activation limitateur (info envoyé)") 
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/reg_lim", "la")
             
         
 
@@ -270,4 +279,5 @@ class Interface :
                     self.vitesse_consigne+=1
                 elif signe[0] == "moins" and self.vitesse_consigne > 1 :
                     self.vitesse_consigne-=1
-                print(f"nouvelle consigne vitsse consigne : {self.vitesse_consigne=} (info envoyé)")
+                #permet d'envoyer l'information via mqtt
+                self.mqtt_thread_handler.add_message("aide/vitesse_consigne", f"{self.vitesse_consigne}")

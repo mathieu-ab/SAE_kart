@@ -44,7 +44,11 @@ topics = [
 
     "bms/batterie",
 
-    "message/prevention"
+    "message/prevention",
+
+    "aide/clignotant",
+    "aide/reg_lim",
+    "aide/vitesse_consigne"
 ]
 
 

@@ -26,6 +26,7 @@ def is_connected():
 def redirection_effet_bouton(self, sw) :
     if sw[0] == "detection_ligne_blanche" :
         print(f"{is_activate(sw[1]['etat'])} du mode detection ligne blanche")
+        
     elif sw[0] == "detection_obstacle" :
         print(f"{is_activate(sw[1]['etat'])} du mode detection d'obstacle")
     elif sw[0] == "endormissement" :
@@ -126,7 +127,7 @@ def changement_etat_clignotant(self) :
         self.clignotant_info["cligno"]+=1
         if self.clignotant_info["cligno"] == 6 :
             self.clignotant_info["allume"] = None
-            print(f"clignotant eteint (info envoyé)")
+            self.mqtt_thread_handler.add_message("aide/clignotant", "e")
 
 def affichage_clignotant(self) :
     if self.clignotant_info["etat"] and self.clignotant_info["allume"] == "gauche" :
