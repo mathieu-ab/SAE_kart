@@ -9,7 +9,6 @@ class MQTTMessageHandler(threading.Thread):
         self.interface = interface
         self.lock = threading.Lock()  # Verrou pour synchroniser l'accès à la liste des messages à envoyer
         self.condition = threading.Condition()  # Condition pour gérer la mise en stase
-        self.envoi_mqtt_msg = []  # Liste des messages à envoyer
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -50,6 +49,7 @@ class MQTTMessageHandler(threading.Thread):
 
             if message_to_send:
                 topic, message = message_to_send
+
                 print(f"Envoi : {message} au topic {topic}")
                 try:
                     self.client.publish(topic, message)
@@ -79,7 +79,7 @@ class MQTTMessageHandler(threading.Thread):
     def analyse_topic_bms_batterie(self, message):
         try:
             batterie = int(message)
-            batterie = batterie / 100
+            batterie = batterie
             self.interface.batterie = batterie
         except Exception as e:
             print(e)
