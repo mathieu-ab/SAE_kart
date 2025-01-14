@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Chemin vers le script Python
-PYTHON_SCRIPT="/home/SAE_kart/centralisation_interface/interface_central.py"
+PYTHON_SCRIPT="/home/user/SAE_kart/centralisation_interface/interface_central.py"
 
 
 # Lancer X et exécuter le script Python
