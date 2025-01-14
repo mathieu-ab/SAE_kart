@@ -11,4 +11,4 @@ xinit /bin/bash -c "python3 '$PYTHON_SCRIPT'; pkill X" -- :0
 sleep 1
 
 # Message de confirmation
-echo "Le script s'est terminé"
+echo "Le script s'est terminé
