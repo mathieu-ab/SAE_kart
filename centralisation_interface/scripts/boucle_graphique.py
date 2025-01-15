@@ -188,6 +188,7 @@ class Interface :
                 affichage_loop = False
                 navigation_loop = False
                 systeme_loop = False
+                
             if event.type == MOUSEBUTTONUP : # fonctionnement avec souris
                 self.test_clic(X, Y)
             if systeme_loop :

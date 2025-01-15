@@ -6,6 +6,7 @@ import pygame
 import threading
 import socket
 import os
+import sys
 from pathlib import Path
 import paho.mqtt.client as mqtt
 

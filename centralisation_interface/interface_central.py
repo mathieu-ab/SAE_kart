@@ -49,5 +49,7 @@ if __name__ == "__main__" :
     # Démarrage des thread
     mqtt_thread_handler.start()
     interface.start()
+    os._exit(1)
+    
 
     
