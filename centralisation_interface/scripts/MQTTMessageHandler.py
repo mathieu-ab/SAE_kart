@@ -78,8 +78,8 @@ class MQTTMessageHandler(threading.Thread):
 
     def analyse_topic_bms_batterie(self, message):
         try:
-            batterie = int(message)
-            self.interface.batterie = batterie
+            batterie = int(message) / 100
+            self.interface.batterie = round(batterie, 2)
         except Exception as e:
             print(e)
 
