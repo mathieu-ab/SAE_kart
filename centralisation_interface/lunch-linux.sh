@@ -8,8 +8,9 @@ PYTHON_SCRIPT2="/home/kartuser/BMS/test.py"
 python3 "$PYTHON_SCRIPT2" &
 SCRIPT2_PID=$!
 
-# Lancer le premier script avec X
+# Lancer le premier script avec X et attendre qu'il se termine
 xinit /bin/bash -c "python3 '$PYTHON_SCRIPT1'; pkill X" -- :0
+wait # Cette commande attend la fin du processus `xinit`
 
 # Une fois que le script 1 se termine, arrêter le script 2
 kill $SCRIPT2_PID
