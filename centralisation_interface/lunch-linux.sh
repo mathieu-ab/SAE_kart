@@ -2,7 +2,7 @@
 
 # Chemins vers les scripts Python
 PYTHON_SCRIPT1="/home/kartuser/SAE_kart/centralisation_interface/interface_central.py"
-PYTHON_SCRIPT2="/home/kartuser/BMS/BMS_lireSOC.py"
+PYTHON_SCRIPT2="/home/kartuser/BMS/test.py"
 
 # Lancer le deuxième script Python en arrière-plan et capturer son PID
 python3 "$PYTHON_SCRIPT2" &
