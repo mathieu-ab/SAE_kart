@@ -26,9 +26,9 @@ class MQTTMessageHandler(threading.Thread):
         if msg.topic == "moteur/vitesse":
             self.analyse_topic_moteur_vitesse(msg_received)
         elif msg.topic == "moteur/temperature":
-            self.analyse_topic_bms_temperature(msg_received)
-        elif msg.topic == "bms/temperature":
             self.analyse_topic_moteur_temperature(msg_received)
+        elif msg.topic == "bms/temperature":
+            self.analyse_topic_bms_temperature(msg_received)
         elif msg.topic == "bms/batterie":
             self.analyse_topic_bms_batterie(msg_received)
         elif msg.topic == "message/prevention":
