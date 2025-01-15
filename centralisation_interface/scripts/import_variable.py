@@ -17,7 +17,7 @@ import paho.mqtt.client as mqtt
 CURRENT_PATH = Path("").resolve()
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = True
+tactile = False
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
@@ -73,3 +73,21 @@ COLOR_MODE_CONDUITE = {"dark" : {
                             "selected" : (176, 128, 255),
                             "not selected" : (178, 210, 255)}
                         }
+IP_BROKER_MQTT = "192.168.1.88"
+topics = [
+    "moteur/vitesse",       #--reçois
+    "moteur/temperature",   #--reçois
+    "moteur/mode",          #envoi
+                            #
+    "bms/batterie",         #--reçois
+    "bms/temperature",      #--reçois
+                            #
+    "message/prevention",   #--reçois
+                            #
+    "aide/clignotant",      #envoi
+    "aide/reg_lim",         #envoi
+    "aide/vitesse_consigne",#envoi
+    "aide/ligne_blanche",   #envoi
+    "aide/endormissement",  #envoi
+    "aide/obstacle"         #envoi
+]

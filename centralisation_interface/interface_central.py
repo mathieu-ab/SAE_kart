@@ -37,35 +37,17 @@
 from scripts.boucle_graphique import *
 from scripts.MQTTMessageHandler import *
 
-topics = [
-    "moteur/vitesse",       #--reçois
-    "moteur/temperature",   #--reçois
-    "moteur/mode",          #envoi
-                            #
-    "bms/batterie",         #--reçois
-                            #
-    "message/prevention",   #--reçois
-                            #
-    "aide/clignotant",      #envoi
-    "aide/reg_lim",         #envoi
-    "aide/vitesse_consigne",#envoi
-    "aide/ligne_blanche",   #envoi
-    "aide/endormissement",  #envoi
-    "aide/obstacle"         #envoi
-]
+
 
 
 if __name__ == "__main__" :
-    
     interface = Interface()
+    # Création de l'instance de thread MQTT pour s'abonner au différents topics
     mqtt_thread_handler = MQTTMessageHandler(topics, interface)
     interface.mqtt_thread_handler = mqtt_thread_handler
-    # Création de l'instance de thread MQTT pour s'abonner au différents topics
-    # mqtt_thread_reciever = MQTTMessageReceiver(topics, interface)
     
-    # Démarrage du thread MQTT
+    # Démarrage des thread
     mqtt_thread_handler.start()
-    # mqtt_thread_publisher.start()
     interface.start()
 
     

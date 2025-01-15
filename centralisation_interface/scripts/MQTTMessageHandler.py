@@ -26,6 +26,8 @@ class MQTTMessageHandler(threading.Thread):
         if msg.topic == "moteur/vitesse":
             self.analyse_topic_moteur_vitesse(msg_received)
         elif msg.topic == "moteur/temperature":
+            self.analyse_topic_bms_temperature(msg_received)
+        elif msg.topic == "bms/temperature":
             self.analyse_topic_moteur_temperature(msg_received)
         elif msg.topic == "bms/batterie":
             self.analyse_topic_bms_batterie(msg_received)
@@ -36,7 +38,8 @@ class MQTTMessageHandler(threading.Thread):
         print(f"démarrage...")
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.connect("localhost", keepalive=60)
+        self.client.username_pw_set("mqtt_mat", "user")
+        self.client.connect(IP_BROKER_MQTT, keepalive=60)
 
         self.client.loop_start()
 
@@ -71,8 +74,15 @@ class MQTTMessageHandler(threading.Thread):
 
     def analyse_topic_moteur_temperature(self, message):
         try:
-            temperature = int(message)
-            self.interface.temperature = temperature
+            temperature_moteur = int(message)
+            self.interface.temperature_moteur = temperature_moteur
+        except Exception as e:
+            print(e)
+
+    def analyse_topic_bms_temperature(self, message):
+        try:
+            temperature_batterie = int(message)
+            self.interface.temperature_batterie = temperature_batterie
         except Exception as e:
             print(e)
 

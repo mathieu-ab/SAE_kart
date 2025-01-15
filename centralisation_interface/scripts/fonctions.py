@@ -17,7 +17,7 @@ def hex_to_rgb(hex_color):
 def is_connected():
     try:
         # Tente de se connecter à un site web public connu
-        socket.create_connection(("8.8.8.8", 53), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
+        socket.create_connection((IP_BROKER_MQTT, 1883), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
         return True
     except OSError:
         return False

@@ -72,7 +72,8 @@ class Interface :
         self.vitesse = 17
         self.wifi_etat = True #true = connecté
         self.mode_conduite = "normal"
-        self.temperature = 70
+        self.temperature_batterie = 70
+        self.temperature_moteur = 175
         self.batterie = 0.25
 
 
@@ -95,11 +96,14 @@ class Interface :
                
                 #affichage des textes
                 affichage_heure(self)
-                #affichag vitesse
+                #affichage vitesse
                 affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 113), self.dark_mode["anti_color"])
-                #affichag temperature
-                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature, self.temperature_unite)}", self.fonts["font_nombres"], (685, 215), self.dark_mode["anti_color"])
-                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 212), self.dark_mode["anti_color"])
+                #affichage temperature batterie
+                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_batterie, self.temperature_unite)}", self.fonts["font_nombres"], (685, 170), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 170), self.dark_mode["anti_color"])
+                #affichage temperature moteur
+                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_moteur, self.temperature_unite)}", self.fonts["font_nombres"], (685, 240), self.dark_mode["anti_color"])
+                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 250), self.dark_mode["anti_color"])
                 #affichage mode conduite texte
                 affichage_texte(self.window, f"ECO", self.fonts["font_mode_conduite"], (92, 65), self.dark_mode["anti_color"])
                 affichage_texte(self.window, f"NORMAL", self.fonts["font_mode_conduite"], (270, 65), self.dark_mode["anti_color"])
