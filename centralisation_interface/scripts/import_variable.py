@@ -7,7 +7,6 @@ import threading
 import socket
 import os
 import sys
-from pathlib import Path
 import paho.mqtt.client as mqtt
 
 
@@ -15,10 +14,10 @@ import paho.mqtt.client as mqtt
 
 
 #--|--# lists/variables
-CURRENT_PATH = Path("").resolve()
+CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = False
+tactile = True
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
