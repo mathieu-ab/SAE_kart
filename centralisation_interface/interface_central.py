@@ -34,8 +34,7 @@
 
 #import des autres fichiers python
 
-from scripts.boucle_graphique import *
-from scripts.MQTTMessageHandler import *
+from module_import import *
 
 
 
@@ -43,11 +42,11 @@ from scripts.MQTTMessageHandler import *
 if __name__ == "__main__" :
     interface = Interface()
     # Création de l'instance de thread MQTT pour s'abonner au différents topics
-    mqtt_thread_handler = MQTTMessageHandler(topics, interface)
-    interface.mqtt_thread_handler = mqtt_thread_handler
+    # mqtt_thread_handler = MQTTMessageHandler(topics, interface)
+    # interface.mqtt_thread_handler = mqtt_thread_handler
     
     # Démarrage des thread
-    mqtt_thread_handler.start()
+    # mqtt_thread_handler.start()
     interface.start()
     os._exit(1)
     

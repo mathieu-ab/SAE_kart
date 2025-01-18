@@ -1,4 +1,4 @@
-from scripts.import_variable import *
+
 #--|--# fonctions
 
 def import_image(chemin) :
@@ -109,7 +109,15 @@ def affichage_mode_conduite(self) :
             color = COLOR_MODE_CONDUITE[self.dark_mode["etat"]]["selected"]
         else :
             color = COLOR_MODE_CONDUITE[self.dark_mode["etat"]]["not selected"]
-        pygame.draw.rect(self.window, color, pygame.Rect(info_mode_item[1], 36, 134, 57), border_radius=11)
+        pygame.draw.rect(self.window, color, pygame.Rect(info_mode_item[1], 36, 99, 47), border_radius=11)
+
+def affichage_activation_charge(self) :
+    if self.activation_charge_info["etat"] :
+        color = COLOR_MODE_CONDUITE[self.dark_mode["etat"]]["selected"]
+        pygame.draw.rect(self.window, color, pygame.Rect(424, 39, 99, 47), border_radius=11)
+    else :
+        color = COLOR_MODE_CONDUITE[self.dark_mode["etat"]]["not selected"]
+    pygame.draw.rect(self.window, color, pygame.Rect(424, 39, 99, 47), border_radius=11)
 
         
 def affichage_batterie(self) :

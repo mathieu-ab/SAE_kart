@@ -1,5 +1,5 @@
-from scripts.fonctions import *
-from scripts.import_variable import *
+
+from module_import import *
 
 
 class Interface :
@@ -64,6 +64,7 @@ class Interface :
                     "position" : (363, 277)}
             },
             "affichage" : False}
+        self.activation_charge_info = {"etat" : False, "sec_restant" : 5}
         #variable des parametres
         self.format_heure = "24h"
         self.temperature_unite = "°C"
@@ -72,10 +73,32 @@ class Interface :
         self.vitesse = 17
         self.wifi_etat = True #true = connecté
         self.mode_conduite = "normal"
-        self.temperature_batterie = 70
+        self.temperature_batterie = 170
         self.temperature_moteur = 175
         self.batterie = 0.25
+        self.texts = []
+        self.setup_affichage()
 
+    def setup_affichage(self) :
+        #vitesse
+        self.texts.append({"object_text" : Text(self.window,f"{self.vitesse}", "7-segment-bold", 160, True, self.dark_mode["anti_color"], (380, 113), "center"),
+                           "text" : f"{self.vitesse}"})
+        #temperature batterie
+        self.texts.append({"object_text" : Text(self.window,f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_batterie, self.temperature_unite)}", "Roboto-Bold", 50, True, self.dark_mode["anti_color"], (720, 170), "right"),
+                           "text" : f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_batterie, self.temperature_unite)}"})
+        self.texts.append({"object_text" : Text(self.window,f"{self.temperature_unite}", "Roboto-Bold", 25, True, self.dark_mode["anti_color"], (725, 163), "left"),
+                           "text" : f"{self.temperature_unite}"})
+        #temperature moteur
+        self.texts.append({"object_text" : Text(self.window,f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_moteur, self.temperature_unite)}", "Roboto-Bold", 50, True, self.dark_mode["anti_color"], (720, 240), "right"),
+                           "text" : f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_moteur, self.temperature_unite)}"})
+        self.texts.append({"object_text" : Text(self.window,f"{self.temperature_unite}", "Roboto-Bold", 25, True, self.dark_mode["anti_color"], (725, 233), "left"),
+                           "text" : f"{self.temperature_unite}"})
+
+
+    def affichage(self) :
+        #affichage des texte
+        for text in self.texts :
+            text["object_text"].update_affichage(self.window, text["text"])
 
 
     def start(self) :
@@ -94,16 +117,14 @@ class Interface :
                 affichage_clignotant(self)
                 affichage_prevention(self)
                
+
+                self.affichage()
                 #affichage des textes
                 affichage_heure(self)
                 #affichage vitesse
-                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse"], (380, 113), self.dark_mode["anti_color"])
                 #affichage temperature batterie
-                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_batterie, self.temperature_unite)}", self.fonts["font_nombres"], (685, 170), self.dark_mode["anti_color"])
-                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 170), self.dark_mode["anti_color"])
                 #affichage temperature moteur
-                affichage_texte(self.window, f"{test_convertion_Celsius_to_Fahrenheit(self.temperature_moteur, self.temperature_unite)}", self.fonts["font_nombres"], (685, 240), self.dark_mode["anti_color"])
-                affichage_texte(self.window, f"{self.temperature_unite}", self.fonts["font_normal"], (745, 250), self.dark_mode["anti_color"])
+                
                 #affichage mode conduite texte
                 affichage_texte(self.window, f"ECO", self.fonts["font_mode_conduite"], (92, 65), self.dark_mode["anti_color"])
                 affichage_texte(self.window, f"NORMAL", self.fonts["font_mode_conduite"], (270, 65), self.dark_mode["anti_color"])
@@ -188,7 +209,7 @@ class Interface :
                 affichage_loop = False
                 navigation_loop = False
                 systeme_loop = False
-                
+
             if event.type == MOUSEBUTTONUP : # fonctionnement avec souris
                 self.test_clic(X, Y)
             if systeme_loop :

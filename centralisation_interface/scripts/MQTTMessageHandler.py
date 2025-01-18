@@ -1,4 +1,4 @@
-from scripts.import_variable import *
+from centralisation_interface.config import *
 
 
 class MQTTMessageHandler(threading.Thread):
@@ -40,7 +40,6 @@ class MQTTMessageHandler(threading.Thread):
         self.client.on_message = self.on_message
         self.client.username_pw_set("mqtt_mat", "user")
         self.client.connect(IP_BROKER_MQTT, keepalive=60)
-
         self.client.loop_start()
 
         while True:
@@ -55,7 +54,7 @@ class MQTTMessageHandler(threading.Thread):
                 topic, message = message_to_send
                 print(f"Envoi : {message} au topic {topic}")
                 try:
-                    self.client.publish(topic, message)
+                    self.client.publish(topic, message, retain=True)
                 except Exception as e:
                     print(f"Erreur lors de l'envoi : {e}")
 
