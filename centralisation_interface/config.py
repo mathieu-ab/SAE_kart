@@ -82,3 +82,26 @@ topics = [
 
 # Déclaration globale du cache de polices
 font_cache: List[Dict[str, Any]] = []
+dark_light_mode = {"etat" : "dark",
+                   "text" : {
+                        "light" : (0,0,0),
+                        "dark" : (255,255,255)
+                    },
+                    "button" : {"dark" : {
+                                    "pressed" : (89, 10, 220),
+                                    "normal" : (12, 20, 31),
+                                    "disabled" : (12, 20, 31)},
+                                "light" : {
+                                    "pressed" : (176, 128, 255),
+                                    "normal" : (178, 210, 255),
+                                    "disabled" : (178, 210, 255)}
+                        },
+                    "container" : {
+                        "light" : (202, 208, 255),
+                        "dark" : (17, 26, 50)
+                    },
+                    "background" : {
+                        "light" : (179, 211, 255),
+                        "dark" : (4, 12, 25)
+                    }
+                }

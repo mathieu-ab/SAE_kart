@@ -1,4 +1,4 @@
-from .boucle_graphique import Interface  # Modifier selon ce que contient le fichier
+from .Interface import Interface
+from .setup_draw import setup_draw
 
-# Définir ce qui est importé lors d'un `from mon_projet import *`
-__all__ = ["Interface"]
+

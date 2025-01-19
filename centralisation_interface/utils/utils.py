@@ -1,4 +1,4 @@
-from module_import import *
+from config import *
 
 
 def import_image(chemin) :

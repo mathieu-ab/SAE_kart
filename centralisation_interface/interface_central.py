@@ -35,6 +35,7 @@
 #import des autres fichiers python
 
 from module_import import *
+from scripts import Interface
 
 
 

@@ -1,40 +1,40 @@
 from module_import import *
+from config import *
+from utils.utils import *
 
 
 class Text :
     def __init__(
             self,
-            window, #fenêtre
+            label: str, #nom de l'objet pour poivoir le récupéré facilement
             text: str,
             font_name: str,
             font_size: int,
-            visible: bool,
             color: tuple,
-            position: tuple,
             justify: str #justify possible : ["center", "right", "left"]
     ) :
+        self.label =label
         self.text = text
-        self.visible = visible
+        self.old_text = text
         self.color = color
-        self.position = position
+        self.position = (0,0)
         self.justify = justify
         #obtenir un font dans le cache en fonction de la taille et du nom
         self.font = get_font_by_cache(font_name, font_size)
         self.create_text_rect()
 
-
-    def update_affichage(self, window, new_text) :
+    def draw(self, window) :
         #affiche un texte variable dans le temps
-        if self.visible :
-            if self.text != new_text :#le texte à changé
-                self.text = new_text
-                self.create_text_rect()
-                window.blit(self.text_surf, self.text_rect)
-            else :
-                window.blit(self.text_surf, self.text_rect)
+        if self.old_text != self.text :#le texte à changé
+            self.old_text = self.text
+            self.create_text_rect()
+            window.blit(self.text_surf, self.text_rect)
+        else :
+            window.blit(self.text_surf, self.text_rect)
 
     def create_text_rect(self) :
         self.text_surf = self.font.render(self.text, True, self.color)
+        size_text = self.text_surf.get_size()
         self.text_rect = self.text_surf.get_rect()
         if self.justify == "center":
             self.text_rect.center = self.position
@@ -43,12 +43,12 @@ class Text :
         elif self.justify == "right":
             self.text_rect.midright = self.position
 
-    #changer le texte en visible ou non
-    def toggle_visible(self) :
-        self.visible = not self.visible
-
-
     def get_size(self) :
         return self.text_surf.get_size()
+    
+    def set_position(self, new_position) :
+        self.position = new_position
+        self.create_text_rect()
 
+    
 

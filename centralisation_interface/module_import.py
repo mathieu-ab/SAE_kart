@@ -12,7 +12,3 @@ from typing import List, Dict, Any
 
 
 #importation de tout les fichier/module du projet
-from config import *
-from utils import *
-from components import *
-from scripts import *
