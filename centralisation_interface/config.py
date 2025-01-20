@@ -61,7 +61,7 @@ COLOR_MODE_CONDUITE = {"dark" : {
                             "selected" : (176, 128, 255),
                             "not selected" : (178, 210, 255)}
                         }
-IP_BROKER_MQTT = "192.168.1.88"
+IP_BROKER_MQTT = "localhost"
 topics = [
     "moteur/vitesse",       #--reçois
     "moteur/temperature",   #--reçois
@@ -69,6 +69,8 @@ topics = [
                             #
     "bms/batterie",         #--reçois
     "bms/temperature",      #--reçois
+
+    "batterie/charge",
                             #
     "message/prevention",   #--reçois
                             #
@@ -89,8 +91,8 @@ dark_light_mode = {"etat" : "dark",
                     },
                     "button" : {"dark" : {
                                     "pressed" : (89, 10, 220),
-                                    "normal" : (12, 20, 31),
-                                    "disabled" : (12, 20, 31)},
+                                    "normal" : (37, 52, 92),
+                                    "disabled" : (37, 52, 92)},
                                 "light" : {
                                     "pressed" : (176, 128, 255),
                                     "normal" : (178, 210, 255),

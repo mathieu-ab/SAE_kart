@@ -19,44 +19,25 @@ class Interface :
         self.window = pygame.display.set_mode((800,480)) #création d'une fenêtre en plein écran
         self.clock = pygame.time.Clock() #clock utile pour bloquer la boucle du jeu et limiter la vitesse de la boucle (même principe que sleep du module time)
 
-        self.clignotant_info = {"cligno" : 1, "etat" : False, "allume" : None, "start" : None} #allume deviens "droite" ou "gauche" quand un clignotant est allumé. Sinon il reste en None
         self.index = 0
-        self.vitesse_consigne = 0
-        self.info_switch_3_etat_regulateur = {"etat" : "neutre", "position" : (80, 280), "position_x_rond" : [148]} #etat possible ["regulateur", "neutre", "limitateur"]
-        #information pour les boutons de régulateur pour savoir quand un bouton est appuyé ou non
-        self.info_regulateur_limitateur = {"boutons" : {
-                "plus" : {
-                    "etat" : False,
-                    "position" : (670, 277)},
-                "moins" : {
-                    "etat" : False,
-                    "position" : (363, 277)}
-            },
-            "affichage" : False}
-        self.activation_charge_info = {"etat" : False, "sec_restant" : 5}
-        #variable des parametres
-        self.format_heure = "24h"
-        self.temperature_unite = "°C"
-
-        #variable importé des autre partie du projet SAE
-        self.vitesse = 17
-        self.wifi_etat = True #true = connecté
-        self.mode_conduite = "normal"
-        self.temperature_batterie = 170
-        self.temperature_moteur = 175
-        self.batterie = 0.25
+        self.clickable_object = {
+            "affichage" : [],
+            "navigation" : [],
+            "systeme" : []
+        }
         self.container_storage = {
             "affichage" : {},
             "navigation" : {},
-            "system" : {}
+            "systeme" : {}
         }
+        self.current_page = "affichage"
         setup_draw(self)
 
     
 
 
     def draw(self) :
-        for container in self.container_storage["affichage"].values() :
+        for container in self.container_storage[self.current_page].values() :
             container.draw(self.window)
 
 
@@ -75,15 +56,15 @@ class Interface :
                 pygame.display.flip()
 
 
-                #permet de tester toute les 10 secondes
-                if self.index >= fps*10 :
-                    if is_connected() :
-                        self.wifi_etat = True
-                    else :
-                        self.wifi_etat = False
-                    self.index = 0
-                if self.index%(fps//2) == 0 :
-                    changement_etat_clignotant(self)
+                # #permet de tester toute les 10 secondes
+                # if self.index >= fps*10 :
+                #     if is_connected() :
+                #         self.wifi_etat = True
+                #     else :
+                #         self.wifi_etat = False
+                #     self.index = 0
+                # if self.index%(fps//2) == 0 :
+                #     changement_etat_clignotant(self)
                 
 
 
@@ -148,8 +129,13 @@ class Interface :
                 navigation_loop = False
                 systeme_loop = False
 
-            if event.type == MOUSEBUTTONUP : # fonctionnement avec souris
-                pass
+            if event.type == MOUSEBUTTONDOWN : # fonctionnement avec souris
+                for objt in self.clickable_object[self.current_page] :
+                    objt.on_click((X, Y))
+            elif event.type == MOUSEBUTTONUP : # fonctionnement avec souris
+                for objt in self.clickable_object[self.current_page] :
+                    objt.on_release((X, Y))
+                
 
 
     def test_clic(self, x, y) :

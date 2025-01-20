@@ -25,9 +25,10 @@ class Container :
                     font_name="Roboto-Bold",
                     font_size=11,
                     color=dark_light_mode["text"][dark_light_mode["etat"]],
-                    justify="left"
+                    justify="left",
+                    show=True
                     ),
-                relative_position=(10,10))
+                relative_position=(5,5))
         self.pygame_rect = pygame.Rect(self.position[0], self.position[1], self.size[0], self.size[1])
 
 
@@ -70,6 +71,11 @@ class Container :
                 new_pos_object[1-priority_axe] = self.position[1-priority_axe]+(self.size[1-priority_axe]-objt["object"].get_size()[1-priority_axe])/2
                 cumule_position+=objt["object"].get_size()[priority_axe]+left_space_length
                 objt["object"].set_position(new_pos_object)
+            else :
+                objt["object"].set_position((
+                self.position[0]+objt["relative_position"][0],
+                self.position[1]+objt["relative_position"][1]
+            ))
     
     def get_nb_not_relative_object(self) :
         nb_object = 0
@@ -95,3 +101,11 @@ class Container :
      
         for objt in self.objects :
             objt["object"].draw(window)
+    
+    def set_position(self, new_position) :
+        self.position = new_position
+        self.pygame_rect = pygame.Rect(self.position[0], self.position[1], self.size[0], self.size[1])
+        self.reCalcule_position()
+
+    def get_size(self) :
+        return self.size

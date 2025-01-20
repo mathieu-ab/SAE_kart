@@ -16,7 +16,7 @@ class Button :
             state: str,  # Options possibles : ["normal", "pressed", "disabled"]
             size: tuple[int, int],  # Taille (width, height) du bouton
             callback_action: callable,  # Fonction appelée lors d'un clic
-            callback_mqtt_response: callable,  # Fonction appelée pour gérer la réponse MQTT
+            auto_change_state: bool,
             **kwargs  # Paramètres supplémentaires
     ):
         self.label = label
@@ -26,7 +26,9 @@ class Button :
             font_name=font_name,
             font_size=font_size,
             color=(dark_light_mode["text"][dark_light_mode["etat"]]),
-            justify="left")
+            justify="left",
+            show=True
+            )
         self.font = get_font_by_cache(font_name, font_size)
         self.state = state if state in ["normal", "pressed", "disabled"] else "normal"  # Validation de l'état
         self.position = (0,0)
@@ -35,7 +37,7 @@ class Button :
         self.size = size
         self.kwargs = kwargs
         self.callback_action = callback_action
-        self.callback_mqtt_response = callback_mqtt_response
+        self.auto_change_state = auto_change_state
         if icon_path != None :
             self.icon = Image(f"Image_button_{label}", icon_path, True, None, None)
         else :
@@ -76,19 +78,23 @@ class Button :
             print(f"Warning : La taille du text + icon dépasse du bouton {self.label}")
         self.text.set_position((
             self.position[0]+self.size[0]//2-(size_icon[0]+size_text[0]+empatement)//2+size_icon[0]+empatement,
-            self.position[1]+self.size[1]//2
+            self.position[1]+self.size[1]//2-size_text[1]//2
         ))
 
     def on_release(self, mouse_position) :
         if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) :
-            if self.callback_action != None :
-                self.callback_action(self.kwargs)
-            if self.callback_mqtt_response != None :
-                self.callback_mqtt_response(self.kwargs)
-        self.state = "normal"
+            if self.callback_action != None and self.auto_change_state :
+                self.callback_action(**self.kwargs)
+        if self.auto_change_state :
+            self.state = "normal"
         
     def on_click(self, mouse_position) :
-        self.state = "pressed"
+        if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) :
+            if self.auto_change_state :
+                self.state = "pressed"
+            if self.auto_change_state == False and self.callback_action != None :
+                self.callback_action(**self.kwargs)
+
         
 
 

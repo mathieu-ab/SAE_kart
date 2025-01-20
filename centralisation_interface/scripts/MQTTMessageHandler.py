@@ -1,15 +1,16 @@
-from centralisation_interface.config import *
+from config import *
 
 
-class MQTTMessageHandler(threading.Thread):
+class MQTTMessageHandler():
     def __init__(self, topics, interface):
-        threading.Thread.__init__(self)
         self.topics = topics  # Liste des topics à surveiller
         self.client = mqtt.Client()
         self.interface = interface
-        self.lock = threading.Lock()  # Verrou pour synchroniser l'accès à la liste des messages à envoyer
-        self.condition = threading.Condition()  # Condition pour gérer la mise en stase
-        self.envoi_mqtt_msg = []  # Liste des messages à envoyer
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+        self.client.username_pw_set("mqtt_mat", "user")
+        self.client.connect(IP_BROKER_MQTT, keepalive=60)
+        self.client.loop_start()
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -34,35 +35,14 @@ class MQTTMessageHandler(threading.Thread):
         elif msg.topic == "message/prevention":
             self.analyse_topic_message_prevention(msg_received)
 
-    def run(self):
-        print(f"démarrage...")
-        self.client.on_connect = self.on_connect
-        self.client.on_message = self.on_message
-        self.client.username_pw_set("mqtt_mat", "user")
-        self.client.connect(IP_BROKER_MQTT, keepalive=60)
-        self.client.loop_start()
 
-        while True:
-            with self.condition:
-                while not self.envoi_mqtt_msg:
-                    self.condition.wait()
 
-                with self.lock:
-                    message_to_send = self.envoi_mqtt_msg.pop(0)
-
-            if message_to_send:
-                topic, message = message_to_send
-                print(f"Envoi : {message} au topic {topic}")
-                try:
-                    self.client.publish(topic, message, retain=True)
-                except Exception as e:
-                    print(f"Erreur lors de l'envoi : {e}")
-
-    def add_message(self, topic, message):
-        with self.lock:
-            self.envoi_mqtt_msg.append((topic, message))
-        with self.condition:
-            self.condition.notify()
+    def publish_message(self, topic, message):
+        try:
+            self.client.publish(topic, message, retain=True)
+            print(f"Message '{message}' envoyé sur le topic '{topic}'")
+        except Exception as e:
+            print(f"Erreur lors de l'envoi : {e}")
 
     def analyse_topic_moteur_vitesse(self, message):
         try:
