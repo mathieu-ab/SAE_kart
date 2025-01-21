@@ -106,9 +106,11 @@ class Interface :
         if new_state == "ON" :
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
+            self.mqtt_thread_handler.publish_message("charge/status", "ON")
         else :
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
+            self.mqtt_thread_handler.publish_message("charge/status", "OFF")
 
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :
