@@ -1,5 +1,5 @@
 
-from scripts.setup_draw import *
+from scripts.setup_draw import setup_draw
 from module_import import *
 from components import *
 from config import *
@@ -31,6 +31,7 @@ class Interface :
             "systeme" : {}
         }
         self.current_page = "affichage"
+        self.setup_draw = setup_draw
 
         #paramètrage
         self.format_heure = "24h"
@@ -88,13 +89,16 @@ class Interface :
         self.container_storage["navigation"]["Vitesse"].get_object("Vitesse").text = str(new_vitesse)
 
     def update_temperature_moteur(self, new_temperature_moteur) :
-        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Moteur").text = str(new_temperature_moteur)
+        self.temperature_moteur = new_temperature_moteur
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Moteur").text = str(test_convertion_Celsius_to_Fahrenheit(new_temperature_moteur, self.temperature_unite))
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Moteur Unite").text = self.temperature_unite
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
 
     def update_temperature_batterie(self, new_temperature_batterie) :
-        print(len(str(new_temperature_batterie)))
-        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Batterie").text = str(new_temperature_batterie)
+        self.temperature_batterie = new_temperature_batterie
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Batterie").text = str(test_convertion_Celsius_to_Fahrenheit(new_temperature_batterie, self.temperature_unite))
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Batterie Unite").text = self.temperature_unite
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
                 # #permet de tester toute les 10 secondes

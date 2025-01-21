@@ -95,7 +95,7 @@ dark_light_mode = {"etat" : "dark",
                                     "disabled" : (37, 52, 92)},
                                 "light" : {
                                     "pressed" : (176, 128, 255),
-                                    "normal" : (178, 210, 255),
+                                    "normal" : (150, 162, 251),
                                     "disabled" : (178, 210, 255)}
                         },
                     "container" : {

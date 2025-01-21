@@ -35,11 +35,7 @@ def redirection_effet_bouton(self, sw) :
         else :
             self.dark_mode = {"etat" : "dark", "color" : (0,0,0), "anti_color" : (255,255,255)}
 
-def test_convertion_Celsius_to_Fahrenheit(temperature_c, unite) : 
-    if unite == "°F" :
-        return int((temperature_c*1.8) + 32)
-    else :
-        return temperature_c
+
 
 def is_activate(etat) :
     if etat :
@@ -279,3 +275,9 @@ def hex_to_rgb(hex_color):
     # Convertit en trois entiers (rouge, vert, bleu)
     rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
     return rgb
+
+def test_convertion_Celsius_to_Fahrenheit(temperature_c, unite) : 
+    if unite == "°F" :
+        return int((temperature_c*1.8) + 32)
+    else :
+        return temperature_c

@@ -1,12 +1,7 @@
 from module_import import *
 from config import *
 from callbacks import *
-from components import Container
-from components import Button
-from components import Text
-from components import Image
-from components import Shape
-
+from components import *
 
 
 def setup_draw(self) :
@@ -23,7 +18,7 @@ def setup_draw(self) :
         Shape(
             label="Background Rectangle",
             shape="rectangle",
-            size=(820, 480),
+            size=(820, 500),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
             show=True
@@ -200,7 +195,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Heure Wifi"].add_object(
         Image(
             label="Wifi",
-            image_path="affichage/wifi.png",
+            image_path=f"affichage/wifi_{dark_light_mode["etat"]}.png",
             show=True,
             callback_action=None,
         ),
@@ -312,7 +307,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path="affichage/batterie.png",
+            image_path=f"affichage/batterie_{dark_light_mode["etat"]}.png",
             show=True,
             callback_action=None,
         ),
@@ -321,7 +316,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path="affichage/batterie.png",
+            image_path=f"affichage/batterie_{dark_light_mode["etat"]}.png",
             show=False,
             callback_action=None,
         ),
@@ -401,7 +396,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Temperature"].add_object(
         Image(
             label="Temperature Png",
-            image_path="affichage/temperature.png",
+            image_path=f"affichage/temperature_{dark_light_mode["etat"]}.png",
             show=True,
             callback_action=None,
         ),
@@ -632,7 +627,7 @@ def setup_draw(self) :
         Shape(
             label="Background Rectangle",
             shape="rectangle",
-            size=(820, 480),
+            size=(820, 500),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
             show=True
@@ -817,7 +812,7 @@ def setup_draw(self) :
         Shape(
             label="Background Rectangle",
             shape="rectangle",
-            size=(820, 480),
+            size=(820, 500),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
             show=True
@@ -892,8 +887,56 @@ def setup_draw(self) :
         position=(20, 10),
         size=(373, 215),
         show=True,
-        allignement="verticale"
+        allignement="horizontal"
     )
+    self.container_storage["systeme"]["Aide Conduite"].add_object(
+        Container(
+            label="Aide Conduite Text",
+            show_label=False,
+            position=(0, 0),
+            size=(246, 215),
+            show=False,
+            allignement="vertical"
+        ), 
+        relative_position=None
+    )
+    self.container_storage["systeme"]["Aide Conduite"].add_object(
+        Container(
+            label="Aide Conduite Switch",
+            show_label=False,
+            position=(0, 0),
+            size=(126, 215),
+            show=False,
+            allignement="vertical"
+        ), 
+        relative_position=None
+    )
+    
+    for sw_text in ["Detection ligne blanche", "Detection obstacle", "Endormissement"] :
+        self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Text").add_object(
+                    Text(
+                label=f"{sw_text} Text",
+                text=sw_text,
+                font_name="Roboto-Bold",
+                font_size=20,
+                color=dark_light_mode["text"][dark_light_mode["etat"]],
+                justify="left",
+                show=True
+            ),
+            relative_position=None
+        )
+        self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").add_object(
+            Switch(
+                label=f"Switch {sw_text}",
+                show=True,
+                callback_action=None,
+                self_Interface=self
+            ),
+            relative_position=None
+        )
+        self.clickable_object["systeme"].append(self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object(f"Switch {sw_text}")) 
+
+
 
 
 
@@ -905,8 +948,98 @@ def setup_draw(self) :
         position=(407, 10),
         size=(373, 215),
         show=True,
-        allignement="verticale"
+        allignement="horizontal"
     )
+    self.container_storage["systeme"]["Autre Parametre"].add_object(
+        Container(
+            label="Autre Parametre Text Left",
+            show_label=False,
+            position=(0, 0),
+            size=(164, 215),
+            show=False,
+            allignement="vertical"
+        ), 
+        relative_position=None
+    )
+    self.container_storage["systeme"]["Autre Parametre"].add_object(
+        Container(
+            label="Autre Parametre Switch",
+            show_label=False,
+            position=(0, 0),
+            size=(84, 215),
+            show=False,
+            allignement="vertical"
+        ), 
+        relative_position=None
+    )
+    self.container_storage["systeme"]["Autre Parametre"].add_object(
+        Container(
+            label="Autre Parametre Text Right",
+            show_label=False,
+            position=(0, 0),
+            size=(164, 215),
+            show=False,
+            allignement="vertical"
+        ), 
+        relative_position=None
+    )
+
+    for sw_text in [["24h", "12h"], ["°C", "°F"]] :#, ["dark mode", "light mode"]] :
+        self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Text Left").add_object(
+                    Text(
+                label=f"{sw_text[0]} Text",
+                text=sw_text[0],
+                font_name="Roboto-Bold",
+                font_size=20,
+                color=dark_light_mode["text"][dark_light_mode["etat"]],
+                justify="left",
+                show=True
+            ),
+            relative_position=None
+        )
+        self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Text Right").add_object(
+                    Text(
+                label=f"{sw_text[1]} Text",
+                text=sw_text[1],
+                font_name="Roboto-Bold",
+                font_size=20,
+                color=dark_light_mode["text"][dark_light_mode["etat"]],
+                justify="left",
+                show=True
+            ),
+            relative_position=None
+        )
+
+    self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
+        Switch(
+            label=f"Switch 24h",
+            show=True,
+            callback_action=callback_1224h_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch 24h")) 
+    self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
+        Switch(
+            label=f"Switch °C",
+            show=True,
+            callback_action=callback_temperature_unite_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch °C")) 
+    # self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
+    #     Switch(
+    #         label=f"Switch dark mode",
+    #         show=True,
+    #         callback_action=callback_dark_liht_switch,
+    #         self_Interface=self
+    #     ),
+    #     relative_position=None
+    # )
+    # self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch dark mode")) 
 
 
 
