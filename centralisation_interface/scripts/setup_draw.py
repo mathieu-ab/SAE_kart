@@ -195,7 +195,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Heure Wifi"].add_object(
         Image(
             label="Wifi",
-            image_path=f"affichage/wifi_{dark_light_mode["etat"]}.png",
+            image_path=f"affichage/wifi_{dark_light_mode['etat']}.png",
             show=True,
             callback_action=None,
         ),
@@ -307,7 +307,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path=f"affichage/batterie_{dark_light_mode["etat"]}.png",
+            image_path=f"affichage/batterie_{dark_light_mode['etat']}.png",
             show=True,
             callback_action=None,
         ),
@@ -316,7 +316,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path=f"affichage/batterie_{dark_light_mode["etat"]}.png",
+            image_path=f"affichage/batterie_{dark_light_mode['etat']}.png",
             show=False,
             callback_action=None,
         ),
@@ -396,7 +396,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Temperature"].add_object(
         Image(
             label="Temperature Png",
-            image_path=f"affichage/temperature_{dark_light_mode["etat"]}.png",
+            image_path=f"affichage/temperature_{dark_light_mode['etat']}.png",
             show=True,
             callback_action=None,
         ),
