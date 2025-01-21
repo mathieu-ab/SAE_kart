@@ -103,15 +103,15 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Activation Charge"].add_object(
         Button(
             label="Charge",
-            text="CHARGE",
+            text="CHARGE OFF",
             font_name="Roboto-Bold",
             font_size=18,
             icon_path=None,
             state="normal",
-            size=(100,47),
+            size=(125,47),
             callback_action=callback_charge_button,
-            auto_change_state=True,
-            self_Interface = self
+            auto_change_state=False,
+            self_Interface = self,
         ),
         relative_position=None
     )

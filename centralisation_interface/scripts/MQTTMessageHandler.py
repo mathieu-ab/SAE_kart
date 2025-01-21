@@ -31,6 +31,8 @@ class MQTTMessageHandler():
             self.analyse_topic_bms_temperature(msg_received)
         elif msg.topic == "bms/batterie":
             self.analyse_topic_bms_batterie(msg_received)
+        elif msg.topic == "charge/control":
+            self.analyse_topic_charge_control(msg_received)
         elif msg.topic == "message/prevention":
             self.analyse_topic_message_prevention(msg_received)
 
@@ -71,6 +73,12 @@ class MQTTMessageHandler():
         except Exception as e:
             print(e)
 
+    def analyse_topic_charge_control(self, message):
+        try:
+            new_state = message
+            self.interface.update_charge_control(new_state)
+        except Exception as e:
+            print(e)
 
     def analyse_topic_message_prevention(self, message):
         global prevention_queue, affichage_loop, navigation_loop, systeme_loop

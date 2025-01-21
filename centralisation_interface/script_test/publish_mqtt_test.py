@@ -1,4 +1,4 @@
-from random import randint
+from random import choice, randint
 import paho.mqtt.client as mqtt
 import time
 
@@ -31,13 +31,11 @@ def main():
 
     # Envoi de messages périodiques sur différents topics
 
-    for i in range(1):
-        message = f"{randint(1, 100)}"
-        publisher.publish_message("moteur/vitesse", message)
-        publisher.publish_message("moteur/temperature", message)
-        publisher.publish_message("bms/temperature", message)
-        publisher.publish_message("bms/batterie", message)
-        time.sleep(2)  # Pause entre les envois
+    for i in range(5):
+        message = choice(["ON", "OFF"])
+        publisher.publish_message("charge/control", message)
+
+        # time.sleep(0.5)  # Pause entre les envois
 
 if __name__ == "__main__":
     main()

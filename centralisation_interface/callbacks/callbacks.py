@@ -43,25 +43,32 @@ def callback_sport_button(self_Interface) :
 
 
 def callback_charge_button(self_Interface) :
+    if self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state == "normal" :
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
+        self_Interface.mqtt_thread_handler.publish_message("charge/status", "ON")
+    else :
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
+        self_Interface.mqtt_thread_handler.publish_message("charge/status", "OFF")
     #popup activation
     #disable le bouton pendant 10s
-    self_Interface.mqtt_thread_handler.publish_message("batterie/charge", "activation charge")
     
-    script_path = '/home/kartuser/SAE_kart/camera_recule/camera_recule.py'
-    try:
-        print(f"Exécution du script en arrière-plan : {script_path}")
-        # Lancer le script en arrière-plan (ne bloque pas le script principal)
-        process = subprocess.Popen(["python", script_path])
-        print("Script lancé en arrière-plan.")
+    # script_path = '/home/kartuser/SAE_kart/camera_recule/camera_recule.py'
+    # try:
+    #     print(f"Exécution du script en arrière-plan : {script_path}")
+    #     # Lancer le script en arrière-plan (ne bloque pas le script principal)
+    #     process = subprocess.Popen(["python", script_path])
+    #     print("Script lancé en arrière-plan.")
         
-        # Vous pouvez ajouter ici du code supplémentaire pour continuer à exécuter d'autres tâches dans le script principal
-        return process
-    except FileNotFoundError:
-        print(f"Fichier non trouvé : {script_path}")
-        return None
-    except Exception as e:
-        print(f"Erreur lors de l'exécution du script : {str(e)}")
-        return None
+    #     # Vous pouvez ajouter ici du code supplémentaire pour continuer à exécuter d'autres tâches dans le script principal
+    #     return process
+    # except FileNotFoundError:
+    #     print(f"Fichier non trouvé : {script_path}")
+    #     return None
+    # except Exception as e:
+    #     print(f"Erreur lors de l'exécution du script : {str(e)}")
+    #     return None
 
 def callback_1224h_switch(state_switch, self_Interface) :
     if state_switch :

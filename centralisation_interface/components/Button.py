@@ -21,7 +21,7 @@ class Button :
     ):
         self.label = label
         self.text = Text(
-            label=f"Text_button{label}",
+            label=f"Text_button_{label}",
             text=text,
             font_name=font_name,
             font_size=font_size,

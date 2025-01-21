@@ -61,25 +61,26 @@ COLOR_MODE_CONDUITE = {"dark" : {
                             "selected" : (176, 128, 255),
                             "not selected" : (178, 210, 255)}
                         }
-IP_BROKER_MQTT = "192.168.1.202"
+IP_BROKER_MQTT = "192.168.1.195"
 topics = [
     "moteur/vitesse",       #--reçois
     "moteur/temperature",   #--reçois
-    "moteur/mode",          #envoi
+    # "moteur/mode",          #envoi
                             #
     "bms/batterie",         #--reçois
     "bms/temperature",      #--reçois
 
-    "batterie/charge",
+    # "charge/status",        #envoi
+    "charge/control",        #--reçois
                             #
     "message/prevention",   #--reçois
                             #
-    "aide/clignotant",      #envoi
-    "aide/reg_lim",         #envoi
-    "aide/vitesse_consigne",#envoi
-    "aide/ligne_blanche",   #envoi
-    "aide/endormissement",  #envoi
-    "aide/obstacle"         #envoi
+    # "aide/clignotant",      #envoi
+    # "aide/reg_lim",         #envoi
+    # "aide/vitesse_consigne",#envoi
+    # "aide/ligne_blanche",   #envoi
+    # "aide/endormissement",  #envoi
+    # "aide/obstacle"         #envoi
 ]
 
 # Déclaration globale du cache de polices

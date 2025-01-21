@@ -101,6 +101,15 @@ class Interface :
         self.container_storage["affichage"]["Temperature"].get_object("Temperature Batterie Unite").text = self.temperature_unite
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
         self.container_storage["affichage"]["Temperature"].reCalcule_position()
+
+    def update_charge_control(self, new_state) :
+        if new_state == "ON" :
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
+        else :
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
+
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :
                 #     if is_connected() :
