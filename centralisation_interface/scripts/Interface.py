@@ -163,7 +163,7 @@ class Interface :
     def event_window(self) :
         global main_loop, affichage_loop, navigation_loop, systeme_loop
         #position de la sourie pour le clic
-        X, Y = pygame.mouse.get_pos()
+        
 
         #event du clavier/de la fenêtre
         keys = pygame.key.get_pressed() #on récupère tout les touches du clavier (keys[] = True si la touche est préssé)
@@ -175,9 +175,11 @@ class Interface :
                 systeme_loop = False
 
             if event.type == MOUSEBUTTONDOWN : # fonctionnement avec souris
+                X, Y = event.pos
                 for objt in self.clickable_object[self.current_page] :
                     objt.on_click((X, Y))
             elif event.type == MOUSEBUTTONUP : # fonctionnement avec souris
+                X, Y = event.pos
                 for objt in self.clickable_object[self.current_page] :
                     objt.on_release((X, Y))
                 
