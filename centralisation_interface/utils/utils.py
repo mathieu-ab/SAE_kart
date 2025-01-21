@@ -244,7 +244,7 @@ def update_heure(self) :
         heure = 12 if int(heure) == 12 or heure == 0 else int(heure) % 12
     else:
         sup = ""
-    self.container_storage["affichage"]["Heure Wifi"].get_object("Heure").text = f"{heure}{warning}{minutes}{" "*len(sup)}"
+    self.container_storage["affichage"]["Heure Wifi"].get_object("Heure").text = f"{heure}{warning}{minutes}{' '*len(sup)}"
     self.container_storage["affichage"]["Heure Wifi"].get_object("PMAM").text = f"{sup}"
 
 def etat_wifi(self, is_connected) :
