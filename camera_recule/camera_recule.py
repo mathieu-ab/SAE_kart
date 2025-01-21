@@ -4,6 +4,12 @@ import numpy as np
 # Create a named window for the rear-view camera display
 cv2.namedWindow("Rear View Camera", cv2.WINDOW_NORMAL)
 
+# Set the window size to 700x480
+cv2.resizeWindow("Rear View Camera", 700, 480)
+
+# Position the window at (0, 0)
+cv2.moveWindow("Rear View Camera", 0, 0)
+
 def draw_guide_lines(frame):
     """
     Draws parking guide lines on the frame.
