@@ -47,7 +47,7 @@ def callback_charge_button(self_Interface) :
     #disable le bouton pendant 10s
     self_Interface.mqtt_thread_handler.publish_message("batterie/charge", "activation charge")
     
-    script_path = 'C:/Users/mathi/Documents/info/Python/projet/SAE_kart/camera_recule/camera_recule.py'
+    script_path = '/home/kartuser/SAE_kart/camera_recule/camera_recule.py'
     try:
         print(f"Exécution du script en arrière-plan : {script_path}")
         # Lancer le script en arrière-plan (ne bloque pas le script principal)
