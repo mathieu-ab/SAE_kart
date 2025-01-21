@@ -1,5 +1,9 @@
 import cv2
 import numpy as np
+import os
+
+# Définir la variable d'environnement XDG_RUNTIME_DIR
+os.environ["XDG_RUNTIME_DIR"] = f"/run/user/{os.getuid()}"
 
 # Create a named window for the rear-view camera display
 cv2.namedWindow("Rear View Camera", cv2.WINDOW_NORMAL)
