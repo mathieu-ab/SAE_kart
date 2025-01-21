@@ -39,7 +39,7 @@ class Button :
         self.callback_action = callback_action
         self.auto_change_state = auto_change_state
         if icon_path != None :
-            self.icon = Image(f"Image_button_{label}", icon_path, True, None, None)
+            self.icon = Image(f"Image_button_{label}", icon_path, True, None)
         else :
             self.icon = None
         self.pygame_rect = pygame.Rect(self.position[0], self.position[1], self.size[0], self.size[1])

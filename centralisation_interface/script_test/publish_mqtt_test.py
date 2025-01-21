@@ -14,7 +14,7 @@ class MQTTPublisher:
             print(f"Échec de la connexion, code de retour : {rc}")
 
     def publish_message(self, topic, message):
-        self.client.publish(topic, message)
+        self.client.publish(topic, message, retain=True)
         print(f"Message envoyé sur {topic}: {message}")
 
     def start(self):
@@ -30,28 +30,14 @@ def main():
     publisher.start()
 
     # Envoi de messages périodiques sur différents topics
-    topics = [
-        "moteur/vitesse",
-        "moteur/temperature",
-        "moteur/mode",
 
-        "bms/batterie",
-
-        "message/prevention",
-
-        "aide/clignotant",
-        "aide/reg_lim",
-        "aide/vitesse_consigne",
-        "aide/ligne_blanche",
-        "aide/endormissement",
-        "aide/obstacle"
-    ]
-    for i in range(5):
-        message = f"{randint(10, 100)}"
+    for i in range(1):
+        message = f"{randint(1, 100)}"
         publisher.publish_message("moteur/vitesse", message)
         publisher.publish_message("moteur/temperature", message)
+        publisher.publish_message("bms/temperature", message)
         publisher.publish_message("bms/batterie", message)
-        time.sleep(1)  # Pause entre les envois
+        time.sleep(2)  # Pause entre les envois
 
 if __name__ == "__main__":
     main()

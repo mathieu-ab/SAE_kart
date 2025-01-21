@@ -31,6 +31,15 @@ class Interface :
             "systeme" : {}
         }
         self.current_page = "affichage"
+
+        #paramètrage
+        self.format_heure = "24h"
+        self.temperature_unite = "°C"
+
+        #variable importé des autre partie du projet SAE
+        self.vitesse = 17
+        self.temperature_batterie = 170
+        self.temperature_moteur = 175
         setup_draw(self)
 
     
@@ -43,19 +52,51 @@ class Interface :
 
     def start(self) :
         while main_loop :
-            while affichage_loop : #boucle du menu
-                self.index+=1
-                self.event_window()
-                #Limitation de vitesse de la boucle
-                self.clock.tick(fps) 
+            self.index+=1
+            self.event_window()
+            #Limitation de vitesse de la boucle
+            self.clock.tick(fps) 
 
-                self.draw()
-                
+            self.draw()
 
-                #Rafraîchissement de l'écran
-                pygame.display.flip()
+            self.periodic_test()
 
 
+            #Rafraîchissement de l'écran
+            pygame.display.flip()
+
+
+    def periodic_test(self) :
+        #test toute les secondes
+        if self.index % fps == 0:
+            update_heure(self)
+        if self.index % (fps*10) == 0 :
+            test_connection(self)
+            self.index = 0
+
+
+    def update_batterie(self, new_batterie) : 
+        self.container_storage["affichage"]["Batterie"].get_object("Batterie Niveau Container").get_object("Niveau").text = f"{int(new_batterie*100)}"
+        self.container_storage["affichage"]["Batterie"].get_object("Rectangle Batterie").color = hex_to_rgb(color_green_to_red[int((1-new_batterie)*len(color_green_to_red))])
+        self.container_storage["affichage"]["Batterie"].get_object("Rectangle Batterie").position = (131, 150+int((1-new_batterie)*150))
+        self.container_storage["affichage"]["Batterie"].get_object("Rectangle Batterie").kwargs["size"] = (73, int(new_batterie*150))
+        self.container_storage["affichage"]["Batterie"].get_object("Batterie Niveau Container").reCalcule_position()
+        self.container_storage["affichage"]["Batterie"].get_object("Batterie Niveau Container").reCalcule_position()
+    
+    def update_vitesse(self, new_vitesse) :
+        self.container_storage["affichage"]["Vitesse"].get_object("Vitesse").text = str(new_vitesse)
+        self.container_storage["navigation"]["Vitesse"].get_object("Vitesse").text = str(new_vitesse)
+
+    def update_temperature_moteur(self, new_temperature_moteur) :
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Moteur").text = str(new_temperature_moteur)
+        self.container_storage["affichage"]["Temperature"].reCalcule_position()
+        self.container_storage["affichage"]["Temperature"].reCalcule_position()
+
+    def update_temperature_batterie(self, new_temperature_batterie) :
+        print(len(str(new_temperature_batterie)))
+        self.container_storage["affichage"]["Temperature"].get_object("Temperature Container").get_object("Temperature Batterie").text = str(new_temperature_batterie)
+        self.container_storage["affichage"]["Temperature"].reCalcule_position()
+        self.container_storage["affichage"]["Temperature"].reCalcule_position()
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :
                 #     if is_connected() :
@@ -69,46 +110,46 @@ class Interface :
 
 
 
-            #boucle d'affichage de l'onglet navigation
-            while navigation_loop :
-                self.index+=1
-                self.event_window()
-                #Limitation de vitesse de la boucle
-                self.clock.tick(fps) 
+            # #boucle d'affichage de l'onglet navigation
+            # while navigation_loop :
+            #     self.index+=1
+            #     self.event_window()
+            #     #Limitation de vitesse de la boucle
+            #     self.clock.tick(fps) 
 
-                #affichage des images
-                self.window.blit(self.images["background_navigation_"+self.dark_mode["etat"]], (0,0)) #image du background
-                affichage_clignotant(self)
-                #affichage vitesse
-                affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse_navigation"], (388, 330), self.dark_mode["anti_color"])
+            #     #affichage des images
+            #     self.window.blit(self.images["background_navigation_"+self.dark_mode["etat"]], (0,0)) #image du background
+            #     affichage_clignotant(self)
+            #     #affichage vitesse
+            #     affichage_texte(self.window, f"{self.vitesse}", self.fonts["font_vitesse_navigation"], (388, 330), self.dark_mode["anti_color"])
 
-                if self.index%(fps//2) == 0 :
-                    changement_etat_clignotant(self)
-                    self.index = 0
-                #Rafraîchissement de l'écran
-                pygame.display.flip()
-
-
+            #     if self.index%(fps//2) == 0 :
+            #         changement_etat_clignotant(self)
+            #         self.index = 0
+            #     #Rafraîchissement de l'écran
+            #     pygame.display.flip()
 
 
-            #boucle d'affichage de l'onglet parametre
-            while systeme_loop :
-                self.event_window()
-                #Limitation de vitesse de la boucle
-                self.clock.tick(fps) 
-                #affichage des images
-                self.window.blit(self.images["background_systeme_"+self.dark_mode["etat"]], (0,0)) #image du background
+
+
+            # #boucle d'affichage de l'onglet parametre
+            # while systeme_loop :
+            #     self.event_window()
+            #     #Limitation de vitesse de la boucle
+            #     self.clock.tick(fps) 
+            #     #affichage des images
+            #     self.window.blit(self.images["background_systeme_"+self.dark_mode["etat"]], (0,0)) #image du background
                 
-                #afichage des switchs
-                for sw in switch_dict.values() :
-                    affichage_switch(self, sw["position"], sw["etat"], sw["position_x_rond"])
-                if self.info_regulateur_limitateur["affichage"] :
-                    #affichage des boutçons plus et moins du limitateur et régulateur
-                    affichage_bouton_regulateur_limitateur(self)
-                    affichage_texte(self.window, f"{self.vitesse_consigne}", self.fonts["font_vitesse_consigne"], (570, 270), self.dark_mode["anti_color"])
-                affichage_switch_3_etat(self, self.info_switch_3_etat_regulateur["position"], self.info_switch_3_etat_regulateur["etat"], self.info_switch_3_etat_regulateur["position_x_rond"])
-                #Rafraîchissement de l'écran
-                pygame.display.flip()
+            #     #afichage des switchs
+            #     for sw in switch_dict.values() :
+            #         affichage_switch(self, sw["position"], sw["etat"], sw["position_x_rond"])
+            #     if self.info_regulateur_limitateur["affichage"] :
+            #         #affichage des boutçons plus et moins du limitateur et régulateur
+            #         affichage_bouton_regulateur_limitateur(self)
+            #         affichage_texte(self.window, f"{self.vitesse_consigne}", self.fonts["font_vitesse_consigne"], (570, 270), self.dark_mode["anti_color"])
+            #     affichage_switch_3_etat(self, self.info_switch_3_etat_regulateur["position"], self.info_switch_3_etat_regulateur["etat"], self.info_switch_3_etat_regulateur["position_x_rond"])
+            #     #Rafraîchissement de l'écran
+            #     pygame.display.flip()
 
 
 

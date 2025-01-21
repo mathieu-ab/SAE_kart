@@ -10,7 +10,6 @@ class Image :
             image_path: str,  # Chemin de l'image de l'icône (facultatif)
             show: bool, 
             callback_action: callable,  # Fonction appelée lors d'un clic
-            callback_mqtt_response: callable,  # Fonction appelée pour gérer la réponse MQTT
             **kwargs  # Paramètres supplémentaires
     ):
         self.label = label
@@ -19,7 +18,6 @@ class Image :
         self.kwargs = kwargs
         # Callback
         self.callback_action = callback_action
-        self.callback_mqtt_response = callback_mqtt_response
         # Surface de texte et rectangle associé
         self.image = self.get_pygame_image(image_path)
 

@@ -61,7 +61,7 @@ COLOR_MODE_CONDUITE = {"dark" : {
                             "selected" : (176, 128, 255),
                             "not selected" : (178, 210, 255)}
                         }
-IP_BROKER_MQTT = "localhost"
+IP_BROKER_MQTT = "192.168.1.202"
 topics = [
     "moteur/vitesse",       #--reçois
     "moteur/temperature",   #--reçois

@@ -5,7 +5,7 @@ from components import Container
 from components import Button
 from components import Text
 from components import Image
-from components import Rectangle
+from components import Shape
 
 
 
@@ -20,8 +20,9 @@ def setup_draw(self) :
         allignement="horizontal"
     )
     self.container_storage["affichage"]["Background"].add_object(
-        Rectangle(
+        Shape(
             label="Background Rectangle",
+            shape="rectangle",
             size=(820, 480),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
@@ -202,14 +203,13 @@ def setup_draw(self) :
             image_path="affichage/wifi.png",
             show=True,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=None
     )
     self.container_storage["affichage"]["Heure Wifi"].add_object(
         Text(
             label="Heure",
-            text="20:25",
+            text="9:25",
             font_name="Roboto-Bold",
             font_size=35,
             color=dark_light_mode["text"][dark_light_mode["etat"]],
@@ -217,6 +217,50 @@ def setup_draw(self) :
             show=True
         ),
         relative_position=None
+    )
+    self.container_storage["affichage"]["Heure Wifi"].add_object(
+        Text(
+            label="PMAM",
+            text="",
+            font_name="Roboto-Bold",
+            font_size=20,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=(172, 37)
+    )
+    self.container_storage["affichage"]["Heure Wifi"].add_object(
+        Shape(
+            label="Wifi Connected",
+            shape="circle",
+            color=(26, 237, 21),
+            show=True,
+            radius=4
+        ),
+        relative_position=(73, 59)
+    )
+    self.container_storage["affichage"]["Heure Wifi"].add_object(
+        Shape(
+            label="Wifi Not Connected 1",
+            shape="line",
+            color=(255,40,40),
+            show=False,
+            end_pos=(10, 10),
+            width=3
+        ),
+        relative_position=(68, 54)
+    )
+    self.container_storage["affichage"]["Heure Wifi"].add_object(
+        Shape(
+            label="Wifi Not Connected 2",
+            shape="line",
+            color=(255,40,40),
+            show=False,
+            end_pos=(10, -10),
+            width=3
+        ),
+        relative_position=(68, 64)
     )
 
 
@@ -231,11 +275,34 @@ def setup_draw(self) :
         allignement="horizontal"
     )
     self.container_storage["affichage"]["Batterie"].add_object(
+        Container(
+        label="Batterie Niveau Container",
+        show_label=False,
+        position=(0, 0),
+        size=(73, 50),
+        show=False,
+        allignement="horizontal"
+        ),
+        relative_position=None
+    )
+    self.container_storage["affichage"]["Batterie"].get_object("Batterie Niveau Container").add_object(
         Text(
             label="Niveau",
             text="50",
             font_name="Roboto-Regular",
             font_size=30,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=None
+    )
+    self.container_storage["affichage"]["Batterie"].get_object("Batterie Niveau Container").add_object(
+        Text(
+            label="Pourcentage",
+            text="%",
+            font_name="Roboto-Regular",
+            font_size=20,
             color=dark_light_mode["text"][dark_light_mode["etat"]],
             justify="left",
             show=True
@@ -248,21 +315,17 @@ def setup_draw(self) :
             image_path="affichage/batterie.png",
             show=True,
             callback_action=None,
-            callback_mqtt_response=None
         ),
-        relative_position=None
+        relative_position=(100, 13)
     )
     self.container_storage["affichage"]["Batterie"].add_object(
-        Text(
-            label="Pourcentage",
-            text="%",
-            font_name="Roboto-Regular",
-            font_size=20,
-            color=dark_light_mode["text"][dark_light_mode["etat"]],
-            justify="left",
-            show=True
+        Image(
+            label="Batterie Png",
+            image_path="affichage/batterie.png",
+            show=False,
+            callback_action=None,
         ),
-        relative_position=(65, 95)
+        relative_position=None
     )
     self.container_storage["affichage"]["Batterie"].add_object(
         Text(
@@ -277,10 +340,11 @@ def setup_draw(self) :
         relative_position=(50, 120)
     )
     self.container_storage["affichage"]["Batterie"].add_object(
-        Rectangle(
+        Shape(
             label="Rectangle Batterie",
-            size=(1,1),
-            color=(0,0,0),
+            shape="rectangle",
+            size=(0,0),
+            color=(0,255,0),
             border_radius=5,
             show=True
         ),
@@ -320,7 +384,7 @@ def setup_draw(self) :
             justify="left",
             show=True
         ),
-        relative_position=(161, 240)
+        relative_position=(161, 245)
     )
 
 
@@ -340,7 +404,6 @@ def setup_draw(self) :
             image_path="affichage/temperature.png",
             show=True,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=None
     )
@@ -445,7 +508,6 @@ def setup_draw(self) :
             image_path="clignotant/clignotant_gauche_allume.png",
             show=False,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=(0,0)
     )
@@ -455,7 +517,6 @@ def setup_draw(self) :
             image_path="clignotant/clignotant_gauche_eteint.png",
             show=True,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=(0,0)
     )
@@ -477,7 +538,6 @@ def setup_draw(self) :
             image_path="clignotant/clignotant_droit_allume.png",
             show=False,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=(0,0)
     )
@@ -487,7 +547,6 @@ def setup_draw(self) :
             image_path="clignotant/clignotant_droit_eteint.png",
             show=True,
             callback_action=None,
-            callback_mqtt_response=None
         ),
         relative_position=(0,0)
     )
@@ -516,8 +575,9 @@ def setup_draw(self) :
             relative_position=None
         )
         self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {(i+1)}").add_object(
-            Rectangle(
+            Shape(
                 label=f"Prevention {(i+1)} Rectangle",
+                shape="rectangle",
                 size=(363, 30),
                 color=(251,44,44),
                 border_radius=7,
@@ -531,7 +591,7 @@ def setup_draw(self) :
                 image_path="affichage/danger.png",
                 show=False,
                 callback_action=None,
-                callback_mqtt_response=None
+
             ),
             relative_position=None
         )
@@ -569,8 +629,9 @@ def setup_draw(self) :
         allignement="horizontal"
     )
     self.container_storage["navigation"]["Background"].add_object(
-        Rectangle(
+        Shape(
             label="Background Rectangle",
+            shape="rectangle",
             size=(820, 480),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
@@ -639,9 +700,102 @@ def setup_draw(self) :
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["navigation"].append(self.container_storage["navigation"]["Bouton Choix Page"].get_object("Système")) 
 
-
-
-
+    #--------------Container clignotant gauche--------------#
+    self.container_storage["navigation"]["Clignotant Gauche"] = Container(
+        label="Clignotant Gauche",
+        show_label=False,
+        position=(40, 331),
+        size=(97, 65),
+        show=False,
+        allignement="horizontal"
+    )
+    self.container_storage["navigation"]["Clignotant Gauche"].add_object(
+        Image(
+            label="Clignotant Gauche Allume",
+            image_path="clignotant/clignotant_gauche_allume.png",
+            show=False,
+            callback_action=None,
+        ),
+        relative_position=(0,0)
+    )
+    self.container_storage["navigation"]["Clignotant Gauche"].add_object(
+        Image(
+            label="Clignotant Gauche eteint",
+            image_path="clignotant/clignotant_gauche_eteint.png",
+            show=True,
+            callback_action=None,
+        ),
+        relative_position=(0,0)
+    )
+    #--------------Container clignotant droit--------------#
+    self.container_storage["navigation"]["Clignotant Droit"] = Container(
+        label="Clignotant Droit",
+        show_label=False,
+        position=(655, 331),
+        size=(97, 65),
+        show=False,
+        allignement="horizontal"
+    )
+    self.container_storage["navigation"]["Clignotant Droit"].add_object(
+        Image(
+            label="Clignotant Droit Allume",
+            image_path="clignotant/clignotant_droit_allume.png",
+            show=False,
+            callback_action=None,
+        ),
+        relative_position=(0,0)
+    )
+    self.container_storage["navigation"]["Clignotant Droit"].add_object(
+        Image(
+            label="Clignotant Droit eteint",
+            image_path="clignotant/clignotant_droit_eteint.png",
+            show=True,
+            callback_action=None,
+        ),
+        relative_position=(0,0)
+    )
+    #--------------Container gps--------------#
+    self.container_storage["navigation"]["Gps"] = Container(
+        label="Gps",
+        show_label=False,
+        position=(20, 20),
+        size=(760, 291),
+        show=True,
+        allignement="horizontal"
+    )
+    #--------------Container Vitesse--------------#
+    self.container_storage["navigation"]["Vitesse"] = Container(
+        label="Vitesse",
+        show_label=False,
+        position=(0, 245),
+        size=(800, 149),
+        show=False,
+        allignement="horizontal"
+    )
+    self.container_storage["navigation"]["Vitesse"].add_object(
+        Text(
+            label="Vitesse",
+            text="17",
+            font_name="7-segment-bold",
+            font_size=80,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=None
+    )
+    self.container_storage["navigation"]["Vitesse"].add_object(
+        Text(
+            label="Vitesse Unite",
+            text="km/h",
+            font_name="Roboto-Bold",
+            font_size=20,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=(470, 128)
+    )
 
 
 
@@ -660,8 +814,9 @@ def setup_draw(self) :
         allignement="horizontal"
     )
     self.container_storage["systeme"]["Background"].add_object(
-        Rectangle(
+        Shape(
             label="Background Rectangle",
+            shape="rectangle",
             size=(820, 480),
             color=dark_light_mode["background"][dark_light_mode["etat"]],
             border_radius=0,
@@ -729,10 +884,42 @@ def setup_draw(self) :
     )
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["systeme"].append(self.container_storage["systeme"]["Bouton Choix Page"].get_object("Système")) 
+    
+    #--------------Container Aide Conduite--------------#
+    self.container_storage["systeme"]["Aide Conduite"] = Container(
+        label="Aide Conduite",
+        show_label=False,
+        position=(20, 10),
+        size=(373, 215),
+        show=True,
+        allignement="verticale"
+    )
 
 
 
 
+    #--------------Container Autre Parametre--------------#
+    self.container_storage["systeme"]["Autre Parametre"] = Container(
+        label="Autre Parametre",
+        show_label=False,
+        position=(407, 10),
+        size=(373, 215),
+        show=True,
+        allignement="verticale"
+    )
+
+
+
+
+    #--------------Container Regulateur--------------#
+    self.container_storage["systeme"]["Regulateur"] = Container(
+        label="Regulateur",
+        show_label=False,
+        position=(20, 236),
+        size=(760, 153),
+        show=True,
+        allignement="verticale"
+    )
 
 
 

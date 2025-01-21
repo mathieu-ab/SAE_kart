@@ -7,20 +7,9 @@ def import_image(chemin) :
 def import_font(chemin, size) :
     return pygame.font.Font(CURRENT_PATH + chemin, size)
 
-def hex_to_rgb(hex_color):
-    # Supprime le caractère '#' si présent
-    hex_color = str(hex_color).replace("#", "")
-    # Convertit en trois entiers (rouge, vert, bleu)
-    rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
-    return rgb
 
-def is_connected():
-    try:
-        # Tente de se connecter à un site web public connu
-        socket.create_connection((IP_BROKER_MQTT, 1883), timeout=3)  # 8.8.8.8 est un serveur DNS de Google
-        return True
-    except OSError:
-        return False
+
+
     
 
 def redirection_effet_bouton(self, sw) :
@@ -67,39 +56,10 @@ def affichage_texte(window, text, font, pos, color) :
         window.blit(text_surf, text_surf.get_rect(center = pos))
 
 
-def affichage_heure(self) :
-    #calcule de l'heure actuelle
-    # Obtenir l'heure actuel en seconde
-    local_time = localtime()
-    heure = int(f"{local_time.tm_hour:02}")  # Heure locale (avec deux chiffres)
-    minutes = f"{local_time.tm_min:02}"  # Minutes locales (avec deux chiffres)
-    #affichage d l'heure actuelle
-    #clignotement des 2 points
-    if int(time()) % 2 == 0 : 
-        warning = ":"
-    else :
-        warning = " "
-    #affectation du format 12 ou 24h
-    if self.format_heure == "12h" :
-        if heure == 12 :
-            heure = 12
-            sup = "PM"
-        if heure > 12 :
-            heure = heure-12
-            sup = "PM"
-        else :
-            sup = "AM"
-    else :
-        sup = ""
-    affichage_texte(self.window, f"{heure}{warning}{minutes}{sup}", self.fonts["font_normal"], (709, 58), self.dark_mode["anti_color"])
 
 
-def affichage_etat_wifi(self) :
-    if self.wifi_etat :
-        pygame.draw.circle(self.window, (26, 237, 21), (625, 70), 4)
-    else :
-        pygame.draw.line(self.window, (255,40,40), (625 - 5, 70-5), (625 + 5, 70+5), 3)
-        pygame.draw.line(self.window, (255,40,40), (625-5, 70 + 5), (625+5, 70 - 5), 3)
+
+
 
 
 def affichage_mode_conduite(self) :
@@ -271,3 +231,51 @@ def get_font_by_cache(font_name: str, font_size: int) -> pygame.font.Font:
 
     # Retourner la police chargée
     return pygame_font
+
+def update_heure(self) :
+    #calcule de l'heure actuelle
+    # Obtenir l'heure actuel en seconde
+    local_time = localtime()
+    heure = f"{local_time.tm_hour:02}"
+    minutes = f"{local_time.tm_min:02}"  # Minutes locales formatées
+
+    # Clignotement des deux points
+    warning = ":" if int(time()) % 2 == 0 else " "
+
+    # Formatage de l'heure en 12h ou 24h
+    if self.format_heure == "12h":
+        sup = "PM" if int(heure) >= 12 else "AM"
+        heure = 12 if int(heure) == 12 or heure == 0 else int(heure) % 12
+    else:
+        sup = ""
+    self.container_storage["affichage"]["Heure Wifi"].get_object("Heure").text = f"{heure}{warning}{minutes}{" "*len(sup)}"
+    self.container_storage["affichage"]["Heure Wifi"].get_object("PMAM").text = f"{sup}"
+
+def etat_wifi(self, is_connected) :
+    if is_connected :
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Connected").show = True
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Not Connected 1").show = False
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Not Connected 2").show = False
+    else :
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Connected").show = False
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Not Connected 1").show = True
+        self.container_storage["affichage"]["Heure Wifi"].get_object("Wifi Not Connected 2").show = True
+
+
+def test_connection(self):
+    def check():
+        try:
+            socket.create_connection((IP_BROKER_MQTT, 1883), timeout=3)
+            etat_wifi(self, True)
+        except OSError:
+            etat_wifi(self, False)
+
+    thread = threading.Thread(target=check, daemon=True)
+    thread.start()
+
+def hex_to_rgb(hex_color):
+    # Supprime le caractère '#' si présent
+    hex_color = str(hex_color).replace("#", "")
+    # Convertit en trois entiers (rouge, vert, bleu)
+    rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+    return rgb

@@ -8,8 +8,7 @@ class MQTTMessageHandler():
         self.interface = interface
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.username_pw_set("mqtt_mat", "user")
-        self.client.connect(IP_BROKER_MQTT, keepalive=60)
+        self.client.connect("localhost", keepalive=60)
         self.client.loop_start()
 
     def on_connect(self, client, userdata, flags, rc):
@@ -47,30 +46,31 @@ class MQTTMessageHandler():
     def analyse_topic_moteur_vitesse(self, message):
         try:
             vitesse = int(message)
-            self.interface.vitesse = vitesse
+            self.interface.update_vitesse(vitesse)
         except Exception as e:
             print(e)
 
     def analyse_topic_moteur_temperature(self, message):
         try:
             temperature_moteur = int(message)
-            self.interface.temperature_moteur = temperature_moteur
+            self.interface.update_temperature_moteur(temperature_moteur)
         except Exception as e:
             print(e)
 
     def analyse_topic_bms_temperature(self, message):
         try:
             temperature_batterie = int(message)
-            self.interface.temperature_batterie = temperature_batterie
+            self.interface.update_temperature_batterie(temperature_batterie)
         except Exception as e:
             print(e)
 
     def analyse_topic_bms_batterie(self, message):
         try:
-            batterie = int(message) / 100
-            self.interface.batterie = round(batterie, 2)
+            batterie = round(int(message) / 100, 2)
+            self.interface.update_batterie(batterie)
         except Exception as e:
             print(e)
+
 
     def analyse_topic_message_prevention(self, message):
         global prevention_queue, affichage_loop, navigation_loop, systeme_loop
