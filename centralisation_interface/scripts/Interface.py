@@ -175,11 +175,21 @@ class Interface :
                 systeme_loop = False
 
             if event.type == MOUSEBUTTONDOWN : # fonctionnement avec souris
-                X, Y = event.pos
+                if tactile:
+                    # Convertir les coordonnées tactiles en pixels
+                    X = int(event.x * pygame.display.get_surface().get_width())
+                    Y = int(event.y * pygame.display.get_surface().get_height())
+                else:
+                    X, Y = event.pos  # Utiliser les coordonnées de la souris
                 for objt in self.clickable_object[self.current_page] :
                     objt.on_click((X, Y))
             elif event.type == MOUSEBUTTONUP : # fonctionnement avec souris
-                X, Y = event.pos
+                if tactile:
+                    # Convertir les coordonnées tactiles en pixels
+                    X = int(event.x * pygame.display.get_surface().get_width())
+                    Y = int(event.y * pygame.display.get_surface().get_height())
+                else:
+                    X, Y = event.pos  # Utiliser les coordonnées de la souris
                 for objt in self.clickable_object[self.current_page] :
                     objt.on_release((X, Y))
                 
