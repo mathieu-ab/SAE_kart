@@ -41,6 +41,8 @@ class MQTTMessageHandler():
             self.interface.update_endormissement(msg_received)
         elif msg.topic == "aide/obstacle/control":
             self.interface.update_obstacle(msg_received)
+        elif msg.topic == "bouton/page":
+            self.interface.update_bouton_page(msg_received)
 
     def publish_message(self, topic, message):
         try:

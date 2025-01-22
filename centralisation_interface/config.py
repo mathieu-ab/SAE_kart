@@ -78,3 +78,4 @@ dark_light_mode = {"etat" : "dark",
                         "dark" : (4, 12, 25)
                     }
                 }
+PAGE_HANDLER = {"pages" : ["affichage", "navigation", "systeme"], "indice" : 0}

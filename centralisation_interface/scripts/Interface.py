@@ -168,6 +168,14 @@ class Interface :
                 self.mqtt_thread_handler.publish_message("aide/endormissement/status", "OFF")
         except Exception as e:
             print(e)
+    
+    def update_bouton_page(self, message) :
+        if message == "right" :
+            PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)%len(PAGE_HANDLER["pages"])
+        elif message == "left" :
+            self.current_page = PAGE_HANDLER["pages"][PAGE_HANDLER["indice"]]
+        self.current_page = PAGE_HANDLER["pages"][PAGE_HANDLER["indice"]]
+
 
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :
