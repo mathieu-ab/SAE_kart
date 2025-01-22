@@ -2,8 +2,7 @@ from gpiozero import Button
 from signal import pause
 import paho.mqtt.client as mqtt
 
-client = mqtt.Client()
-client.connect("localhost", keepalive=60)
+
 test = False
 
 # Fonction pour publier un message via MQTT
@@ -50,4 +49,8 @@ for button in buttons:
     button_instance.when_pressed = lambda b=button_instance, cb=callback_function: cb(b.pin.number)
 
 print("Appuyez sur un bouton (Ctrl+C pour quitter)")
+client = mqtt.Client()
+client.connect("localhost", keepalive=60)
+client.loop_start()
+print("test loop")
 pause()
