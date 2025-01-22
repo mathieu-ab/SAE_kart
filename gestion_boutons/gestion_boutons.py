@@ -5,6 +5,12 @@ import paho.mqtt.client as mqtt
 
 test = False
 
+def on_connect(self, client, userdata, flags, rc):
+    if rc == 0:
+        print("Connecté au broker MQTT avec succès.")
+    else:
+        print(f"Échec de la connexion, code de retour : {rc}")
+
 # Fonction pour publier un message via MQTT
 def publish_message(topic, message):
     try:
@@ -50,7 +56,10 @@ for button in buttons:
 
 print("Appuyez sur un bouton (Ctrl+C pour quitter)")
 client = mqtt.Client()
+client.on_connect = on_connect
 client.connect("localhost", keepalive=60)
 client.loop_start()
-print("test loop")
 pause()
+print("test loop")
+client.loop_stop()
+client.disconnect()
