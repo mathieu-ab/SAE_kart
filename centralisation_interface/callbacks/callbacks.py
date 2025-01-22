@@ -46,11 +46,11 @@ def callback_charge_button(self_Interface) :
     if self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state == "normal" :
         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
-        self_Interface.mqtt_thread_handler.publish_message("charge/status", "ON")
+        self_Interface.mqtt_thread_handler.publish_message("charge/control", "ON")
     else :
         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
-        self_Interface.mqtt_thread_handler.publish_message("charge/status", "OFF")
+        self_Interface.mqtt_thread_handler.publish_message("charge/control", "OFF")
     #popup activation
     #disable le bouton pendant 10s
     

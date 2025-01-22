@@ -31,7 +31,7 @@ class MQTTMessageHandler():
             self.interface.update_temperature_batterie(msg_received)
         elif msg.topic == "bms/batterie":
             self.interface.update_batterie(msg_received)
-        elif msg.topic == "charge/control":
+        elif msg.topic == "charge/status":
             self.interface.update_charge_control(msg_received)
         elif msg.topic == "message/prevention":
             self.interface.update_message_prevention(msg_received)
