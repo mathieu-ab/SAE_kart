@@ -24,19 +24,23 @@ class MQTTMessageHandler():
         msg_received = msg.payload.decode('utf-8')
         print(f"- Message reçu sur le topic {msg.topic}: {msg_received}")
         if msg.topic == "moteur/vitesse":
-            self.analyse_topic_moteur_vitesse(msg_received)
+            self.interface.update_vitesse(msg_received)
         elif msg.topic == "moteur/temperature":
-            self.analyse_topic_moteur_temperature(msg_received)
+            self.interface.update_temperature_moteur(msg_received)
         elif msg.topic == "bms/temperature":
-            self.analyse_topic_bms_temperature(msg_received)
+            self.interface.update_temperature_batterie(msg_received)
         elif msg.topic == "bms/batterie":
-            self.analyse_topic_bms_batterie(msg_received)
+            self.interface.update_batterie(msg_received)
         elif msg.topic == "charge/control":
-            self.analyse_topic_charge_control(msg_received)
+            self.interface.update_charge_control(msg_received)
         elif msg.topic == "message/prevention":
-            self.analyse_topic_message_prevention(msg_received)
-
-
+            self.interface.update_message_prevention(msg_received)
+        elif msg.topic == "aide/ligne_blanche/control":
+            self.interface.update_ligne_blanche(msg_received)
+        elif msg.topic == "aide/endormissement/control":
+            self.interface.update_endormissement(msg_received)
+        elif msg.topic == "aide/obstacle/control":
+            self.interface.update_obstacle(msg_received)
 
     def publish_message(self, topic, message):
         try:
@@ -45,43 +49,9 @@ class MQTTMessageHandler():
         except Exception as e:
             print(f"Erreur lors de l'envoi : {e}")
 
-    def analyse_topic_moteur_vitesse(self, message):
-        try:
-            vitesse = int(message)
-            self.interface.update_vitesse(vitesse)
-        except Exception as e:
-            print(e)
-
-    def analyse_topic_moteur_temperature(self, message):
-        try:
-            temperature_moteur = int(message)
-            self.interface.update_temperature_moteur(temperature_moteur)
-        except Exception as e:
-            print(e)
-
-    def analyse_topic_bms_temperature(self, message):
-        try:
-            temperature_batterie = int(message)
-            self.interface.update_temperature_batterie(temperature_batterie)
-        except Exception as e:
-            print(e)
-
-    def analyse_topic_bms_batterie(self, message):
-        try:
-            batterie = round(int(message) / 100, 2)
-            self.interface.update_batterie(batterie)
-        except Exception as e:
-            print(e)
-
-    def analyse_topic_charge_control(self, message):
-        try:
-            new_state = message
-            self.interface.update_charge_control(new_state)
-        except Exception as e:
-            print(e)
 
     def analyse_topic_message_prevention(self, message):
-        global prevention_queue, affichage_loop, navigation_loop, systeme_loop
+        global prevention_queue
         message_parts = message.split("|")
         if len(message_parts) != 2:
             print(f"Longueur du message de prévention incorrecte ! Message : {message}")
@@ -95,6 +65,3 @@ class MQTTMessageHandler():
             return
 
         prevention_queue.append({"message": message_text, "start": int(time()), "end": choix})
-        affichage_loop = True
-        navigation_loop = False
-        systeme_loop = False

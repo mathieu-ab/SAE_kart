@@ -54,8 +54,6 @@ class Switch:
     def toggle(self):
         """Inverse l'état du switch et exécute le callback."""
         self.etat = not self.etat
-        if self.callback_action != None:
-            self.callback_action(self.etat,**self.kwargs)
 
     def toggle_show(self):
         """Affiche ou cache le switch."""
@@ -73,6 +71,8 @@ class Switch:
     def on_click(self, mouse_position) :
         if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) :
             self.toggle()
+            if self.callback_action != None:
+                self.callback_action(self.etat,**self.kwargs)
     
     #je dois mettre cette méthode même si elle n'est pas utile pour m'uniformiser avec les autrs classes cliquable
     def on_release(self, mouse_position) :

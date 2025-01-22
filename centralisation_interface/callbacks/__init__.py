@@ -8,5 +8,13 @@ from .callbacks import (
     callback_charge_button,
     callback_temperature_unite_switch,
     callback_1224h_switch,
-    callback_dark_liht_switch
+    callback_dark_liht_switch,
+    callback_detection_ligne_switch,
+    callback_detection_obstacle_switch,
+    callback_endormissement_switch,
+    callback_reg_lim_moins,
+    callback_reg_lim_plus,
+    callback_lim_switch,
+    callback_neutre_witch,
+    callback_reg_switch
 )

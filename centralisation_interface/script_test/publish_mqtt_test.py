@@ -31,11 +31,12 @@ def main():
 
     # Envoi de messages périodiques sur différents topics
 
-    for i in range(5):
-        message = choice(["ON", "OFF"])
-        publisher.publish_message("charge/control", message)
+    for i in range(1):
+        message = "OFF"
+        publisher.publish_message("aide/endormissement/control", message)
 
         # time.sleep(0.5)  # Pause entre les envois
-
+    publisher.client.loop_stop()
+    publisher.client.disconnect()
 if __name__ == "__main__":
     main()

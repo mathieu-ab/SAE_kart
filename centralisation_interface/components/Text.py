@@ -12,7 +12,8 @@ class Text :
             font_size: int,
             color: tuple,
             justify: str, #justify possible : ["center", "right", "left"]
-            show: bool
+            show: bool,
+            **kwargs
     ) :
         self.label =label
         self.text = text
@@ -21,6 +22,7 @@ class Text :
         self.position = (0,0)
         self.justify = justify
         self.show = show
+        self.kwargs = kwargs
         #obtenir un font dans le cache en fonction de la taille et du nom
         self.font = get_font_by_cache(font_name, font_size)
         self.create_text_rect()
@@ -36,7 +38,7 @@ class Text :
                 window.blit(self.text_surf, self.text_rect)
 
     def create_text_rect(self) :
-        self.text_surf = self.font.render(self.text, True, self.color)
+        self.text_surf = self.font.render(f"{self.text}", True, self.color)
         size_text = self.text_surf.get_size()
         self.text_rect = self.text_surf.get_rect()
         if self.justify == "center":

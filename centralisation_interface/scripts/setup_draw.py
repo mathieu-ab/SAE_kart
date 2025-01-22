@@ -223,7 +223,7 @@ def setup_draw(self) :
             justify="left",
             show=True
         ),
-        relative_position=(172, 37)
+        relative_position=(170, 57)
     )
     self.container_storage["affichage"]["Heure Wifi"].add_object(
         Shape(
@@ -925,16 +925,36 @@ def setup_draw(self) :
             ),
             relative_position=None
         )
-        self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").add_object(
-            Switch(
-                label=f"Switch {sw_text}",
-                show=True,
-                callback_action=None,
-                self_Interface=self
-            ),
-            relative_position=None
-        )
-        self.clickable_object["systeme"].append(self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object(f"Switch {sw_text}")) 
+    self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").add_object(
+        Switch(
+            label=f"Switch Detection ligne blanche",
+            show=True,
+            callback_action=callback_detection_ligne_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object(f"Switch Detection ligne blanche")) 
+    self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").add_object(
+        Switch(
+            label=f"Switch Detection obstacle",
+            show=True,
+            callback_action=callback_detection_obstacle_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object(f"Switch Detection obstacle")) 
+    self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").add_object(
+        Switch(
+            label=f"Switch Endormissement",
+            show=True,
+            callback_action=callback_endormissement_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object(f"Switch Endormissement")) 
 
 
 
@@ -1030,6 +1050,7 @@ def setup_draw(self) :
         relative_position=None
     )
     self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch °C")) 
+    #switch non fonctionnel mais peux important. Mis sur la touche pour l'instant
     # self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
     #     Switch(
     #         label=f"Switch dark mode",
@@ -1051,7 +1072,135 @@ def setup_draw(self) :
         position=(20, 236),
         size=(760, 153),
         show=True,
-        allignement="verticale"
+        allignement="horizontal"
+    )
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Container(
+            label="Switch Limitateur Regulateur Container",
+            show_label=False,
+            position=(0, 0),
+            size=(216, 67),
+            show=False,
+            allignement="horizontal"
+        ), 
+        relative_position=None
+    )
+    self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
+        Image(
+            label="Switch Reg",
+            image_path="systeme/switch_neutre.png",
+            show=True,
+            callback_action=callback_reg_switch,
+            self_Interface=self
+        ),
+        relative_position=(0,0)
+    )
+    self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg").size = (72, 68)
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg")) 
+    self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
+        Image(
+            label="Switch Neutre",
+            image_path="systeme/vide.png",
+            show=True,
+            callback_action=callback_neutre_witch,
+            self_Interface=self
+        ),
+        relative_position=(72,0)
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Neutre"))
+    self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
+        Image(
+            label="Switch Lim",
+            image_path="systeme/vide.png",
+            show=True,
+            callback_action=callback_lim_switch,
+            self_Interface=self
+        ),
+        relative_position=(144,0)
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Lim"))
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Image(
+            label="Bouton Moins",
+            image_path="systeme/normal_moins.png",
+            show=False,
+            callback_action=callback_reg_lim_moins,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins")) 
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Vitesse Consigne",
+            text=self.vitesse,
+            font_name="7-segment-bold",
+            font_size=110,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=False,
+            vitesse_consigne=self.vitesse
+        ),
+        relative_position=(430, -85)
+    )
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Vitesse Consigne Copie",
+            text=self.vitesse,
+            font_name="7-segment-bold",
+            font_size=110,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=False,
+        ),
+        relative_position=None
+    )
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Image(
+            label="Bouton Plus",
+            image_path="systeme/normal_plus.png",
+            show=False,
+            callback_action=callback_reg_lim_plus,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus")) 
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Neutre Text",
+            text="neutre",
+            font_name="Roboto-Bold",
+            font_size=15,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True,
+        ),
+        relative_position=(135, 120)
+    )
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Limitateur Text",
+            text="limitateur",
+            font_name="Roboto-Bold",
+            font_size=15,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True,
+        ),
+        relative_position=(25, 15)
+    )
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Regulateur Text",
+            text="regulateur",
+            font_name="Roboto-Bold",
+            font_size=15,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True,
+        ),
+        relative_position=(210, 15)
     )
 
 

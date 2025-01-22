@@ -19,8 +19,9 @@ class Image :
         # Callback
         self.callback_action = callback_action
         # Surface de texte et rectangle associé
+        self.image_path = image_path
         self.image = self.get_pygame_image(image_path)
-
+        self.size = self.image.get_size()
 
     def draw(self, window) :
         if self.show :
@@ -41,3 +42,20 @@ class Image :
         except FileNotFoundError:
             raise FileNotFoundError(f"L'image avec ce chemin '{path}' est introuvable dans le dossier '/assets/images/'.")
 
+    def change_image(self, new_img_path) :
+        self.image = self.get_pygame_image(new_img_path)
+        self.image_path = new_img_path
+
+    def on_release(self, mouse_position) :
+        if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) and self.show :
+            if self.callback_action != None :
+                self.callback_action(**self.kwargs, etat="release")
+        else :
+            self.callback_action(**self.kwargs, etat="release_outside")
+        
+    def on_click(self, mouse_position) :
+        if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) and self.show :
+            if self.callback_action != None :
+                self.callback_action(**self.kwargs, etat="click")
+
+        
