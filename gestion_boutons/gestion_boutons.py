@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 
 test = False
 
-def on_connect(self, client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connecté au broker MQTT avec succès.")
     else:
