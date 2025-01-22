@@ -60,6 +60,4 @@ client.on_connect = on_connect
 client.connect("localhost", keepalive=60)
 client.loop_start()
 pause()
-print("test loop")
-client.loop_stop()
-client.disconnect()
+
