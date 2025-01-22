@@ -3,6 +3,7 @@ from signal import pause
 import paho.mqtt.client as mqtt
 
 client = mqtt.Client()
+client.connect("localhost", keepalive=60)
 test = False
 
 # Fonction pour publier un message via MQTT
