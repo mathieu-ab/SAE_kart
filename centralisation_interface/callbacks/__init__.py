@@ -18,13 +18,3 @@ from .callbacks import (
     callback_neutre_witch,
     callback_reg_switch
 )
-from .MQTT_callback import (
-    update_temperature_moteur, 
-    update_batterie,
-    update_charge_control,
-    update_endormissement,
-    update_ligne_blanche,
-    update_obstacle,
-    update_temperature_batterie,
-    update_vitesse
-)
