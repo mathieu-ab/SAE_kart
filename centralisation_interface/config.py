@@ -30,27 +30,29 @@ prevention_queue = []
 VITESSE_MAX = 30
 IP_BROKER_MQTT = "192.168.1.195"
 topics = [
-    "moteur/vitesse",       #--reçois
-    "moteur/temperature",   #--reçois
-    # "moteur/mode",          #envoi
-                            #
-    "bms/batterie",         #--reçois
-    "bms/temperature",      #--reçois
+    "moteur/vitesse",             #--reçois
+    "moteur/temperature",         #--reçois
+    # "moteur/mode",              #envoi
+                                  #
+    "bms/batterie",               #--reçois
+    "bms/temperature",            #--reçois
 
-    # "charge/status",        #envoi
-    "charge/control",        #--reçois
-                            #
-    "message/prevention",   #--reçois
-                            #
-    # "aide/clignotant",      #envoi
-    # "aide/reg_lim",         #envoi
-    # "aide/vitesse_consigne",#envoi
+    # "charge/status",            #envoi
+    "charge/control",             #--reçois
+                                  #
+    "message/prevention",         #--reçois
+                                  #
+    # "aide/clignotant",          #envoi
+    # "aide/reg_lim",             #envoi
+    # "aide/vitesse_consigne",    #envoi
     # "aide/ligne_blanche/status",#envoi
     # "aide/endormissement/status",#envoi
-    # "aide/obstacle/status"  #envoi
+    # "aide/obstacle/status"      #envoi
     "aide/ligne_blanche/control", #--reçois
     "aide/endormissement/control",#--reçois
-    "aide/obstacle/control"       #--reçois
+    "aide/obstacle/control",      #--reçois
+    "bouton/page",                #--reçois
+    "bouton/clignotant"           #--reçois
 ]
 
 # Déclaration globale du cache de polices
