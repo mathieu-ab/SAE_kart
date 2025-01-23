@@ -40,6 +40,6 @@ void CAN_ADC::get_string(char *buffer, ADC_Channel channel)
 double CAN_ADC::get_tension(ADC_Channel channel)
 {
     uint16_t adcValue = read(channel); // lecture de la valeur du channel ADC
-    double tension = (adcValue * tension_Ref) / 1023.0;
+    double tension = (adcValue * tension_Ref) / (float)adcResolution;
     return tension;
 }

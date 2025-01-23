@@ -3,37 +3,42 @@
 #include <avr/interrupt.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 
 #include "USART.h"
 #include "Timer0.h"
 #include "Timer1.h"
+#include "Timer2.h"
 #include "CAN_ADC.h"
 #include "pompe.h"
 #include "gestionVitesse.h"
 
-
-#define BAUD_RATE 500000                             // baud rate de la liaison serie
+#define BAUD_RATE 9600                               // baud rate de la liaison serie
 #define UBRR_VALUE ((F_CPU / (8UL * BAUD_RATE)) - 1) // Mode double vitesse
 
-void nb_tourFCT();
-
-int nb_tour = 0;
-volatile int flag_USART = 0;
-volatile int flag_TIMER0 = 0;
-
-USART serial(UBRR_VALUE);
-Timer0 compteur;
-Timer1 MLI;
-CAN_ADC adc;
-pompe maPompe(&adc);
-gestionVitesse maVitesse(&adc, &nb_tour);
-
-// Interruption pour la réception sur USART0
-ISR(USART_RX_vect)
+enum Etat_MAE
 {
-  flag_USART = 1;
-}
+  Mode_classique,
+  Mode_regulateur,
+  Mode_limitateur,
+  TEST
+};
+
+Etat_MAE Etat = TEST;
+int nb_tour = 0;
+uint32_t cptPF = 0;
+int valeurRegu;
+
+USART &serial = USART::getInstance(UBRR_VALUE);
+Timer0 &compteur = Timer0::getInstance();
+Timer1 &MLI = Timer1::getInstance();
+Timer2 &time = Timer2::getInstance(&cptPF);
+CAN_ADC &adc = CAN_ADC::getInstance();
+
+pompe maPompe;
+gestionVitesse maVitesse(&nb_tour, &cptPF);
+
+void changementEtat();
+
 // interruption pour la comparaison des impulsions de la roue crantée
 ISR(TIMER0_COMPA_vect)
 {
@@ -41,30 +46,116 @@ ISR(TIMER0_COMPA_vect)
   nb_tour++;
 }
 
-int main(void)
+ISR(TIMER2_OVF_vect)
 {
-  sei();
-  char buffer[100];
-  while (1)
-  {
-    maVitesse.get_string(buffer);
-    serial.putsln(buffer);
-    maVitesse.lierPotToVit(CAN_ADC::ADC0);
-    maPompe.get_String(buffer, 100);
-    serial.putsln(buffer);
-    maPompe.regulation(100);
-    nb_tourFCT();
-    adc.get_string(buffer, CAN_ADC::ADC0);
-    serial.putsln(buffer);
-    maPompe.get_stringR(buffer, CAN_ADC::ADC1);
-    serial.putsln(buffer);
-    _delay_ms(10);
-  }
+  cptPF++;
 }
 
-void nb_tourFCT()
+int main(void)
 {
-  char buffer[20];
-  sprintf(buffer, "nombre de tour :  %d", nb_tour);
-  serial.putsln(buffer);
+  char buffer[100];
+  double tempsPre = 0;
+  float temps = 0;
+
+  sei();
+  while (1)
+  {
+    switch (Etat)
+    {
+    case Mode_classique:
+      changementEtat();
+      temps = time.get_timeS() - tempsPre;
+      if (temps >= 5)
+      {
+        float vit = maVitesse.get_vitesse();
+        tempsPre = time.get_timeS();
+        serial.putsln("mode classique");
+        serial.printFloat(vit);
+      }
+      maVitesse.lierPotToVit(CAN_ADC::ADC1);
+      // maPompe.regulation(100);
+
+      break;
+
+    case Mode_limitateur:
+      changementEtat();
+      temps = time.get_timeS() - tempsPre;
+      if (temps >= 5)
+      {
+        tempsPre = time.get_timeS();
+        serial.putsln("mode limitateur");
+      }
+      maVitesse.limitateur(10);
+      // maPompe.regulation(100);
+      break;
+
+    case Mode_regulateur:
+      changementEtat();
+      maVitesse.regulation(valeurRegu);
+      temps = time.get_timeS() - tempsPre;
+      if (temps >= 0.5)
+      {
+        /*float vit = maVitesse.get_vitesse();
+        tempsPre = time.get_timeS();
+        serial.putsln("mode regulateur");
+        serial.printInt(valeurRegu);
+        serial.printFloat(vit);*/
+      }
+      // maPompe.regulation(100);
+      break;
+
+    case TEST:
+      changementEtat();
+      serial.putsln("mode TEST");
+      /*temps = time.get_timeS() - tempsPre;
+      maVitesse.get_vitesse();
+      if (temps >= 0.5)
+      {
+        tempsPre = time.get_timeS();
+        maVitesse.get_string(buffer);
+        serial.putsln(buffer);
+        //maPompe.get_String(buffer, 100);
+        //serial.putsln(buffer);
+        //adc.get_string(buffer, CAN_ADC::ADC0);
+        //serial.putsln(buffer);
+        //maPompe.get_stringR(buffer, CAN_ADC::ADC1);
+        //serial.putsln(buffer);
+      }*/
+      // maPompe.regulation(100);
+      maVitesse.regulation(10);
+      // maVitesse.lierPotToVit(CAN_ADC::ADC1);
+      break;
+
+    default:
+      break;
+    }
+  }
+  return 0;
+}
+
+void changementEtat()
+{
+  char bufferReceive = 0;
+  if (bit_is_set(UCSR0A, RXC0))
+  {
+    bufferReceive = serial.Receive();
+
+    if (bufferReceive == 'r')
+    {
+      valeurRegu = maVitesse.get_vitesse();
+      Etat = Mode_regulateur;
+    }
+    else if (bufferReceive == 'l')
+    {
+      Etat = Mode_limitateur;
+    }
+    else if (bufferReceive == 'c')
+    {
+      Etat = Mode_classique;
+    }
+    else if (bufferReceive == 'n')
+    {
+      valeurRegu = serial.receiveNumb();
+    }
+  }
 }

@@ -17,6 +17,7 @@ void USART::Transmit(unsigned char data)
     UDR0 = data; // Charger les données à envoyer dans le buffer
 }
 
+
 // Fonction pour envoyer une chaîne de caractères via USART
 void USART::puts(const char *str)
 {
@@ -42,4 +43,32 @@ unsigned char USART::Receive(void)
         ;
     /* Récupération et renvoi des données reçues */
     return UDR0;
+}
+
+int USART::receiveNumb()
+{
+   char buffer0[4]={0,0,0,0};
+    int i = 0;
+ while (1)
+      {
+       char bufferReceive = Receive();
+       if(bufferReceive == 'f') break;
+       buffer0[i] = bufferReceive;
+       i++;
+      }
+      return atoi(buffer0);
+}
+
+void USART::printInt(int _nb)
+{
+    char buffer[10];
+    itoa(_nb, buffer, 10);
+    putsln(buffer);
+}
+
+void USART::printFloat(float _nb)
+{
+    char buffer[10];
+    dtostrf(_nb,6,3,buffer);
+    putsln(buffer);
 }
