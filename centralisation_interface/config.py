@@ -1,11 +1,11 @@
 from module_import import *
 
 #--|--# lists/variables
-CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
-# CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface"
+# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
+CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface"
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = True
+tactile = False
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
