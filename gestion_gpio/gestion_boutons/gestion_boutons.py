@@ -42,10 +42,10 @@ def callback_clignotant_left(pin):
 
 # Configurer plusieurs boutons
 buttons = [
-    {"button": Button(5, bounce_time=0.2), "callback": callback_right_page},
-    {"button": Button(6, bounce_time=0.2), "callback": callback_left_page},
-    {"button": Button(16, bounce_time=0.2), "callback": callback_clignotant_droit},
-    {"button": Button(17, bounce_time=0.2), "callback": callback_clignotant_left},
+    {"button": Button(5, bounce_time=0.1), "callback": callback_right_page},
+    {"button": Button(6, bounce_time=0.1), "callback": callback_left_page},
+    {"button": Button(16, bounce_time=0.1), "callback": callback_clignotant_droit},
+    {"button": Button(17, bounce_time=0.1), "callback": callback_clignotant_left},
 ]
 
 # Associer les callbacks avec une fermeture pour capturer la variable correcte

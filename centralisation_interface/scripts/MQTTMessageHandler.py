@@ -1,6 +1,5 @@
 from config import *
 
-
 class MQTTMessageHandler():
     def __init__(self, topics, interface):
         self.topics = topics  # Liste des topics à surveiller
