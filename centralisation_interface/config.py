@@ -1,11 +1,11 @@
 from module_import import *
 
 #--|--# lists/variables
-CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
-# CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface"
+# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
+CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface"
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = True
+tactile = False
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
@@ -53,6 +53,12 @@ topics = [
     "aide/obstacle/control",      #--reçois
     "bouton/page",                #--reçois
     "bouton/clignotant"           #--reçois
+]
+
+topics_non_retain = [
+    "charge/control",
+    "bouton/page",
+    "bouton/clignotant"
 ]
 
 # Déclaration globale du cache de polices

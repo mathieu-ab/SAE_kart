@@ -499,18 +499,18 @@ def setup_draw(self) :
     )
     self.container_storage["affichage"]["Clignotant Gauche"].add_object(
         Image(
-            label="Clignotant Gauche Allume",
-            image_path="clignotant/clignotant_gauche_allume.png",
-            show=False,
+            label="Clignotant Gauche eteint",
+            image_path="clignotant/clignotant_gauche_eteint.png",
+            show=True,
             callback_action=None,
         ),
         relative_position=(0,0)
     )
     self.container_storage["affichage"]["Clignotant Gauche"].add_object(
         Image(
-            label="Clignotant Gauche eteint",
-            image_path="clignotant/clignotant_gauche_eteint.png",
-            show=True,
+            label="Clignotant Gauche Allume",
+            image_path="clignotant/clignotant_gauche_allume.png",
+            show=False,
             callback_action=None,
         ),
         relative_position=(0,0)

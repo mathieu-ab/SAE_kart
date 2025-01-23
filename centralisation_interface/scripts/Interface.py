@@ -36,6 +36,7 @@ class Interface :
         }
         self.current_page = "affichage"
         self.setup_draw = setup_draw
+        self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : False, "allume" : None, "start" : None} #allume deviens "droite" ou "gauche" quand un clignotant est allumé. Sinon il reste en None
 
         #paramètrage
         self.format_heure = "24h"
@@ -73,12 +74,39 @@ class Interface :
 
 
     def periodic_test(self) :
-        #test toute les secondes
+        if self.clignotant["index_clignotant"]%(fps//2) == 0 :
+            self.clignotant["index_clignotant"] = 1
+            self.update_clignotant()
+        else :
+            self.clignotant["index_clignotant"]+=1
+
         if self.index % fps == 0:
             update_heure(self)
         if self.index % (fps*10) == 0 :
             test_connection(self)
             self.index = 0
+
+    def update_clignotant(self) :
+        if self.clignotant["allume"] != None  :
+            self.clignotant["etat"] = not self.clignotant["etat"] 
+            self.clignotant["cligno"]+=1
+            if self.clignotant["allume"] == "gauche" :
+                print(self.clignotant)
+                if self.clignotant["etat"] == True :    
+                    self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = True
+                else :
+                    self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
+            if self.clignotant["allume"] == "droite" :
+                if self.clignotant["etat"] == True :    
+                    self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = True
+                else :
+                    self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = False
+            if self.clignotant["cligno"] == 6 :
+                self.clignotant["allume"] = None
+                self.mqtt_thread_handler.publish_message("bouton/clignotant", "eteint")
+    
+        
+
 
 
     def update_batterie(self, message) : 
@@ -186,6 +214,12 @@ class Interface :
             callback_navigation_button(self)
         elif self.current_page == "systeme" :
             callback_systeme_button(self)
+
+    def update_button_clignotant(self, message) : 
+        if message == "left" :
+            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : True, "allume" : "gauche", "start" : int(time())}
+        if message == "right" :
+            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : True, "allume" : "droite", "start" : int(time())} 
 
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :

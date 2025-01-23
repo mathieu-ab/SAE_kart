@@ -43,11 +43,17 @@ class MQTTMessageHandler():
             self.interface.update_obstacle(msg_received)
         elif msg.topic == "bouton/page":
             self.interface.update_bouton_page(msg_received)
+        elif msg.topic == "bouton/clignotant" : 
+            self.interface.update_button_clignotant(msg_received)
 
     def publish_message(self, topic, message):
         try:
-            self.client.publish(topic, message, retain=True)
-            print(f"Message '{message}' envoyé sur le topic '{topic}'")
+            if topic in topics_non_retain :
+                rt = False
+            else :
+                rt = True
+            self.client.publish(topic, message, retain=rt)
+            print(f"Message '{message}' envoyé sur le topic '{topic}' avec retain {rt}")
         except Exception as e:
             print(f"Erreur lors de l'envoi : {e}")
 
