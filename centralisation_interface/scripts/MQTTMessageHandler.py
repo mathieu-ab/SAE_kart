@@ -1,9 +1,7 @@
 from config import *
-from module_import import sleep
 
 class MQTTMessageHandler():
     def __init__(self, topics, interface):
-        sleep(3)
         self.topics = topics  # Liste des topics à surveiller
         self.client = mqtt.Client()
         self.interface = interface

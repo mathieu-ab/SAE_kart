@@ -98,9 +98,9 @@ class Interface :
                     self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
             if self.clignotant["allume"] == "droite" :
                 if self.clignotant["etat"] == True :    
-                    self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = True
+                    self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = True
                 else :
-                    self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = False
+                    self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
             if self.clignotant["cligno"] == 7 :
                 self.clignotant["allume"] = None
                 self.mqtt_thread_handler.publish_message("bouton/clignotant", "eteint")
