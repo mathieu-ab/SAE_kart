@@ -17,9 +17,11 @@
 
 enum Etat_MAE
 {
-  Mode_classique,
+  Mode_normal,
   Mode_regulateur,
   Mode_limitateur,
+  Mode_eco,
+  Mode_sport,
   TEST
 };
 
@@ -56,23 +58,25 @@ int main(void)
   char buffer[100];
   double tempsPre = 0;
   float temps = 0;
+  DDRD &= ~(1 << PD5); // pin en entrée
+  PORTD |= (1 << PD5); // activation de la pull up interne
 
   sei();
   while (1)
   {
     switch (Etat)
     {
-    case Mode_classique:
+    case Mode_normal:
       changementEtat();
       temps = time.get_timeS() - tempsPre;
       if (temps >= 5)
       {
         float vit = maVitesse.get_vitesse();
         tempsPre = time.get_timeS();
-        serial.putsln("mode classique");
+        serial.putsln("mode normal");
         serial.printFloat(vit);
       }
-      maVitesse.lierPotToVit(CAN_ADC::ADC1);
+      maVitesse.lierPotToVitN(CAN_ADC::ADC1);
       // maPompe.regulation(100);
 
       break;
@@ -82,8 +86,10 @@ int main(void)
       temps = time.get_timeS() - tempsPre;
       if (temps >= 5)
       {
+        float vit = maVitesse.get_vitesse();
         tempsPre = time.get_timeS();
         serial.putsln("mode limitateur");
+        serial.printFloat(vit);
       }
       maVitesse.limitateur(10);
       // maPompe.regulation(100);
@@ -95,12 +101,43 @@ int main(void)
       temps = time.get_timeS() - tempsPre;
       if (temps >= 0.5)
       {
-        /*float vit = maVitesse.get_vitesse();
+        float vit = maVitesse.get_vitesse();
         tempsPre = time.get_timeS();
         serial.putsln("mode regulateur");
         serial.printInt(valeurRegu);
-        serial.printFloat(vit);*/
+        serial.printFloat(vit);
       }
+      if(bit_is_set(PIND,PD5)){
+        Etat = Mode_normal;
+      }
+      // maPompe.regulation(100);
+      break;
+
+    case Mode_eco:
+      changementEtat();
+      temps = time.get_timeS() - tempsPre;
+      if (temps >= 0.5)
+      {
+        float vit = maVitesse.get_vitesse();
+        tempsPre = time.get_timeS();
+        serial.putsln("mode eco");
+        serial.printFloat(vit);
+      }
+       maVitesse.lierPotToVitE(CAN_ADC::ADC1);
+      // maPompe.regulation(100);
+      break;
+
+    case Mode_sport:
+      changementEtat();
+      temps = time.get_timeS() - tempsPre;
+      if (temps >= 0.5)
+      {
+        float vit = maVitesse.get_vitesse();
+        tempsPre = time.get_timeS();
+        serial.putsln("mode sport");
+        serial.printFloat(vit);
+      }
+      maVitesse.lierPotToVitS(CAN_ADC::ADC1);
       // maPompe.regulation(100);
       break;
 
@@ -151,7 +188,15 @@ void changementEtat()
     }
     else if (bufferReceive == 'c')
     {
-      Etat = Mode_classique;
+      Etat = Mode_normal;
+    }
+    else if (bufferReceive == 'e')
+    {
+      Etat = Mode_eco;
+    }
+    else if (bufferReceive == 's')
+    {
+      Etat = Mode_sport;
     }
     else if (bufferReceive == 'n')
     {

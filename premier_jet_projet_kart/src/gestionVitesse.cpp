@@ -6,9 +6,19 @@ gestionVitesse::gestionVitesse(int *_nbtour, uint32_t *_cptPF) : monPID(K_P, K_I
     nbTour = _nbtour;
 }
 
-void gestionVitesse::lierPotToVit(CAN_ADC::ADC_Channel channel)
+void gestionVitesse::lierPotToVitN(CAN_ADC::ADC_Channel channel)
 {
     OCR1A = (PWM_MAX * adc.read(channel)) / (ADC_MAX);
+}
+
+void gestionVitesse::lierPotToVitE(CAN_ADC::ADC_Channel channel)
+{
+    OCR1A = (PWM_MAX * (adc.read(channel)*adc.read(channel))) / ((ADC_MAX)*(ADC_MAX));
+}
+
+void gestionVitesse::lierPotToVitS(CAN_ADC::ADC_Channel channel)
+{
+    OCR1A = PWM_MAX * sin(2.0 * M_PI * 0.00025 * (float)ADC_MAX);
 }
 
 void gestionVitesse::get_string(char *buffer)
@@ -79,6 +89,6 @@ void gestionVitesse::limitateur(int limiteV)
     }
     else
     {
-        lierPotToVit(CAN_ADC::ADC1);
+        lierPotToVitN(CAN_ADC::ADC1);
     }
 }
