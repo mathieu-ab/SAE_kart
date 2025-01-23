@@ -101,7 +101,7 @@ class Interface :
                     self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = True
                 else :
                     self.container_storage["affichage"]["Clignotant Droite"].get_object("Clignotant Droite Allume").show = False
-            if self.clignotant["cligno"] == 6 :
+            if self.clignotant["cligno"] == 7 :
                 self.clignotant["allume"] = None
                 self.mqtt_thread_handler.publish_message("bouton/clignotant", "eteint")
     
@@ -216,10 +216,11 @@ class Interface :
             callback_systeme_button(self)
 
     def update_button_clignotant(self, message) : 
+        self.clignotant["index_clignotant"] = fps//2
         if message == "left" :
-            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : True, "allume" : "gauche", "start" : int(time())}
+            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : False, "allume" : "gauche", "start" : int(time())}
         if message == "right" :
-            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : True, "allume" : "droite", "start" : int(time())} 
+            self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : False, "allume" : "droite", "start" : int(time())} 
 
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :
