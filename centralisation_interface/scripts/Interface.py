@@ -123,7 +123,7 @@ class Interface :
 
     def update_vitesse(self, message) :
         try :
-            vitesse = int(message)
+            vitesse = int(float(message))
             self.container_storage["affichage"]["Vitesse"].get_object("Vitesse").text = str(vitesse)
             self.container_storage["navigation"]["Vitesse"].get_object("Vitesse").text = str(vitesse)
         except Exception as e:

@@ -59,7 +59,10 @@ topics = [
 topics_non_retain = [
     "charge/control",
     "bouton/page",
-    "bouton/clignotant"
+    "bouton/clignotant",
+    "moteur/mode",
+    "aide/clignotant",
+    "aide/reg_lim"
 ]
 
 # Déclaration globale du cache de polices
