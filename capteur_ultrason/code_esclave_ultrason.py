@@ -1,8 +1,8 @@
-import spi
+import spidev
 import time
 
 # Initialisation du bus SPI
-spi = spi.Spi()  # Création de l'objet SPI
+spi = spidev.SpiDev()  # Création de l'objet SPI
 spi.open(0, 0)         # Bus 0, périphérique 0 (CS0)
 spi.max_speed_hz = 50000  # Vitesse maximale du bus SPI
 spi.mode = 0b00           # Mode SPI (CPOL=0, CPHA=0)
