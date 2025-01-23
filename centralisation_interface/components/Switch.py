@@ -25,7 +25,6 @@ class Switch:
           # Position initiale du cercle
 
     def draw(self, window):
-        """Dessine le switch avec animation."""
         if not self.show:
             return
 
@@ -52,20 +51,16 @@ class Switch:
                              30 + distance_control_target // 3, 30 - distance_control_target // 4))
 
     def toggle(self):
-        """Inverse l'état du switch et exécute le callback."""
         self.etat = not self.etat
 
     def toggle_show(self):
-        """Affiche ou cache le switch."""
         self.show = not self.show
 
     def set_position(self, new_position):
-        """Définit une nouvelle position pour le switch."""
         self.position = new_position
         self.control_position_x = self.position[0] + (3 if self.etat else self.size[0] - 30 - 3)
 
     def get_size(self):
-        """Retourne la taille du switch."""
         return self.size
 
     def on_click(self, mouse_position) :
@@ -74,6 +69,6 @@ class Switch:
             if self.callback_action != None:
                 self.callback_action(self.etat,**self.kwargs)
     
-    #je dois mettre cette méthode même si elle n'est pas utile pour m'uniformiser avec les autrs classes cliquable
+    #cette méthode, même si elle n'est pas utile, dois être implémenté pour s'uniformiser avec les autres classes cliquable
     def on_release(self, mouse_position) :
         pass

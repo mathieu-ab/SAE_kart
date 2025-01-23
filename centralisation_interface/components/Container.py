@@ -4,18 +4,18 @@ from components.Text import Text
 
 class Container :
     def __init__(
-            self,
-            label: str, #nom de l'objet pour poivoir le récupéré facilement
-            show_label: str, #affiche ou non le label du container en haut à droite
-            position: tuple,
-            size: tuple,
-            show: bool,
-            allignement: str #defini l'allignement des object dans le container ["horizontal", "vertical"]
+        self,
+        label: str,  # Nom de l'objet pour pouvoir le récupérer facilement
+        show_label: str,  # Affiche ou non le label du container en haut à gauche
+        position: tuple,  # Position du container sous forme de tuple (x, y)
+        size: tuple,  # Taille du container sous forme de tuple (largeur, hauteur)
+        show: bool,  # Affiche ou non le container (le carré autour). Les objets à l'interieur seront toujours affiché
+        allignement: str,  # Définit l'alignement des objets dans le container ["horizontal", "vertical"]
     ):
         self.label = label
         self.position = position
         self.size = size
-        self.show = show #affiche ou non le container (le carré autour) Les objets à l'interieur seront toujours affiché
+        self.show = show 
         self.allignement = allignement
         self.objects = []
         if show_label :
@@ -44,8 +44,7 @@ class Container :
                 self.position[1]+relative_position[1]
             ))
 
-
-
+    #update et recalcuel la nouvelle position des objet dans un container 
     def reCalcule_position(self) :
         nb_object = self.get_nb_not_relative_object()
         if self.allignement == "horizontal" :
@@ -84,7 +83,7 @@ class Container :
                 nb_object+=1
         return nb_object
 
-    
+    #permet d'obtenir l'objet avec sont nom/label
     def get_object(self, object_label) :
         for objt in self.objects :
             if objt["object"].label == object_label :
@@ -98,7 +97,7 @@ class Container :
                 dark_light_mode["container"][dark_light_mode["etat"]],
                 self.pygame_rect,
                 border_radius=10)
-     
+        #dessin récursif des objet de ce container
         for objt in self.objects :
             objt["object"].draw(window)
     
@@ -109,3 +108,10 @@ class Container :
 
     def get_size(self) :
         return self.size
+    
+    #utile pour update et passer du mode jour au mode nuit
+    def update_color(self) : 
+        for objt in self.objects : 
+            #si la méthode de changement de couleur est implémenté
+            if hasattr(objt["object"], 'update_color'):
+                objt["object"].update_color()

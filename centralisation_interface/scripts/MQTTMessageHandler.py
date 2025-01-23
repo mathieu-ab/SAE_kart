@@ -1,4 +1,5 @@
 from config import *
+from callbacks import *
 
 class MQTTMessageHandler():
     def __init__(self, topics, interface):
@@ -10,6 +11,7 @@ class MQTTMessageHandler():
         self.client.connect("localhost", keepalive=60)
         self.client.loop_start()
 
+    #callback pour indiquer la connection au broker et à quel topic l'abonnement est fait
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print(f"connecté au broker MQTT avec succès.")
@@ -19,32 +21,35 @@ class MQTTMessageHandler():
         else:
             print(f"échec de la connexion, code de retour : {rc}")
 
+    #callback pour chaque message reçu auquel on est abonné
     def on_message(self, client, userdata, msg):
         msg_received = msg.payload.decode('utf-8')
         print(f"- Message reçu sur le topic {msg.topic}: {msg_received}")
+        #redirection des action de chaque topic dans le fichier mqtt_callback dans le dossier callbacks
         if msg.topic == "moteur/vitesse":
-            self.interface.update_vitesse(msg_received)
+            update_vitesse(self.interface, msg_received)
         elif msg.topic == "moteur/temperature":
-            self.interface.update_temperature_moteur(msg_received)
+            update_temperature_moteur(self.interface, msg_received)
         elif msg.topic == "bms/temperature":
-            self.interface.update_temperature_batterie(msg_received)
+            update_temperature_batterie(self.interface, msg_received)
         elif msg.topic == "bms/batterie":
-            self.interface.update_batterie(msg_received)
-        elif msg.topic == "charge/status":
-            self.interface.update_charge_control(msg_received)
+            update_batterie(self.interface, msg_received)
+        elif msg.topic == "charge/control":
+            update_charge_control(self.interface, msg_received)
         elif msg.topic == "message/prevention":
-            self.interface.update_message_prevention(msg_received)
+            update_message_prevention(self.interface, msg_received)
         elif msg.topic == "aide/ligne_blanche/control":
-            self.interface.update_ligne_blanche(msg_received)
+            update_ligne_blanche(self.interface, msg_received)
         elif msg.topic == "aide/endormissement/control":
-            self.interface.update_endormissement(msg_received)
+            update_endormissement(self.interface, msg_received)
         elif msg.topic == "aide/obstacle/control":
-            self.interface.update_obstacle(msg_received)
+            update_obstacle(self.interface, msg_received)
         elif msg.topic == "bouton/page":
-            self.interface.update_bouton_page(msg_received)
+            update_bouton_page(self.interface, msg_received)
         elif msg.topic == "bouton/clignotant" : 
-            self.interface.update_button_clignotant(msg_received)
+            update_button_clignotant(self.interface, msg_received)
 
+    #méthode pour publier un message avec un topic
     def publish_message(self, topic, message):
         try:
             if topic in topics_non_retain :
@@ -57,18 +62,4 @@ class MQTTMessageHandler():
             print(f"Erreur lors de l'envoi : {e}")
 
 
-    def analyse_topic_message_prevention(self, message):
-        global prevention_queue
-        message_parts = message.split("|")
-        if len(message_parts) != 2:
-            print(f"Longueur du message de prévention incorrecte ! Message : {message}")
-            return
 
-        message_text = message_parts[0]
-        try:
-            choix = None if message_parts[1] == "None" else int(message_parts[1])
-        except ValueError:
-            print(f"Problème avec la fin du message : {message_parts[1]}")
-            return
-
-        prevention_queue.append({"message": message_text, "start": int(time()), "end": choix})

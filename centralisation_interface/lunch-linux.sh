@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Chemins vers les scripts Python
-PYTHON_SCRIPT1="/home/kartuser/SAE_kart/centralisation_interface/interface_central.py"
+PYTHON_SCRIPT1="/home/kartuser/SAE_kart/centralisation_interface/main.py"
 PYTHON_SCRIPT2="/home/kartuser/BMS/test.py"
 PYTHON_SCRIPT3="/home/kartuser/SAE_kart/gestion_gpio/gestion_boutons/gestion_boutons.py"
 

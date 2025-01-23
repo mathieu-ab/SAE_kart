@@ -32,8 +32,9 @@ def main():
     # Envoi de messages périodiques sur différents topics
 
     for i in range(1):
-        message = "right"
-        publisher.publish_message("bouton/clignotant", message)
+        publisher.publish_message("message/prevention", "moteur 1 !|Stop")
+        publisher.publish_message("message/prevention", "moteur 8 !|5")
+        publisher.publish_message("message/prevention", "moteur 2 !|Stop")
 
         # time.sleep(0.5)  # Pause entre les envois
     publisher.client.loop_stop()

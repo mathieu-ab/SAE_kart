@@ -6,19 +6,19 @@ from utils.utils import *
 class Image :
     def __init__(
             self,
-            label: str,  # Nom de l'objet pour le récupérer facilement
+            label: str,  # Nom de l'objet pour pouvoir le récupérer facilement
             image_path: str,  # Chemin de l'image de l'icône (facultatif)
-            show: bool, 
-            callback_action: callable,  # Fonction appelée lors d'un clic
-            **kwargs  # Paramètres supplémentaires
+            show: bool,  # Indique si l'objet doit être affiché ou non
+            callback_action: callable,  # Fonction à appeler lorsqu'un clic est effectué
+            dark_light: bool,  # Indique si l'icône doit s'adapter au thème clair/sombre
+            **kwargs  # Paramètres supplémentaires pour configurer l'objet
     ):
         self.label = label
         self.show = show
         self.position = (0,0)
         self.kwargs = kwargs
-        # Callback
         self.callback_action = callback_action
-        # Surface de texte et rectangle associé
+        self.dark_light = dark_light
         self.image_path = image_path
         self.image = self.get_pygame_image(image_path)
         self.size = self.image.get_size()
@@ -38,9 +38,14 @@ class Image :
         
     def get_pygame_image(self, path) :
         try:
-            return pygame.image.load(f"{CURRENT_PATH}/assets/images/{path}").convert_alpha()
+            if self.dark_light :
+                dlm = dark_light_mode["etat"]
+            else :
+                dlm = ""
+            return pygame.image.load(f"{CURRENT_PATH}/assets/images/{path}{dlm}.png").convert_alpha()
         except FileNotFoundError:
-            raise FileNotFoundError(f"L'image avec ce chemin '{path}' est introuvable dans le dossier '/assets/images/'.")
+
+            raise FileNotFoundError(f"L'image avec ce chemin '{CURRENT_PATH}/assets/images/{path}{dlm}.png' est introuvable.")
 
     def change_image(self, new_img_path) :
         self.image = self.get_pygame_image(new_img_path)
@@ -58,4 +63,6 @@ class Image :
             if self.callback_action != None :
                 self.callback_action(**self.kwargs, etat="click")
 
-        
+    def update_color(self) :
+        if self.dark_light :
+            self.image = self.get_pygame_image(self.image_path)

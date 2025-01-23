@@ -1,8 +1,7 @@
 from module_import import *
 
-#--|--# lists/variables
-# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface"
-CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface"
+# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
+CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface" #chemin d'accés sur mon ordi pour les tests
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
 tactile = False
@@ -14,9 +13,9 @@ else :
     MOUSEBUTTONDOWN = pygame.MOUSEBUTTONDOWN
 
 
-#loop pour passer d'une page à une autre
+#loop principale du programme
 main_loop = True
-
+#limitation de lavitesse de rafraichissement. Pour fps=30, on a 30 images par secondes
 fps = 30
 # listes pour avoir les dégradé de couleur
 color_green_to_red = list(Color("#61ff01").range_to(Color("#ccff01"),15))
@@ -25,10 +24,13 @@ color_green_to_red.extend(list(Color("#fff001").range_to(Color("#ffae01"),15)))
 color_green_to_red.extend(list(Color("#ffae01").range_to(Color("#ff6101"),15)))
 color_green_to_red.extend(list(Color("#ff6101").range_to(Color("#ff0101"),15)))
 #queue des messages de prévention
-prevention_queue = []
-
+prevention_queue = [None, None, None]
+#vitesse maximal autorisé pour la vitesse de consigne du régulateur/limitateur
 VITESSE_MAX = 30
+#IP du broker situé sur le hotspot
 IP_BROKER_MQTT = "192.168.1.195"
+#topic auquel l'abonnement est fait
+#les topics commenté sont ceux pour lesquel la pi envoi des message uniquement. Nul besoin d'écouté des réponses pour ceux là
 topics = [
     "moteur/vitesse",             #--reçois
     "moteur/temperature",         #--reçois
@@ -55,18 +57,20 @@ topics = [
     "bouton/clignotant",           #--reçois
     "test/topic"
 ]
-
+#topics pour lesquel l'option retain sera désactivé (retain = dernier message sauvegardé sur le broker et envoyé au chaque nouvel connection)
 topics_non_retain = [
     "charge/control",
     "bouton/page",
     "bouton/clignotant",
     "moteur/mode",
     "aide/clignotant",
-    "aide/reg_lim"
+    "aide/reg_lim",
+    "message/prevention"
 ]
 
 # Déclaration globale du cache de polices
 font_cache: List[Dict[str, Any]] = []
+# Déclaration des couleurs des objet pour les 2 mode : dark et light
 dark_light_mode = {"etat" : "dark",
                    "text" : {
                         "light" : (0,0,0),
@@ -86,8 +90,9 @@ dark_light_mode = {"etat" : "dark",
                         "dark" : (17, 26, 50)
                     },
                     "background" : {
-                        "light" : (179, 211, 255),
+                        "light" : (135, 185, 254),
                         "dark" : (4, 12, 25)
                     }
                 }
+#Permet de switch de page directement avec des boutons physique
 PAGE_HANDLER = {"pages" : ["affichage", "navigation", "systeme"], "indice" : 0}

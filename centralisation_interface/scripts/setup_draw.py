@@ -3,7 +3,7 @@ from config import *
 from callbacks import *
 from components import *
 
-
+#fonction qui va cree chaque objet à dessiner
 def setup_draw(self) :
     #--------------Container Background--------------#
     self.container_storage["affichage"]["Background"] = Container(
@@ -44,6 +44,7 @@ def setup_draw(self) :
             icon_path=None,
             state="normal",
             size=(100,47),
+            dark_light=False,
             callback_action=callback_eco_button,
             auto_change_state=False,
             self_Interface = self
@@ -62,6 +63,7 @@ def setup_draw(self) :
             icon_path=None,
             state="pressed",
             size=(100,47),
+            dark_light=False,
             callback_action=callback_normal_button,
             auto_change_state=False,
             self_Interface = self
@@ -80,6 +82,7 @@ def setup_draw(self) :
             icon_path=None,
             state="normal",
             size=(100,47),
+            dark_light=False,
             callback_action=callback_sport_button,
             auto_change_state=False,
             self_Interface = self
@@ -109,7 +112,8 @@ def setup_draw(self) :
             icon_path=None,
             state="normal",
             size=(125,47),
-            callback_action=callback_charge_button,
+            dark_light=False,
+            callback_action=None,#callback_charge_button,
             auto_change_state=False,
             self_Interface = self,
         ),
@@ -135,9 +139,10 @@ def setup_draw(self) :
             text="Affichage",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/affichage_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/affichage_",
             state="pressed",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
             self_Interface = self
@@ -152,9 +157,10 @@ def setup_draw(self) :
             text="Navigation",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/navigation_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/navigation_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
             self_Interface = self
@@ -169,9 +175,10 @@ def setup_draw(self) :
             text="Système",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/system_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/system_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
             self_Interface = self
@@ -195,9 +202,10 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Heure Wifi"].add_object(
         Image(
             label="Wifi",
-            image_path=f"affichage/wifi_{dark_light_mode['etat']}.png",
+            image_path=f"affichage/wifi_",
             show=True,
             callback_action=None,
+            dark_light=True
         ),
         relative_position=None
     )
@@ -307,18 +315,20 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path=f"affichage/batterie_{dark_light_mode['etat']}.png",
+            image_path=f"affichage/batterie_",
             show=True,
             callback_action=None,
+            dark_light=True
         ),
         relative_position=(100, 13)
     )
     self.container_storage["affichage"]["Batterie"].add_object(
         Image(
             label="Batterie Png",
-            image_path=f"affichage/batterie_{dark_light_mode['etat']}.png",
+            image_path=f"affichage/batterie_",
             show=False,
             callback_action=None,
+            dark_light=True
         ),
         relative_position=None
     )
@@ -396,9 +406,10 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Temperature"].add_object(
         Image(
             label="Temperature Png",
-            image_path=f"affichage/temperature_{dark_light_mode['etat']}.png",
+            image_path=f"affichage/temperature_",
             show=True,
             callback_action=None,
+            dark_light=True
         ),
         relative_position=None
     )
@@ -500,18 +511,20 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Clignotant Gauche"].add_object(
         Image(
             label="Clignotant Gauche eteint",
-            image_path="clignotant/clignotant_gauche_eteint.png",
+            image_path="clignotant/clignotant_gauche_eteint",
             show=True,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
     self.container_storage["affichage"]["Clignotant Gauche"].add_object(
         Image(
             label="Clignotant Gauche Allume",
-            image_path="clignotant/clignotant_gauche_allume.png",
+            image_path="clignotant/clignotant_gauche_allume",
             show=False,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
@@ -530,18 +543,20 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Clignotant Droit"].add_object(
         Image(
             label="Clignotant Droit eteint",
-            image_path="clignotant/clignotant_droit_eteint.png",
+            image_path="clignotant/clignotant_droit_eteint",
             show=True,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
     self.container_storage["affichage"]["Clignotant Droit"].add_object(
         Image(
             label="Clignotant Droit Allume",
-            image_path="clignotant/clignotant_droit_allume.png",
+            image_path="clignotant/clignotant_droit_allume",
             show=False,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
@@ -561,7 +576,7 @@ def setup_draw(self) :
     for i in range(3) :
         self.container_storage["affichage"]["Prevention"].add_object(
             Container(
-                label=f"Prevention {(i+1)}",
+                label=f"Prevention {i}",
                 show_label=False,
                 position=(247+i*30, 296),
                 size=(363, 30),
@@ -570,9 +585,9 @@ def setup_draw(self) :
             ),
             relative_position=None
         )
-        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {(i+1)}").add_object(
+        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").add_object(
             Shape(
-                label=f"Prevention {(i+1)} Rectangle",
+                label=f"Prevention {i} Rectangle",
                 shape="rectangle",
                 size=(363, 30),
                 color=(251,44,44),
@@ -581,19 +596,19 @@ def setup_draw(self) :
             ),
             relative_position=(0,0)
         )
-        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {(i+1)}").add_object(
+        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").add_object(
             Image(
-                label=f"Prevention {(i+1)} icon",
-                image_path="affichage/danger.png",
+                label=f"Prevention {i} icon",
+                image_path="affichage/danger",
                 show=False,
                 callback_action=None,
-
+                dark_light=False
             ),
             relative_position=None
         )
-        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {(i+1)}").add_object(
+        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").add_object(
             Text(
-                label=f"Prevention {(i+1)} icon",
+                label=f"Prevention {i} text",
                 text="Attention moteur trop chaud !",
                 font_name="Roboto-Bold",
                 font_size=20,
@@ -650,9 +665,10 @@ def setup_draw(self) :
             text="Affichage",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/affichage_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/affichage_",
             state="pressed",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
             self_Interface = self
@@ -667,9 +683,10 @@ def setup_draw(self) :
             text="Navigation",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/navigation_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/navigation_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
             self_Interface = self
@@ -684,9 +701,10 @@ def setup_draw(self) :
             text="Système",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/system_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/system_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
             self_Interface = self
@@ -708,18 +726,20 @@ def setup_draw(self) :
     self.container_storage["navigation"]["Clignotant Gauche"].add_object(
         Image(
             label="Clignotant Gauche Allume",
-            image_path="clignotant/clignotant_gauche_allume.png",
+            image_path="clignotant/clignotant_gauche_allume",
             show=False,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
     self.container_storage["navigation"]["Clignotant Gauche"].add_object(
         Image(
             label="Clignotant Gauche eteint",
-            image_path="clignotant/clignotant_gauche_eteint.png",
+            image_path="clignotant/clignotant_gauche_eteint",
             show=True,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
@@ -735,18 +755,20 @@ def setup_draw(self) :
     self.container_storage["navigation"]["Clignotant Droit"].add_object(
         Image(
             label="Clignotant Droit Allume",
-            image_path="clignotant/clignotant_droit_allume.png",
+            image_path="clignotant/clignotant_droit_allume",
             show=False,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
     self.container_storage["navigation"]["Clignotant Droit"].add_object(
         Image(
             label="Clignotant Droit eteint",
-            image_path="clignotant/clignotant_droit_eteint.png",
+            image_path="clignotant/clignotant_droit_eteint",
             show=True,
             callback_action=None,
+            dark_light=False
         ),
         relative_position=(0,0)
     )
@@ -835,9 +857,10 @@ def setup_draw(self) :
             text="Affichage",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/affichage_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/affichage_",
             state="pressed",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
             self_Interface = self
@@ -852,9 +875,10 @@ def setup_draw(self) :
             text="Navigation",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/navigation_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/navigation_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
             self_Interface = self
@@ -869,9 +893,10 @@ def setup_draw(self) :
             text="Système",
             font_name="Roboto-Bold",
             font_size=35,
-            icon_path=f"affichage/system_{dark_light_mode['etat']}.png",
+            icon_path=f"affichage/system_",
             state="normal",
             size=(247,68),
+            dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
             self_Interface = self
@@ -1005,7 +1030,7 @@ def setup_draw(self) :
         relative_position=None
     )
 
-    for sw_text in [["24h", "12h"], ["°C", "°F"]] :#, ["dark mode", "light mode"]] :
+    for sw_text in [["24h", "12h"], ["°C", "°F"], ["dark mode", "light mode"], ["", ""]] :
         self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Text Left").add_object(
                     Text(
                 label=f"{sw_text[0]} Text",
@@ -1052,17 +1077,34 @@ def setup_draw(self) :
     )
     self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch °C")) 
     #switch non fonctionnel mais peux important. Mis sur la touche pour l'instant
-    # self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
-    #     Switch(
-    #         label=f"Switch dark mode",
-    #         show=True,
-    #         callback_action=callback_dark_liht_switch,
-    #         self_Interface=self
-    #     ),
-    #     relative_position=None
-    # )
-    # self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch dark mode")) 
-
+    self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
+        Switch(
+            label=f"Switch dark mode",
+            show=True,
+            callback_action=callback_dark_liht_switch,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Switch dark mode")) 
+    
+    #bouton temporaire pour tester la caméras de recule
+    self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").add_object(
+        Button(
+            label="Caméra de Recul",
+            text="Caméra de Recul",
+            font_name="Roboto-Bold",
+            font_size=20,
+            icon_path=None,
+            state="normal",
+            size=(180,50),
+            dark_light=False,
+            callback_action=callback_cameras_recule,
+            auto_change_state=True,
+        ),
+        relative_position=None
+    )
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object(f"Caméra de Recul"))
 
 
 
@@ -1089,9 +1131,10 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
         Image(
             label="Switch Reg",
-            image_path="systeme/switch_neutre.png",
+            image_path="systeme/switch_neutre",
             show=True,
             callback_action=callback_reg_switch,
+            dark_light=False,
             self_Interface=self
         ),
         relative_position=(0,0)
@@ -1101,9 +1144,10 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
         Image(
             label="Switch Neutre",
-            image_path="systeme/vide.png",
+            image_path="systeme/vide",
             show=True,
             callback_action=callback_neutre_witch,
+            dark_light=False,
             self_Interface=self
         ),
         relative_position=(72,0)
@@ -1112,9 +1156,10 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").add_object(
         Image(
             label="Switch Lim",
-            image_path="systeme/vide.png",
+            image_path="systeme/vide",
             show=True,
             callback_action=callback_lim_switch,
+            dark_light=False,
             self_Interface=self
         ),
         relative_position=(144,0)
@@ -1123,9 +1168,10 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Regulateur"].add_object(
         Image(
             label="Bouton Moins",
-            image_path="systeme/normal_moins.png",
+            image_path="systeme/normal_moins",
             show=False,
             callback_action=callback_reg_lim_moins,
+            dark_light=False,
             self_Interface=self
         ),
         relative_position=None
@@ -1159,9 +1205,10 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Regulateur"].add_object(
         Image(
             label="Bouton Plus",
-            image_path="systeme/normal_plus.png",
+            image_path="systeme/normal_plus",
             show=False,
             callback_action=callback_reg_lim_plus,
+            dark_light=False,
             self_Interface=self
         ),
         relative_position=None

@@ -5,12 +5,12 @@ from utils.utils import *
 
 class Shape :
     def __init__(
-            self,
-            label: str, #nom de l'objet pour poivoir le récupéré facilement
-            shape: str, #option possible : "circle", "rectangle", "line"
-            color: tuple,
-            show: bool,
-            **kwargs
+        self,
+        label: str,  # Nom de l'objet pour pouvoir le récupérer facilement
+        shape: str,  # Options possibles : "circle", "rectangle", "line"
+        color: tuple,  # Couleur de l'objet sous forme de tuple (R, G, B)
+        show: bool,  # Indique si l'objet doit être affiché ou non
+        **kwargs  # Paramètres supplémentaires pour configurer l'objet
     ) :
         self.label =label
         self.color = color
@@ -36,6 +36,9 @@ class Shape :
     
     def set_position(self, new_position) :
         self.position = new_position
+    
+    def change_color(self, new_color) :
+        self.color = new_color
 
     
 

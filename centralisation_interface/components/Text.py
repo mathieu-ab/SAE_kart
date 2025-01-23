@@ -6,14 +6,14 @@ from utils.utils import *
 class Text :
     def __init__(
             self,
-            label: str, #nom de l'objet pour poivoir le récupéré facilement
-            text: str,
-            font_name: str,
-            font_size: int,
-            color: tuple,
-            justify: str, #justify possible : ["center", "right", "left"]
-            show: bool,
-            **kwargs
+            label: str,  # Nom de l'objet pour pouvoir le récupérer facilement avec get_object
+            text: str,  # Texte à afficher
+            font_name: str,  # Nom de la police utilisée pour le texte
+            font_size: int,  # Taille de la police
+            color: tuple,  # Couleur du texte sous forme de tuple (R, G, B)
+            justify: str,  # Justification possible : ["center", "right", "left"]
+            show: bool,  # Indique si l'objet doit être affiché ou non
+            **kwargs  # Paramètres supplémentaires pour configurer l'objet
     ) :
         self.label =label
         self.text = text
@@ -34,6 +34,7 @@ class Text :
                 self.old_text = self.text
                 self.create_text_rect()
                 window.blit(self.text_surf, self.text_rect)
+            #afficher un text static (inutile de recréé le text_rect)
             else :
                 window.blit(self.text_surf, self.text_rect)
 
@@ -57,6 +58,10 @@ class Text :
 
     def toggle_show(self) :
         self.show = not self.show
+    
+    def update_color(self) :
+        self.color = dark_light_mode["text"][dark_light_mode["etat"]]
+        self.create_text_rect()
 
     
 

@@ -5,13 +5,13 @@ import time
 # Configuration des GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO_INPUT_PIN = 18  # GPIO pour recevoir l'activation MLI (remplacez par votre GPIO)
-GPIO_OUTPUT_PIN = 17  # GPIO pour activer la charge (remplacez par votre GPIO)
+GPIO_INPUT_PIN = 19  # GPIO pour recevoir l'activation MLI (remplacez par votre GPIO)
+GPIO_OUTPUT_PIN = 18  # GPIO pour activer la charge (remplacez par votre GPIO)
 GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(GPIO_OUTPUT_PIN, GPIO.OUT)
 
 # Configuration MQTT
-BROKER = "mqtt_broker_address"  # Remplacez par l'adresse de votre broker MQTT
+BROKER = "localhost"  # Remplacez par l'adresse de votre broker MQTT
 PORT = 1883  # Port par défaut pour MQTT
 TOPIC_MLI = "charge/mli"
 TOPIC_CONTROL = "charge/control"

@@ -15,8 +15,9 @@ class Button :
             icon_path: str,  # Chemin de l'image de l'icône (facultatif)
             state: str,  # Options possibles : ["normal", "pressed", "disabled"]
             size: tuple[int, int],  # Taille (width, height) du bouton
+            dark_light: bool,  # Indique si l'icône doit s'adapter au thème clair/sombre
             callback_action: callable,  # Fonction appelée lors d'un clic
-            auto_change_state: bool,
+            auto_change_state: bool, # Indique si un click change l'etat du bouton automatiquement ou non
             **kwargs  # Paramètres supplémentaires
     ):
         self.label = label
@@ -39,7 +40,13 @@ class Button :
         self.callback_action = callback_action
         self.auto_change_state = auto_change_state
         if icon_path != None :
-            self.icon = Image(f"Image_button_{label}", icon_path, True, None)
+            self.icon = Image(
+                label=f"Image_button_{label}",
+                image_path=icon_path,
+                show=True,
+                callback_action=None,
+                dark_light=dark_light
+                )
         else :
             self.icon = None
         self.pygame_rect = pygame.Rect(self.position[0], self.position[1], self.size[0], self.size[1])
@@ -95,6 +102,10 @@ class Button :
             if self.auto_change_state == False and self.callback_action != None :
                 self.callback_action(**self.kwargs)
 
+    def update_color(self) :
+        self.text.update_color()
+        if self.icon != None :
+            self.icon.update_color()
         
 
 
