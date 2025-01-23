@@ -1,41 +1,41 @@
-import spidev
+import smbus
 import time
 
-# Initialisation du bus SPI
-spi = spidev.SpiDev()
-spi.open(0, 0)         # Bus 0, périphérique 0 (CS0)
-spi.max_speed_hz = 125000  # Fréquence SPI (125 kHz)
-spi.mode = 0b00           # Mode SPI (CPOL=0, CPHA=0)
+# Adresse I2C de l'esclave (doit correspondre à celle définie dans le maître)
+SLAVE_ADDRESS = 0x08
 
-def receive_distance():
+# Initialisation de la variable pour stocker la distance reçue
+distance = 0
+
+# Initialisation de l'I2C sur le bus 1 (le bus I2C standard sur Raspberry Pi 4)
+bus = smbus.SMBus(1)
+
+def read_distance():
     """
-    Fonction pour recevoir la distance en deux octets via SPI.
-    Retourne la distance en centimètres.
+    Fonction pour lire la distance envoyée par le maître via I2C.
     """
-    response = spi.xfer2([0x00, 0x00])  # Envoyer deux octets vides pour recevoir les données
-    high_byte = response[0]            # Premier octet reçu
-    low_byte = response[1]             # Deuxième octet reçu
+    global distance
+    try:
+        # Lire deux octets depuis le maître
+        high_byte = bus.read_byte(SLAVE_ADDRESS)  # Octet de poids fort
+        low_byte = bus.read_byte(SLAVE_ADDRESS)   # Octet de poids faible
 
-    # Reconstituer la valeur de distance
-    distance = (high_byte << 8) | low_byte
-    return distance
-
-try:
-    print("Esclave SPI prêt à recevoir les données...")
-    while True:
-        distance = receive_distance()
+        # Reconstituer la distance à partir des deux octets
+        distance = (high_byte << 8) | low_byte
         print(f"Distance reçue : {distance} cm")
 
-        # Logique supplémentaire
-        if distance > 0 and distance <= 100:
-            print("Obstacle détecté à proximité !")
-        else:
-            print("Pas d'obstacle détecté.")
+    except Exception as e:
+        print(f"Erreur lors de la lecture I2C : {e}")
 
-        time.sleep(0.5)  # Pause avant la prochaine lecture
+if __name__ == "__main__":
+    print("Esclave I2C prêt à recevoir des données...")
 
-except KeyboardInterrupt:
-    print("\nArrêt du programme.")
+    try:
+        while True:
+            read_distance()  # Lire les données depuis le maître
+            time.sleep(0.5)  # Pause pour éviter une surcharge
 
-finally:
-    spi.close()
+    except KeyboardInterrupt:
+        print("\nArrêt du programme.")
+    finally:
+        bus.close()
