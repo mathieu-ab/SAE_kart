@@ -529,15 +529,6 @@ def setup_draw(self) :
     )
     self.container_storage["affichage"]["Clignotant Droit"].add_object(
         Image(
-            label="Clignotant Droit Allume",
-            image_path="clignotant/clignotant_droit_allume.png",
-            show=False,
-            callback_action=None,
-        ),
-        relative_position=(0,0)
-    )
-    self.container_storage["affichage"]["Clignotant Droit"].add_object(
-        Image(
             label="Clignotant Droit eteint",
             image_path="clignotant/clignotant_droit_eteint.png",
             show=True,
@@ -545,6 +536,16 @@ def setup_draw(self) :
         ),
         relative_position=(0,0)
     )
+    self.container_storage["affichage"]["Clignotant Droit"].add_object(
+        Image(
+            label="Clignotant Droit Allume",
+            image_path="clignotant/clignotant_droit_allume.png",
+            show=False,
+            callback_action=None,
+        ),
+        relative_position=(0,0)
+    )
+
 
 
     
