@@ -14,7 +14,7 @@ class MQTTPublisher:
             print(f"Échec de la connexion, code de retour : {rc}")
 
     def publish_message(self, topic, message):
-        self.client.publish(topic, message, retain=True)
+        self.client.publish(topic, message, retain=False)
         print(f"Message envoyé sur {topic}: {message}")
 
     def start(self):
@@ -32,7 +32,7 @@ def main():
     # Envoi de messages périodiques sur différents topics
 
     for i in range(1):
-        message = "left"
+        message = "right"
         publisher.publish_message("bouton/clignotant", message)
 
         # time.sleep(0.5)  # Pause entre les envois

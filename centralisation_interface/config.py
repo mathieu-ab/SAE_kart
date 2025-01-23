@@ -52,7 +52,8 @@ topics = [
     "aide/endormissement/control",#--reçois
     "aide/obstacle/control",      #--reçois
     "bouton/page",                #--reçois
-    "bouton/clignotant"           #--reçois
+    "bouton/clignotant",           #--reçois
+    "test/topic"
 ]
 
 topics_non_retain = [
