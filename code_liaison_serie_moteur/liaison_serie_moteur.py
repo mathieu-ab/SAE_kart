@@ -4,13 +4,6 @@ import paho.mqtt.client as mqtt
 import time
 import threading
 
-
-
-
-
-
-
-
 class MQTTMessageHandler(threading.Thread):
     def __init__(self, topics):
         threading.Thread.__init__(self)
@@ -31,10 +24,15 @@ class MQTTMessageHandler(threading.Thread):
     def on_message(self, client, userdata, msg):
         msg_received = msg.payload.decode('utf-8')
         print(f"- Message reçu sur le topic {msg.topic}: {msg_received}")
-        if msg.topic == "moteur/vitesse":
-            pass
-
-
+        if msg.topic == "aide/vitesse_consigne":
+            envoyer_commande("n"+ msg_received + "f")
+        if msg.topic == "aide/reg_lim":
+            if msg_received == "desactivation":
+                envoyer_commande("n")
+            if msg_received =="activation limitateur":
+                envoyer_commande("l")
+            if msg_received =="activation regulateur":
+                envoyer_commande("r")
 
     def publish_message(self, topic, message):
         try:
@@ -48,15 +46,15 @@ class MQTTMessageHandler(threading.Thread):
         self.client.loop_start()
 
 
-def envoyer_commande(vitesse, mode):
+def envoyer_commande(information):
     """
     Envoie la vitesse de consigne et le mode de conduite à l'ATmega328P.
     :param vitesse: La vitesse de consigne à envoyer (en km/h).
     :param mode: Le mode de conduite (char: 'N' pour normal, 'E' pour éco, 'T' pour turbo).
     """
-    message = f"{vitesse},{mode}\n"
+    message = f"{information}\n"
     ser.write(message.encode())  # Envoie de la commande série
-    print(f"Commandé: {vitesse} km/h, Mode: {mode}")
+    print(f"info envoyés : {information}")
 
 def lire_donnees():
     """Lire les données reçues (vitesse et température) de l'ATmega328P."""
@@ -86,8 +84,6 @@ def traiter_donnees(data):
         print(f"Erreur dans le traitement des données : {e}")
 
 
-
-
 # Exemple d'utilisation
 
 
@@ -110,13 +106,12 @@ if __name__ == "__main__":
     time.sleep(2)  # Attendre 2 secondes pour établir la connexion
 
 
-
     # Exemple de commande
     vitesse_consigne = 30  # Vitesse de consigne (par exemple, 30 km/h)
     mode_conduite = 'N'  # Mode 'N' pour normal
 
     # Envoie de la commande à l'ATmega328P
-    envoyer_commande(vitesse_consigne, mode_conduite)
+    #envoyer_commande(vitesse_consigne, mode_conduite)
 
     # Lire les données envoyées par l'ATmega328P
     lire_donnees()
