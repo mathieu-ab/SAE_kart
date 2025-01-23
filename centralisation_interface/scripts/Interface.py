@@ -4,6 +4,10 @@ from module_import import *
 from components import *
 from config import *
 from utils.utils import *
+from callbacks.callbacks import (
+    callback_affichage_button,
+    callback_navigation_button,
+    callback_systeme_button)
 
 class Interface :
     def __init__(self):
@@ -170,12 +174,18 @@ class Interface :
             print(e)
     
     def update_bouton_page(self, message) :
-        if message == "right" :
-            PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)%len(PAGE_HANDLER["pages"])
-        elif message == "left" :
-            self.current_page = PAGE_HANDLER["pages"][PAGE_HANDLER["indice"]]
+        if message == "right" and PAGE_HANDLER["indice"] < 2 :
+            PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)
+        elif message == "left" and PAGE_HANDLER["indice"] > 0:
+            PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]-1)
+        
         self.current_page = PAGE_HANDLER["pages"][PAGE_HANDLER["indice"]]
-
+        if self.current_page == "affichage" :
+            callback_affichage_button(self)
+        elif self.current_page == "navigation" :
+            callback_navigation_button(self)
+        elif self.current_page == "systeme" :
+            callback_systeme_button(self)
 
                 # #permet de tester toute les 10 secondes
                 # if self.index >= fps*10 :

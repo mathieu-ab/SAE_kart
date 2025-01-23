@@ -1,5 +1,4 @@
 from module_import import subprocess
-from scripts import MQTTMessageHandler
 from config import dark_light_mode, VITESSE_MAX
 
 def callback_affichage_button(self_Interface) :

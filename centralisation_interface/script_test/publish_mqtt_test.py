@@ -32,7 +32,7 @@ def main():
     # Envoi de messages périodiques sur différents topics
 
     for i in range(1):
-        message = "right"
+        message = "left"
         publisher.publish_message("bouton/page", message)
 
         # time.sleep(0.5)  # Pause entre les envois
