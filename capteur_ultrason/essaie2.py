@@ -1,5 +1,6 @@
 import smbus
 import time
+import paho.mqtt.client as mqtt
 
 # Adresse I2C de l'esclave (doit correspondre à celle définie dans le maître)
 SLAVE_ADDRESS = 0x08
@@ -9,6 +10,44 @@ bus = smbus.SMBus(1)
 
 # Nombre de capteurs
 NUM_SENSORS = 3
+
+# Paramètres MQTT
+MQTT_BROKER = "localhost"  # Adresse IP du broker MQTT (à remplacer par la tienne)
+MQTT_PORT = 1883               # Port par défaut pour MQTT
+MQTT_TOPIC = "kart/distance"   # Sujet pour publier les données
+
+# Initialisation du client MQTT
+mqtt_client = mqtt.Client()
+
+def connect_mqtt():
+    """
+    Connecter le client MQTT au broker.
+    """
+    try:
+        mqtt_client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
+        print("Connecté au broker MQTT")
+    except Exception as e:
+        print(f"Erreur lors de la connexion au broker MQTT : {e}")
+        exit(1)
+
+def publish_distance(sensor_id, distance):
+    """
+    Publier la distance mesurée pour un capteur spécifique via MQTT.
+    Args:
+        sensor_id (int): Identifiant du capteur (0, 1, ou 2).
+        distance (int): Distance mesurée par le capteur (en cm).
+    """
+    try:
+        # Créer un message au format JSON
+        message = {
+            "sensor_id": sensor_id,
+            "distance_cm": distance
+        }
+        # Publier le message
+        mqtt_client.publish(MQTT_TOPIC, str(message))
+        print(f"Publié via MQTT : {message}")
+    except Exception as e:
+        print(f"Erreur lors de la publication MQTT : {e}")
 
 def read_sensor_data(sensor_id):
     """
@@ -38,13 +77,18 @@ def read_sensor_data(sensor_id):
 if __name__ == "__main__":
     print("Esclave I2C prêt à recevoir des données...")
 
+    # Connecter le client MQTT au broker
+    connect_mqtt()
+
     try:
         while True:
-            # Lire et afficher les distances pour chaque capteur
+            # Lire et publier les distances pour chaque capteur
             for sensor_id in range(NUM_SENSORS):
                 distance = read_sensor_data(sensor_id)
                 if distance is not None:
                     print(f"Capteur {sensor_id} : Distance reçue = {distance} cm")
+                    # Publier la distance via MQTT
+                    publish_distance(sensor_id, distance)
 
             time.sleep(0.5)  # Pause pour éviter une surcharge
 
@@ -52,3 +96,4 @@ if __name__ == "__main__":
         print("\nArrêt du programme.")
     finally:
         bus.close()
+        mqtt_client.disconnect()
