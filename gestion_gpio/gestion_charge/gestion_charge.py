@@ -10,7 +10,7 @@ GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(GPIO_OUTPUT_PIN, GPIO.OUT)
 
 # Configuration MQTT
-BROKER = "localhost"  # Remplacez par l'adresse de votre broker MQTT
+BROKER = "localhost"
 PORT = 1883  # Port par défaut pour MQTT
 TOPIC_MLI = "charge/mli"
 TOPIC_CONTROL = "charge/control"
