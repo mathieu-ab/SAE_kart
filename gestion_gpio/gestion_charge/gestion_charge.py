@@ -24,10 +24,8 @@ def on_message(client, userdata, msg):
 
         if topic == TOPIC_CONTROL:
             if payload == "ON":
-                print("Reçu ON, GPIO_OUTPUT_PIN mis à 1")
                 GPIO.output(GPIO_OUTPUT_PIN, GPIO.HIGH)
             elif payload == "OFF":
-                print("Reçu OFF, GPIO_OUTPUT_PIN mis à 0")
                 GPIO.output(GPIO_OUTPUT_PIN, GPIO.LOW)
 
     except Exception as e:
@@ -40,17 +38,14 @@ client.on_message = on_message
 try:
     client.connect(BROKER, PORT, 60)
     client.subscribe([(TOPIC_MLI, 0), (TOPIC_CONTROL, 0)])
-    print("Connecté au broker MQTT et abonné aux topics")
 
     client.loop_start()
 
     while True:
         # Vérifie l'état du GPIO_INPUT_PIN
         if GPIO.input(GPIO_INPUT_PIN) == GPIO.HIGH:
-            print("GPIO_INPUT_PIN activé, envoi MQTT: charge/mli ON")
             client.publish(TOPIC_MLI, "ON")
         else:
-            print("GPIO_INPUT_PIN désactivé, envoi MQTT: charge/mli OFF")
             client.publish(TOPIC_MLI, "OFF")
 
         time.sleep(1)  # Pause pour éviter une surcharge
