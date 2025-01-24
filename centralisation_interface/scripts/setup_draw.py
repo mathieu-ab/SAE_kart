@@ -113,7 +113,7 @@ def setup_draw(self) :
             state="normal",
             size=(125,47),
             dark_light=False,
-            callback_action=None,#callback_charge_button,
+            callback_action=callback_charge_button,
             auto_change_state=False,
             self_Interface = self,
         ),

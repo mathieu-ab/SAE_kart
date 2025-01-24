@@ -5,13 +5,13 @@ import time
 # Configuration des GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO_INPUT_PIN = 19  # GPIO pour recevoir l'activation MLI (remplacez par votre GPIO)
-GPIO_OUTPUT_PIN = 18  # GPIO pour activer la charge (remplacez par votre GPIO)
+GPIO_INPUT_PIN = 12  # GPIO pour recevoir l'activation MLI 
+GPIO_OUTPUT_PIN = 13  # GPIO pour activer la charge 
 GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(GPIO_OUTPUT_PIN, GPIO.OUT)
 
 # Configuration MQTT
-BROKER = "localhost"  # Remplacez par l'adresse de votre broker MQTT
+BROKER = "localhost"  
 PORT = 1883  # Port par défaut pour MQTT
 TOPIC_MLI = "charge/mli"
 TOPIC_CONTROL = "charge/control"
@@ -25,8 +25,10 @@ def on_message(client, userdata, msg):
         if topic == TOPIC_CONTROL:
             if payload == "ON":
                 GPIO.output(GPIO_OUTPUT_PIN, GPIO.HIGH)
+                client.publish("charge/status", "ON")
             elif payload == "OFF":
                 GPIO.output(GPIO_OUTPUT_PIN, GPIO.LOW)
+                client.publish("charge/status", "OFF")
 
     except Exception as e:
         print(f"Erreur lors du traitement du message: {e}")

@@ -41,15 +41,15 @@ def callback_sport_button(self_Interface) :
     self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "pressed"
 
 #le bouton activation charge n'est finalement plus actif depuis le tableau de bord
-# def callback_charge_button(self_Interface) :
-#     if self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state == "normal" :
-#         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
-#         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
-#         self_Interface.mqtt_thread_handler.publish_message("charge/status", "ON")
-#     else :
-#         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
-#         self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
-#         self_Interface.mqtt_thread_handler.publish_message("charge/status", "OFF")
+def callback_charge_button(self_Interface) :
+    if self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state == "normal" :
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
+        self_Interface.mqtt_thread_handler.publish_message("charge/control", "ON")
+    else :
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
+        self_Interface.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
+        self_Interface.mqtt_thread_handler.publish_message("charge/control", "OFF")
 
     
     
