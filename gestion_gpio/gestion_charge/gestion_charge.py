@@ -1,6 +1,5 @@
 import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
-import time
 
 # Configuration des GPIO
 GPIO.setmode(GPIO.BCM)
@@ -11,7 +10,7 @@ GPIO.setup(GPIO_INPUT_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(GPIO_OUTPUT_PIN, GPIO.OUT)
 
 # Configuration MQTT
-BROKER = "localhost"  
+BROKER = "localhost"  # Remplacez par l'adresse de votre broker MQTT
 PORT = 1883  # Port par défaut pour MQTT
 TOPIC_MLI = "charge/mli"
 TOPIC_CONTROL = "charge/control"
@@ -33,24 +32,27 @@ def on_message(client, userdata, msg):
     except Exception as e:
         print(f"Erreur lors du traitement du message: {e}")
 
+# Fonction appelée lors d'un changement d'état du GPIO_INPUT_PIN
+def gpio_callback(channel):
+    if GPIO.input(channel) == GPIO.HIGH:
+        client.publish(TOPIC_MLI, "ON")
+    else:
+        client.publish(TOPIC_MLI, "OFF")
+
 # Initialisation du client MQTT
 client = mqtt.Client()
 client.on_message = on_message
 
 try:
+    # Connexion au broker MQTT
     client.connect(BROKER, PORT, 60)
     client.subscribe([(TOPIC_MLI, 0), (TOPIC_CONTROL, 0)])
 
-    client.loop_start()
+    # Ajout d'une interruption sur le GPIO_INPUT_PIN
+    GPIO.add_event_detect(GPIO_INPUT_PIN, GPIO.BOTH, callback=gpio_callback, bouncetime=200)
 
-    while True:
-        # Vérifie l'état du GPIO_INPUT_PIN
-        if GPIO.input(GPIO_INPUT_PIN) == GPIO.HIGH:
-            client.publish(TOPIC_MLI, "ON")
-        else:
-            client.publish(TOPIC_MLI, "OFF")
-
-        time.sleep(1)  # Pause pour éviter une surcharge
+    # Lancer la boucle MQTT
+    client.loop_forever()
 
 except KeyboardInterrupt:
     print("Interruption par l'utilisateur")
@@ -58,5 +60,4 @@ except KeyboardInterrupt:
 finally:
     print("Nettoyage GPIO et déconnexion MQTT")
     GPIO.cleanup()
-    client.loop_stop()
     client.disconnect()
