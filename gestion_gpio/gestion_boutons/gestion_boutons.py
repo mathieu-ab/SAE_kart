@@ -14,7 +14,7 @@ def on_connect(client, userdata, flags, rc):
 # Fonction pour publier un message via MQTT
 def publish_message(topic, message):
     try:
-        client.publish(topic, message, retain=True)
+        client.publish(topic, message, retain=False)
         print(f"Message '{message}' envoyé sur le topic '{topic}'")
     except Exception as e:
         print(f"Erreur lors de l'envoi : {e}")
