@@ -24,7 +24,7 @@ class MQTTPublisher:
 
 # Exemple d'utilisation
 def main():
-    broker_address = "localhost"  # Adresse du broker MQTT
+    broker_address = "192.168.1.13"  # Adresse du broker MQTT
     publisher = MQTTPublisher(broker_address)
 
     publisher.start()
@@ -32,9 +32,7 @@ def main():
     # Envoi de messages périodiques sur différents topics
 
     for i in range(1):
-        publisher.publish_message("message/prevention", "moteur 1 !|Stop")
-        publisher.publish_message("message/prevention", "moteur 8 !|5")
-        publisher.publish_message("message/prevention", "moteur 2 !|Stop")
+        publisher.publish_message("bouton/side", "gauche")
 
         # time.sleep(0.5)  # Pause entre les envois
     publisher.client.loop_stop()

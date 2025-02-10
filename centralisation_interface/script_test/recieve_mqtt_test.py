@@ -26,22 +26,9 @@ class MQTTSubscriber:
 
 # Exemple d'utilisation
 def main():
-    broker_address = "localhost"  # Adresse du broker MQTT
+    broker_address = "192.168.1.13"  # Adresse du broker MQTT
     topics = [
-        "moteur/vitesse",
-        "moteur/temperature",
-        "moteur/mode",
-
-        "bms/batterie",
-
-        "message/prevention",
-
-        "aide/clignotant",
-        "aide/reg_lim",
-        "aide/vitesse_consigne",
-        "aide/ligne_blanche",
-        "aide/endormissement",
-        "aide/obstacle"
+        "bouton/side"
     ]
 
     subscriber = MQTTSubscriber(broker_address, topics)
