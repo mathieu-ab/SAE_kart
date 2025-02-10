@@ -1,6 +1,5 @@
 import serial
 
-# Configuration du port série (remplace "/dev/serial0" par "/dev/ttyS0" si nécessaire)
 ser = serial.Serial('/dev/serial0', 9600, timeout=1)
 ser.flush()
 
