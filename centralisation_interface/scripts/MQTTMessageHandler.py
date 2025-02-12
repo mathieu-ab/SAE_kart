@@ -50,8 +50,7 @@ class MQTTMessageHandler():
             update_button_clignotant(self.interface, msg_received)
         elif msg.topic == "moteur/mode/control" :
             update_mode_conduite(self.interface, msg_received)
-        elif msg.topic == "aide/vitesse_consigne/control" :
-            update_vitesse_consigne(self.interface, msg_received)
+
 
     #méthode pour publier un message avec un topic
     def publish_message(self, topic, message):
