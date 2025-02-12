@@ -244,9 +244,9 @@ def update_mode_conduite(self, msg_received) :
         self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
 
-def update_vitesse_consigne(self, msg_received) :
-    try :
-        self.vitesse_consigne = int(msg_received)
-        self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self.vitesse_consigne
-    except :
-        print("Problème de conversion en int pour la vitesse de consigne control.")
+# def update_vitesse_consigne(self, msg_received) :
+#     try :
+#         self.vitesse_consigne = int(msg_received)
+#         self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self.vitesse_consigne
+#     except :
+#         print("Problème de conversion en int pour la vitesse de consigne control.")

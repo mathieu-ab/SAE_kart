@@ -158,6 +158,8 @@ def callback_reg_switch(self_Interface, etat) :
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
         self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_regulateur")
+        self_Interface.mqtt_thread_handler.publish_message("aide/vitesse_consigne", f"{self_Interface.vitesse}")
+        self_Interface.vitesse_consigne = self_Interface.vitesse
 
 def callback_neutre_witch(self_Interface, etat) :
     if etat == "click" :
@@ -184,3 +186,5 @@ def callback_lim_switch(self_Interface, etat) :
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
         self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_limitateur")
+        self_Interface.mqtt_thread_handler.publish_message("aide/vitesse_consigne", f"{self_Interface.vitesse}")
+        self_Interface.vitesse_consigne = self_Interface.vitesse
