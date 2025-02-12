@@ -51,14 +51,23 @@ class Interface :
         self.vitesse_consigne = 17
         self.temperature_batterie = 20
         self.temperature_moteur = 20
+        self.eg_value = 0
         setup_draw(self)
 
     #méthode pour déssiner les objets
     #tout les object sont dans des containers. chaque container à une méthode draw pour dessiner les object à l'interrieur. 
     #il est donc possible de mettre des container dans d'autre container
     def draw(self) :
-        for container in self.container_storage[self.current_page].values() :
-            container.draw(self.window)
+        if self.current_page == "eg" : 
+            image = pygame.image.load(f"{CURRENT_PATH}/assets/images/affichage/easter_egg/images/1119_1-{self.eg_value}.png")
+            self.window.blit(image, (0,0))
+            if self.eg_value == 89 :
+                self.eg_value = 0
+            else :
+                self.eg_value+=1
+        else :
+            for container in self.container_storage[self.current_page].values() :
+                container.draw(self.window)
 
     #boucle principale de l"interface
     def start(self) :
@@ -67,7 +76,10 @@ class Interface :
             #captation des evenement de la fenêtre : si un clic est effectué, ou une touche appuyé
             self.event_window()
             #Limitation de vitesse de la boucle
-            self.clock.tick(fps) 
+            if self.current_page == "eg" :
+                self.clock.tick(10) 
+            else :
+                self.clock.tick(fps) 
             #dessin de chaque objet
             self.draw()
             #test periodique de certain élément
@@ -97,7 +109,12 @@ class Interface :
         keys = pygame.key.get_pressed() #on récupère tout les touches du clavier (keys[] = True si la touche est préssé)
         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
             if event.type == pygame.QUIT or keys[pygame.K_ESCAPE] :   #Si on ferme la fenêtre, on sort de la boucle principal
-                main_loop = False
+                if self.current_page == "eg" :
+                    self.current_page  ="affichage"
+                else :
+                    main_loop = False
+            if self.current_page == "eg" :
+                return
             if event.type == MOUSEBUTTONDOWN : #appui
                 if tactile:
                     # Convertir les coordonnées tactiles en pixels
