@@ -33,5 +33,6 @@ from .mqtt_callback import (
     update_button_clignotant,
     update_message_prevention,
     update_mode_conduite,
-    update_heure
+    update_heure,
+    update_vitesse_consigne
 )
