@@ -1228,20 +1228,8 @@ def setup_draw(self) :
     )
     self.container_storage["systeme"]["Regulateur"].add_object(
         Text(
-            label="Regulateur Text",
-            text="regulateur",
-            font_name="Roboto-Bold",
-            font_size=15,
-            color=dark_light_mode["text"][dark_light_mode["etat"]],
-            justify="left",
-            show=True,
-        ),
-        relative_position=(210, 15)
-    )
-    self.container_storage["systeme"]["Regulateur"].add_object(
-        Text(
             label="Limitateur Text",
-            text="limitateur",
+            text="regulateur",
             font_name="Roboto-Bold",
             font_size=15,
             color=dark_light_mode["text"][dark_light_mode["etat"]],
@@ -1250,7 +1238,18 @@ def setup_draw(self) :
         ),
         relative_position=(25, 15)
     )
-
+    self.container_storage["systeme"]["Regulateur"].add_object(
+        Text(
+            label="Regulateur Text",
+            text="limitateur",
+            font_name="Roboto-Bold",
+            font_size=15,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True,
+        ),
+        relative_position=(210, 15)
+    )
 
 
 
