@@ -35,6 +35,7 @@ topics = [
     "moteur/vitesse",             #--reçois
     "moteur/temperature",         #--reçois
     # "moteur/mode",              #envoi
+    "moteur/mode/control",              #reçois
                                   #
     "bms/batterie",               #--reçois
     "bms/temperature",            #--reçois
@@ -47,6 +48,7 @@ topics = [
     # "aide/clignotant",          #envoi
     # "aide/reg_lim",             #envoi
     # "aide/vitesse_consigne",    #envoi
+    "aide/vitesse_consigne/control",    #reçois
     # "aide/ligne_blanche/status",#envoi
     # "aide/endormissement/status",#envoi
     # "aide/obstacle/status"      #envoi

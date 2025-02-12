@@ -21,24 +21,24 @@ def callback_systeme_button(self_Interface) :
 
 def callback_eco_button(self_Interface) :
     if self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state != "pressed" :
-        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "eco")
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_eco")
         self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "pressed"
         self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "normal"
         self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "normal"
 
 def callback_normal_button(self_Interface) :
     if self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state != "pressed" :
-        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "normal")
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "pressed"
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "normal"
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_normal")
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "pressed"
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "normal"
 
 def callback_sport_button(self_Interface) :
     if self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state != "pressed" :
-        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "sport")
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "normal"
-    self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "pressed"
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_sport")
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "normal"
+        self_Interface.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "pressed"
 
 #le bouton activation charge n'est finalement plus actif depuis le tableau de bord
 def callback_charge_button(self_Interface) :
@@ -157,7 +157,7 @@ def callback_reg_switch(self_Interface, etat) :
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
-        self_Interface.mqtt_thread_handler.publish_message("aide/reg_lim", "activation regulateur")
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_regulateur")
 
 def callback_neutre_witch(self_Interface, etat) :
     if etat == "click" :
@@ -170,7 +170,7 @@ def callback_neutre_witch(self_Interface, etat) :
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = False
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = False
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = False
-        self_Interface.mqtt_thread_handler.publish_message("aide/reg_lim", "desactivation")
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_normal")
     
 def callback_lim_switch(self_Interface, etat) :
     if etat == "click" :
@@ -183,4 +183,4 @@ def callback_lim_switch(self_Interface, etat) :
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
-        self_Interface.mqtt_thread_handler.publish_message("aide/reg_lim", "activation limitateur")
+        self_Interface.mqtt_thread_handler.publish_message("moteur/mode", "Mode_limitateur")

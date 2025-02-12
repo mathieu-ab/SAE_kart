@@ -196,3 +196,57 @@ def remove_prevention_message(self, msg) :
     none = [x for x in prevention_queue if x is None]
     prevention_queue = non_none + none
     draw_prevention_message(self)
+
+
+def update_mode_conduite(self, msg_received) :
+    if msg_received == "Mode_eco" : 
+        if self.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state != "pressed" :
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "pressed"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "normal"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "normal"
+    elif msg_received == "Mode_normal" :
+        if self.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state != "pressed" :
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "pressed"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "normal"
+        image_object = self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg")
+        if image_object.image_path == "systeme/switch_neutre" :
+            return
+        image_object.change_image("systeme/switch_neutre")
+        self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg").size = (72, 68)
+        #activation des options de vitesse de consigne
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = False
+        self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = False
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = False
+    elif msg_received == "Mode_sport" :
+        if self.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state != "pressed" :
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Eco").state = "normal"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Normal").state = "normal"
+            self.container_storage["affichage"]["Mode Conduite"].get_object("Sport").state = "pressed"
+    elif msg_received == "Mode_regulateur" :
+        image_object = self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg")
+        if image_object.image_path == "systeme/switch_regulateur" :
+            return
+        image_object.change_image("systeme/switch_regulateur")
+        self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg").size = (72, 68)
+        #activation des options de vitesse de consigne
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = True
+        self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
+    elif msg_received == "Mode_limitateur" :
+        image_object = self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg")
+        if image_object.image_path == "systeme/switch_limitateur" :
+            return
+        image_object.change_image("systeme/switch_limitateur")
+        self.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg").size = (72, 68)
+        #activation des options de vitesse de consigne
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins").show = True
+        self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
+        self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
+
+def update_vitesse_consigne(self, msg_received) :
+    try :
+        self.vitesse_consigne = int(msg_received)
+        self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self.vitesse_consigne
+    except :
+        print("Problème de conversion en int pour la vitesse de consigne control.")
