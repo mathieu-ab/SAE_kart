@@ -1,21 +1,22 @@
-import wifi
-import time
+import subprocess
 
-# scan for available WiFi networks
-wifi_scanner = wifi.Cell.all('wlan0')
+# Scanner les réseaux WiFi disponibles
+def scan_wifi():
+    result = subprocess.run(["nmcli", "-t", "-f", "SSID", "dev", "wifi"], capture_output=True, text=True)
+    networks = result.stdout.strip().split("\n")
+    return networks
 
-# print available networks
+# Se connecter à un réseau WiFi
+def connect_wifi(ssid, password):
+    subprocess.run(["nmcli", "dev", "wifi", "connect", ssid, "password", password])
 
-# connect to a WiFi network
+# Afficher les réseaux disponibles
+available_networks = scan_wifi()
+print(f"Available Networks: {available_networks}")
+
+# Demander à l'utilisateur de se connecter
 network_ssid = "XNetwork"
 network_pass = "12345678"
+connect_wifi(network_ssid, network_pass)
 
-for cell in wifi_scanner:
-	if cell.ssid == network_ssid:
-		scheme = wifi.Scheme.for_cell('wlan0', cell.ssid, cell, network_pass)
-		scheme.save()
-		scheme.activate()
-		print(f"Connected to network: {network_ssid}")
-		break
-else:
-	print(f"Unable to find network: {network_ssid}")
+print(f"Trying to connect to {network_ssid}...")
