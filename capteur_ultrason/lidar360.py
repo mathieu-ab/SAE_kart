@@ -27,4 +27,5 @@ def plot_lidar():
         print("Arrêt du LIDAR...")
         lidar.stop()
         lidar.disconnect()
+
 plot_lidar()
