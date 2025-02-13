@@ -7,6 +7,7 @@ PYTHON_SCRIPT3="/home/kartuser/SAE_kart/gestion_gpio/gestion_boutons/gestion_bou
 PYTHON_SCRIPT4="/home/kartuser/SAE_kart/gestion_gpio/gestion_charge/gestion_charge.py"
 PYTHON_SCRIPT5="/home/kartuser/SAE_kart/connection_wifi/connect_wifi.py"
 
+
 # Lancer les scripts Python en arrière-plan et capturer leurs PID
 python3 "$PYTHON_SCRIPT2" &
 SCRIPT2_PID=$!

@@ -6,6 +6,30 @@ def callback_affichage_button(self_Interface) :
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Affichage").state = "pressed"
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Navigation").state = "normal"
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Système").state = "normal"
+    #easter egg
+    if not self_Interface.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object("Switch Detection ligne blanche").etat == False :
+        return
+    if not self_Interface.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object("Switch Detection obstacle").etat == True :
+        return
+    if not self_Interface.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object("Switch Endormissement").etat == False :
+        return
+    if not self_Interface.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object("Switch Endormissement").etat == False :
+        return
+    if not self_Interface.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch 24h").etat == True :
+        return
+    if not self_Interface.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch °C").etat == False :
+        return
+    if not self_Interface.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch dark mode").etat == True :
+        return
+    if not self_Interface.container_storage["systeme"]["Regulateur"].get_object("Switch Limitateur Regulateur Container").get_object("Switch Reg").image_path == "systeme/switch_limitateur" :
+        return
+    if self_Interface.vitesse_consigne != 28 :
+        return
+    self_Interface.current_page  ="eg"
+    
+    
+
+
 
 def callback_navigation_button(self_Interface) :
     self_Interface.current_page = "navigation"
