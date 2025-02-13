@@ -1,24 +1,18 @@
-import numpy as np
 from rplidar import RPLidar
 
 # Définir le port du LIDAR
 PORT_NAME = '/dev/ttyUSB0'  # Modifier selon le système
 
-# Initialiser le LIDAR avec la vitesse de communication explicite
-lidar = RPLidar(PORT_NAME, baudrate=256000)  # Tente un baudrate plus élevé
+# Initialiser le LIDAR
+lidar = RPLidar(PORT_NAME)
 
-try:
-    lidar.start_motor()  # Démarrer le moteur avant de commencer à lire les scans
+#Arrêter le moteur après 5 secondes
+import time
+time.sleep(5)
 
-    # Récupérer un seul scan
-    scan = next(lidar.iter_scans())  
-    for meas in scan:
-        print(f"Angle: {meas[1]:.2f}°, Distance: {meas[2]} mm")
-except KeyboardInterrupt:
-    print("Arrêt du LIDAR...")
-except Exception as e:
-    print(f"Erreur : {e}")
-finally:
-    lidar.stop_motor()  # Arrêter le moteur après l'utilisation
-    lidar.stop()
-    lidar.disconnect()
+lidar.stop_motor()
+print("Moteur du LIDAR arrêté")
+
+# Déconnexion propre
+lidar.stop()
+lidar.disconnect()
