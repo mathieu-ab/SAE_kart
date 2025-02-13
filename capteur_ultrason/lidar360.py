@@ -8,7 +8,7 @@ PORT_NAME = '/dev/ttyUSB0'  # Modifier selon le système
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 try:
-    scan = lidar.get_scan()  # Obtenir un scan unique
+    scan = next(lidar.iter_scans())  # Récupère un seul scan
     for meas in scan:
         print(f"Angle: {meas[1]:.2f}°, Distance: {meas[2]} mm")
 except KeyboardInterrupt:
