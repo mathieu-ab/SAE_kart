@@ -1,39 +1,24 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from rplidar import RPLidar
 
-PORT_NAME = '/dev/ttyUSB0'  # Remplace par le bon port
+# ⚡ Définir le port du LIDAR (À modifier si nécessaire)
+PORT_NAME = '/dev/ttyUSB0'  
 
-# Initialisation du LIDAR avec une réinitialisation
-lidar = RPLidar(PORT_NAME, timeout=3)
-lidar.stop()
-lidar.stop_motor()
-lidar.disconnect()
+# Initialiser le LIDAR
+lidar = RPLidar(PORT_NAME)
 
-print("Réinitialisation du LIDAR...")
-lidar.connect()
-lidar.start_motor()
-lidar.scan_mode = 'standard'
+try:
+    print("LIDAR en marche... Appuie sur Ctrl+C pour arrêter.")
+    
+    for scan in lidar.iter_scans(max_buf_meas=300):  # Limite le buffer pour éviter l’erreur
+        for (_, angle, distance) in scan:
+            print(f"Angle: {angle:.1f}° | Distance: {distance:.1f} mm")
+        print("-" * 30)  # Séparation entre chaque tour de scan
 
-def plot_lidar():
-    plt.ion()
-    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-
-    try:
-        for scan in lidar.iter_scans():
-            angles = [np.deg2rad(meas[1]) for meas in scan]
-            distances = [meas[2] for meas in scan]
-
-            ax.clear()
-            ax.scatter(angles, distances, c='r', s=5)
-            ax.set_ylim(0, max(distances) + 100)
-            plt.draw()
-            plt.pause(0.1)
-
-    except KeyboardInterrupt:
-        print("Arrêt du LIDAR...")
-        lidar.stop()
-        lidar.stop_motor()
-        lidar.disconnect()
-
-plot_lidar()
+except KeyboardInterrupt:
+    print("Arrêt du LIDAR...")
+    
+finally:
+    lidar.stop()
+    lidar.stop_motor()
+    lidar.disconnect()
+    print("LIDAR déconnecté.")
