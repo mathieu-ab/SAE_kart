@@ -8,10 +8,9 @@ PORT_NAME = '/dev/ttyUSB0'  # Modifier selon le système
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 try:
-    lidar.stop_motor()  # Arrêter le moteur avant de commencer à lire les scans
-    for scan in lidar.iter_scans():
-        for meas in scan:
-            print(f"Angle: {meas[1]:.2f}°, Distance: {meas[2]} mm")
+    scan = lidar.get_scan()  # Obtenir un scan unique
+    for meas in scan:
+        print(f"Angle: {meas[1]:.2f}°, Distance: {meas[2]} mm")
 except KeyboardInterrupt:
     print("Arrêt du LIDAR...")
 except Exception as e:
@@ -19,4 +18,3 @@ except Exception as e:
 finally:
     lidar.stop()
     lidar.disconnect()
-
