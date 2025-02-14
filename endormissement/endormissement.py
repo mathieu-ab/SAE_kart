@@ -1,4 +1,3 @@
-from scipy.spatial import distance as dist
 from imutils.video import VideoStream
 import paho.mqtt.client as mqtt
 from imutils import face_utils
@@ -6,6 +5,7 @@ from threading import Thread
 import numpy as np
 import argparse
 import imutils
+import math
 import time
 import dlib
 import cv2
@@ -36,14 +36,11 @@ publisher = MQTTPublisher("localhost")
 publisher.start()
 
 
-
+CURRENT_PATH = "/home/kartuser/SAE_kart/endormissement"
 target_fps = 30
 frame_interval = 1 / target_fps  # Intervalle entre chaque frame (en secondes)
 
-def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)
+
 
 def alarm():
     global c, alarm_status, alarm_status2
@@ -59,9 +56,9 @@ def alarm():
         publisher.publish_message("message/prevention", "Vous drevez faire une pause !|10")
 
 def eye_aspect_ratio(eye):
-    A = dist.euclidean(eye[1], eye[5])
-    B = dist.euclidean(eye[2], eye[4])
-    C = dist.euclidean(eye[0], eye[3])
+    A = math.dist(eye[1], eye[5])
+    B = math.dist(eye[2], eye[4])
+    C = math.dist(eye[0], eye[3])
     return (A + B) / (2.0 * C)
 
 def final_ear(shape):
@@ -87,8 +84,8 @@ COUNTER = c = 0
 START_TIME_PROG = time.time() // 60
 
 print("-> Chargement du détecteur et prédicteur...")
-detector = cv2.CascadeClassifier(resource_path("./haarcascade_frontalface_default.xml"))
-predictor = dlib.shape_predictor(resource_path("./shape_predictor_68_face_landmarks.dat"))
+detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.xml")
+predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
 vs = VideoStream(src=args["webcam"]).start()
