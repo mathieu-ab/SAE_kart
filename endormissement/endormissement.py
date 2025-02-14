@@ -88,7 +88,7 @@ detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.
 predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
-cap = cv2.VideoCapture(args["webcam"])
+cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
     print("Erreur : Impossible d'ouvrir la caméra.")
@@ -98,10 +98,9 @@ time.sleep(1.0)
 while True:
     start_time = time.time()
     ret, frame = cap.read()
-    
     if not ret:
-        print("Erreur : Impossible de récupérer une image de la caméra.")
-        break  # Ou tu peux ajouter une logique pour réessayer après un délai.
+        print("Impossible de récupérer une image de la caméra.")
+        break
 
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -137,4 +136,4 @@ while True:
             print("Attention, ça fait 2h que vous conduisez. une pause s'impose")
 
 cv2.destroyAllWindows()
-vs.stop()
+cap.stop()
