@@ -97,9 +97,9 @@ time.sleep(1.0)
 
 while True:
     start_time = time.time()
-    frame = cap.read()
+    ret, frame = cap.read()
     
-    if frame is None:
+    if not ret:
         print("Erreur : Impossible de récupérer une image de la caméra.")
         break  # Ou tu peux ajouter une logique pour réessayer après un délai.
 
