@@ -1,19 +1,20 @@
-import time
+from picamera2 import Picamera2
 import cv2
-cap = cv2.VideoCapture(0)
-i = 0
-ret, frame = cap.read()
-while frame == None :
-    ret, frame = cap.read()
-    print(frame)
-    time.sleep(0.5)
-    if i == 20 :
-        break
-    else :
-        i+=1
-if ret:
-    cv2.imshow("Frame", frame)
-else:
-    print("Erreur : Impossible de récupérer une image.")
-cap.release()
+import numpy as np
+
+# Initialisation de la caméra
+picam2 = Picamera2()
+picam2.start()
+
+# Capture une image
+frame = picam2.capture_array()
+
+# Affiche l'image avec OpenCV
+cv2.imshow("Image Capturée", frame)
+
+# Attends que l'utilisateur appuie sur une touche pour fermer la fenêtre
+cv2.waitKey(0)
+
+# Libère les ressources et ferme les fenêtres
 cv2.destroyAllWindows()
+picam2.stop()
