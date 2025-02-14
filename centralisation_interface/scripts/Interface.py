@@ -60,7 +60,7 @@ class Interface :
     #il est donc possible de mettre des container dans d'autre container
     def draw(self) :
         if self.current_page == "eg" : 
-            image = pygame.image.load(f"{CURRENT_PATH}/assets/images{[['1120-', 84], ['1119_1-', 81], ['1119-', 78], ['1119_21-', 89]].index(self.eg_choice)}/affichage/easter_egg/images/{self.eg_choice[0]}{self.eg_value}.png")
+            image = pygame.image.load(f"{CURRENT_PATH}/assets/images{[['1120-', 84], ['1119-', 81], ['1119_21-', 78], ['1119_1-', 89]].index(self.eg_choice)}/affichage/easter_egg/images/{self.eg_choice[0]}{self.eg_value}.png")
             image = pygame.transform.scale(image, (800, 480))
             self.window.blit(image, (0,0))
             if self.eg_value == self.eg_choice[1] :
