@@ -135,5 +135,5 @@ while True:
         else:
             print("Attention, ça fait 2h que vous conduisez. une pause s'impose")
 
-cv2.destroyAllWindows()
-cap.stop()
+cap.release()  # Libérer la caméra
+cv2.destroyAllWindows()  # Fermer toutes les fenêtres d'affichage
