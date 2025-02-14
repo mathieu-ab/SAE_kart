@@ -88,12 +88,16 @@ detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.
 predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
-vs = VideoStream(src=args["webcam"]).start()
+cap = cv2.VideoCapture(args["webcam"])
+
+if not cap.isOpened():
+    print("Erreur : Impossible d'ouvrir la caméra.")
+    sys.exit()  
 time.sleep(1.0)
 
 while True:
     start_time = time.time()
-    frame = vs.read()
+    frame = cap.read()
     
     if frame is None:
         print("Erreur : Impossible de récupérer une image de la caméra.")
