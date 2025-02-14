@@ -245,6 +245,13 @@ def update_mode_conduite(self, msg_received) :
         self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").show = True
         self.container_storage["systeme"]["Regulateur"].get_object("Bouton Plus").show = True
 
+def update_eg(self, msg_recieved) :
+    if msg_recieved == "allume" :
+        self.current_page == "eg"
+    else :
+        self.current_page = "affichage"
+
+
 # def update_vitesse_consigne(self, msg_received) :
 #     try :
 #         self.vitesse_consigne = int(msg_received)
