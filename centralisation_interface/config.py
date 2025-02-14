@@ -57,7 +57,8 @@ topics = [
     "aide/obstacle/control",      #--reçois
     "bouton/page",                #--reçois
     "bouton/clignotant",           #--reçois
-    "test/topic"
+    "test/topic",
+    "eg"
 ]
 #topics pour lesquel l'option retain sera désactivé (retain = dernier message sauvegardé sur le broker et envoyé au chaque nouvel connection)
 topics_non_retain = [
