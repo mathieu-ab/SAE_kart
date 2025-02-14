@@ -247,6 +247,7 @@ def update_mode_conduite(self, msg_received) :
 
 def update_eg(self, msg_recieved) :
     if msg_recieved == "allume" :
+        self.eg_choice = choice(["1120-", 84], ["1119_1-", 81], ["1119-", 78], ["1119_21-", 89])
         self.current_page = "eg"
     else :
         self.current_page = "affichage"

@@ -52,6 +52,7 @@ class Interface :
         self.temperature_batterie = 20
         self.temperature_moteur = 20
         self.eg_value = 0
+        self.eg_choice = ["1120-", 84]
         setup_draw(self)
 
     #méthode pour déssiner les objets
@@ -59,9 +60,10 @@ class Interface :
     #il est donc possible de mettre des container dans d'autre container
     def draw(self) :
         if self.current_page == "eg" : 
-            image = pygame.image.load(f"{CURRENT_PATH}/assets/images/affichage/easter_egg/images/1119_1-{self.eg_value}.png")
+            image = pygame.image.load(f"{CURRENT_PATH}/assets/images{["1120-", 84], ["1119_1-", 81], ["1119-", 78], ["1119_21-", 89].index(self.eg_choice)}/affichage/easter_egg/images/{self.eg_choice[0]}{self.eg_value}.png")
+            image = pygame.transform.scale(image, (800, 480))
             self.window.blit(image, (0,0))
-            if self.eg_value == 89 :
+            if self.eg_value == self.eg_choice[1] :
                 self.eg_value = 0
             else :
                 self.eg_value+=1
