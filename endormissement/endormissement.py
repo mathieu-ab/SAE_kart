@@ -1,4 +1,5 @@
 from imutils.video import VideoStream
+from picamera2 import Picamera2
 import paho.mqtt.client as mqtt
 from imutils import face_utils
 from threading import Thread
@@ -88,19 +89,13 @@ detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.
 predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
-cap = cv2.VideoCapture(0)
-
-if not cap.isOpened():
-    print("Erreur : Impossible d'ouvrir la caméra.")
-    sys.exit()  
-time.sleep(1.0)
+picam2 = Picamera2()
+picam2.start()
 
 while True:
     start_time = time.time()
-    ret, frame = cap.read()
-    if not ret:
-        print("Impossible de récupérer une image de la caméra.")
-        break
+    frame = picam2.capture_array()
+    
 
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
