@@ -88,12 +88,18 @@ detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.
 predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
-vs = VideoStream(src=0).start()
+vs = VideoStream(src=args["webcam"]).start()
 time.sleep(1.0)
 
 while True:
     start_time = time.time()
-    frame = imutils.resize(vs.read(), width=450)
+    frame = vs.read()
+    
+    if frame is None:
+        print("Erreur : Impossible de récupérer une image de la caméra.")
+        break  # Ou tu peux ajouter une logique pour réessayer après un délai.
+
+    frame = imutils.resize(frame, width=450)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
     
