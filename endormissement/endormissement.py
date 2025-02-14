@@ -88,7 +88,7 @@ detector = cv2.CascadeClassifier(CURRENT_PATH+"/haarcascade_frontalface_default.
 predictor = dlib.shape_predictor(CURRENT_PATH+"/shape_predictor_68_face_landmarks.dat")
 
 print("-> Démarrage du flux vidéo")
-vs = VideoStream(src=args["webcam"]).start()
+vs = VideoStream(src=0).start()
 time.sleep(1.0)
 
 while True:
