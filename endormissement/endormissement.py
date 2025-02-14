@@ -103,7 +103,7 @@ while True:
         print("Erreur : Impossible de récupérer une image de la caméra.")
         break  # Ou tu peux ajouter une logique pour réessayer après un délai.
 
-    frame = imutils.resize(frame, width=450)
+    frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
     
