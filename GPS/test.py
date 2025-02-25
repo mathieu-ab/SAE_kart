@@ -1,12 +1,37 @@
+
 import os
 import time
 import requests
 import pygame
 import serial
+import paho.mqtt.client as mqtt
+
+broker = "192.168.1.205"
+port = 1883
+topic = "GPS/zoom"
+zoom_level = 15   
+
+def on_message(client, userdata, msg):
+    global zoom_level
+    try:
+        message = msg.payload.decode("utf-8")
+        if message == "zoom":
+            zoom_level = min(zoom_level + 1, 20)  # grand
+        elif message == "dezoom":
+            zoom_level = max(zoom_level - 1, 5)   # petit
+        print(f"Received MQTT message: {message}, zoom level set to {zoom_level}")
+    except Exception as e:
+        print(f"MQTT message processing error: {e}")
+
+client = mqtt.Client()
+client.on_message = on_message
+client.connect(broker, port, 60)
+client.subscribe(topic)
+client.loop_start()
 
 def get_gps_coordinates():
-    """GPS """
-    ser = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+    """GPS"""
+    ser = serial.Serial('/dev/serial0', 9600, timeout=1)
     while True:
         line = ser.readline().decode('utf-8', errors='ignore')
         if line.startswith('$GPGGA'):
@@ -42,7 +67,8 @@ def convert_to_degrees(raw_value):
 
 def get_google_map(lat, lon, api_key):
     """ Google Maps """
-    url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom=15&size=600x400&maptype=roadmap&markers=color:red%7C{lat},{lon}&key={api_key}"
+    global zoom_level
+    url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom={zoom_level}&size=600x400&maptype=roadmap&markers=color:red%7C{lat},{lon}&key={api_key}"
     response = requests.get(url)
     with open('map.png', 'wb') as f:
         f.write(response.content)
@@ -59,32 +85,29 @@ def display_map():
     while running:
         try:
             latitude, longitude = get_gps_coordinates()
-            print(f"Coordonnées obtenues avec succès !LAT: {latitude}, LON: {longitude}")
+            print(f"Coordonnées obtenues ! LAT: {latitude}, LON: {longitude}")
 
             map_file = get_google_map(latitude, longitude, API_KEY)
-            print("map change")
-
+            print("new map")
 
             map_image = pygame.image.load(map_file)
             screen.blit(map_image, (0, 0)) 
-            pygame.display.flip()  
-
+            pygame.display.flip()
 
             time.sleep(3)
-
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     running = False
-
+        
         except Exception as e:
-            print(f" error : {str(e)}")
+            print(f"error: {str(e)}")
             running = False
 
     pygame.quit()
 
 if __name__ == "__main__":
-    API_KEY = "AIzaSyDLvUcraTLttRBcvn728IaGCe_prAZK24Q"  # Google Maps API Key
+    API_KEY = "AIzaSyDLvUcraTLttRBcvn728IaGCe_prAZK24Q"
     display_map()
