@@ -20,6 +20,7 @@ class Interface :
         self.clock = pygame.time.Clock() #clock utile pour bloquer la boucle et limiter la vitesse (même principe que sleep du module time)
 
         self.index = 0 #clock d'indice pour effectuer des tâches periodiquement
+        self.index_nav = 0 #On utilise una autre clock pour garder une syncronisié entre l'update de l'image map.png par le gps et l'update de l'image sur le tableau de bord
         #dictionnaire des listes qui va contenir tout les object qui sont cliquable
         self.clickable_object = {
             "affichage" : [],
@@ -60,7 +61,7 @@ class Interface :
     #il est donc possible de mettre des container dans d'autre container
     def draw(self) :
         if self.current_page == "eg" : 
-            image = pygame.image.load(f"{CURRENT_PATH}/assets/images/affichage/easter_egg/images{[['1120-', 84], ['1119-', 81], ['1119_21-', 78], ['1119_1-', 89]].index(self.eg_choice)}/{self.eg_choice[0]}{self.eg_value}.png")
+            image = pygame.image.load(f"{CURRENT_PATH}/assets/images/affichage/easter_egg/images{[['1120-', 84], ['1119-', 81], ['1119_21-', 78], ['1119_1-', 89]].index(self.eg_choice)}./{self.eg_choice[0]}{self.eg_value}.png")
             image = pygame.transform.scale(image, (800, 480))
             self.window.blit(image, (0,0))
             if self.eg_value == self.eg_choice[1] :
@@ -100,10 +101,13 @@ class Interface :
         #toute les secondes on update l'heure
         if self.index % fps == 0:
             update_heure(self)
-        #toute les 10 secondes on test si on est bine connecté au hotstop wifi
+        #toute les 10 secondes on test si on est bien connecté au hotstop wifi
         if self.index % (fps*10) == 0 :
             test_connection(self)
             self.index = 0
+        if self.index_nav % (fps*TIME_UPDATE_NAV) == 0 :
+            self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
+            self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
 
     def event_window(self) :
         global main_loop

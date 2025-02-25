@@ -24,7 +24,7 @@ class MQTTPublisher:
 
 # Exemple d'utilisation
 def main():
-    broker_address = "192.168.1.13"  # Adresse du broker MQTT
+    broker_address = "192.168.1.205"  # Adresse du broker MQTT
     publisher = MQTTPublisher(broker_address)
 
     publisher.start()

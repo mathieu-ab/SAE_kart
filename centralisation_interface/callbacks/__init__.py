@@ -18,6 +18,8 @@ from .callbacks import (
     callback_neutre_witch,
     callback_reg_switch,
     callback_cameras_recule,
+    callback_nav_plus,
+    callback_nav_moins,
 )
 from .mqtt_callback import (
     update_bouton_page,
@@ -34,5 +36,5 @@ from .mqtt_callback import (
     update_message_prevention,
     update_mode_conduite,
     update_heure,
-    update_eg
+    update_eg,
 )

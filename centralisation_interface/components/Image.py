@@ -44,7 +44,6 @@ class Image :
                 dlm = ""
             return pygame.image.load(f"{CURRENT_PATH}/assets/images/{path}{dlm}.png").convert_alpha()
         except FileNotFoundError:
-
             raise FileNotFoundError(f"L'image avec ce chemin '{CURRENT_PATH}/assets/images/{path}{dlm}.png' est introuvable.")
 
     def change_image(self, new_img_path) :
@@ -66,3 +65,13 @@ class Image :
     def update_color(self) :
         if self.dark_light :
             self.image = self.get_pygame_image(self.image_path)
+
+    def set_absolute_path(self, new_img_path) :
+        try:
+            self.image = pygame.image.load(new_img_path).convert_alpha()
+        except FileNotFoundError:
+            raise FileNotFoundError(f"L'image avec ce chemin '{new_img_path}' est introuvable.")
+        self.image_path = new_img_path
+
+    def set_size(self, size) :
+        self.image = pygame.transform.scale(self.image, size)

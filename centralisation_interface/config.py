@@ -1,10 +1,10 @@
 from module_import import *
 
-CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
-# CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
+CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface" #chemin d'accés sur mon ordi pour les tests
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = True
+tactile = False
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
@@ -36,6 +36,8 @@ topics = [
     "moteur/temperature",         #--reçois
     # "moteur/mode",              #envoi
     "moteur/mode/control",              #reçois
+                                  #
+    # "gps/zoom"                  #envoi
                                   #
     "bms/batterie",               #--reçois
     "bms/temperature",            #--reçois
@@ -99,3 +101,5 @@ dark_light_mode = {"etat" : "dark",
                 }
 #Permet de switch de page directement avec des boutons physique
 PAGE_HANDLER = {"pages" : ["affichage", "navigation", "systeme"], "indice" : 0}
+#temps en secondes entre chaque update de la carte de navigation
+TIME_UPDATE_NAV = 3

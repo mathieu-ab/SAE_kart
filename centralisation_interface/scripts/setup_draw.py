@@ -777,10 +777,48 @@ def setup_draw(self) :
         label="Gps",
         show_label=False,
         position=(20, 20),
-        size=(760, 291),
-        show=True,
+        size=(760, 290),
+        show=False,
         allignement="horizontal"
     )
+    self.container_storage["navigation"]["Gps"].add_object(
+        Image(
+            label="Bouton Moins Nav",
+            image_path="systeme/normal_moins",
+            show=True,
+            callback_action=callback_nav_moins,
+            dark_light=False,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Moins Nav")) 
+    self.container_storage["navigation"]["Gps"].add_object(
+        Image(
+            label="Image Nav",
+            image_path="systeme/normal_moins", #image random pour pouvoir changer l'image plsu tard car celle ci n'est pas dans le répertoire assets/images
+            show=True,
+            callback_action=None,
+            dark_light=False,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
+    self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
+    self.container_storage["navigation"]["Gps"].add_object(
+        Image(
+            label="Bouton Plus Nav",
+            image_path="systeme/normal_plus",
+            show=True,
+            callback_action=callback_nav_plus,
+            dark_light=False,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Plus Nav")) 
+
     #--------------Container Vitesse--------------#
     self.container_storage["navigation"]["Vitesse"] = Container(
         label="Vitesse",

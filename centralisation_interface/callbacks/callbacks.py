@@ -169,6 +169,26 @@ def callback_reg_lim_plus(self_Interface, etat) :
     elif etat == "release_outside" :
         image_object.change_image("systeme/normal_plus")
 
+def callback_nav_moins(self_Interface, etat) :
+    image_object = self_Interface.container_storage["navigation"]["Gps"].get_object("Bouton Moins Nav")
+    if etat == "release" :
+        image_object.change_image("systeme/normal_moins")
+        self_Interface.mqtt_thread_handler.publish_message("gps/zoom", f"dezoom")
+    elif etat == "click" :
+        image_object.change_image("systeme/pressed_moins")
+    elif etat == "release_outside" :
+        image_object.change_image("systeme/normal_moins")
+
+def callback_nav_plus(self_Interface, etat) :
+    image_object = self_Interface.container_storage["navigation"]["Gps"].get_object("Bouton Plus Nav")
+    if etat == "release" :
+        image_object.change_image("systeme/normal_plus")
+        self_Interface.mqtt_thread_handler.publish_message("gps/zoom", f"zoom")
+    elif etat == "click" :
+        image_object.change_image("systeme/pressed_plus")
+    elif etat == "release_outside" :
+        image_object.change_image("systeme/normal_plus")
+
 
 def callback_reg_switch(self_Interface, etat) :
     if etat == "click" :
