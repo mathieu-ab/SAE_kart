@@ -1,33 +1,24 @@
 from rplidar import RPLidar
 
-# Définir le port du LIDAR
-PORT_NAME = '/dev/ttyUSB0'  # Modifier selon le système
+PORT_NAME = "/dev/ttyUSB0"  # Vérifie que c'est bien le bon port !
 
-# Initialiser le LIDAR
-lidar = RPLidar(PORT_NAME)
+try:
+    lidar = RPLidar(PORT_NAME)
+    lidar.start_motor()
+    print("LIDAR démarré !")
 
-# Fonction pour afficher l'angle et la distance en continu
-def show_lidar_data():
-    try:
-        # Démarrer le moteur du LIDAR
-        lidar.start_motor()
-        print("Moteur du LIDAR démarré")
+    print("Lecture d'un seul scan pour tester...")
+    for scan in lidar.iter_scans():
+        print(f"Nombre de mesures : {len(scan)}")
+        for quality, angle, distance in scan:
+            print(f"Angle: {angle:.2f}°, Distance: {distance} mm")
+        break  # Arrêter après un seul scan pour tester
 
-        # Récupérer et afficher les scans en continu
-        for scan in lidar.iter_scans():
-            for meas in scan:
-                angle = meas[1]  # Angle en degrés
-                distance = meas[2]  # Distance en mm
-                print(f"Angle: {angle:.2f}°, Distance: {distance} mm")
+except Exception as e:
+    print(f"Erreur: {e}")
 
-    except KeyboardInterrupt:
-        print("Arrêt du LIDAR...")
-
-    finally:
-        # Déconnexion propre (arrêter le moteur et se déconnecter)
-        lidar.stop()
-        lidar.disconnect()
-        print("LIDAR déconnecté.")
-
-# Exécuter la fonction
-show_lidar_data()
+finally:
+    print("Arrêt du LIDAR...")
+    lidar.stop_motor()
+    lidar.disconnect()
+    print("LIDAR déconnecté.")
