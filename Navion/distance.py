@@ -1,29 +1,20 @@
 import serial
+import numpy as np
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 
-# Reference values for known distances
-REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
-REF_HEIGHT_2M40 = 1075  # Approximate height at 2.4m
-REF_HEIGHT_3M40 = 1147  # Approximate height at 3.4m
+# Reference data (Real vs Measured distances) for polynomial fitting
+real_distances = np.array([140, 240, 340, 260, 150, 90])  # cm (True distances)
+measured_distances = np.array([240, 270, 380, 275, 240, 130])  # Measured distances
 
-REF_DISTANCE_1M40 = 1.4  # meters
-REF_DISTANCE_2M40 = 2.4  # meters
-REF_DISTANCE_3M40 = 3.4  # meters
+# Fit a second-degree polynomial for correction
+coeffs = np.polyfit(measured_distances, real_distances, 2)
+poly_correction = np.poly1d(coeffs)
 
-def estimate_distance(current_height):
-    """Estimate distance using proportional scaling (cross-multiplication)."""
-    if current_height <= 0:
-        return "Unknown"
-
-    # Use the reference height closest to the detected value
-    if current_height >= REF_HEIGHT_1M40:  # Closer than 1.4m
-        return REF_DISTANCE_1M40 * REF_HEIGHT_1M40 / current_height
-    elif current_height >= REF_HEIGHT_2M40:  # Between 1.4m and 2.4m
-        return REF_DISTANCE_2M40 * REF_HEIGHT_2M40 / current_height
-    else:  # Greater than 2.4m (farther away)
-        return REF_DISTANCE_3M40 * REF_HEIGHT_3M40 / current_height
+def estimate_corrected_distance(current_height):
+    """Estimate distance using polynomial correction."""
+    return poly_correction(current_height)
 
 while True:
     try:
@@ -43,8 +34,8 @@ while True:
             else:
                 position = "Right"
 
-            # Estimate distance
-            estimated_distance = estimate_distance(height)
+            # Apply polynomial correction for distance estimation
+            estimated_distance = estimate_corrected_distance(height)
             
             print(f"Person detected at {position}, Distance: {estimated_distance:.2f}m (h={height})")
 
