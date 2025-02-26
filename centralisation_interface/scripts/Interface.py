@@ -105,9 +105,9 @@ class Interface :
         if self.index % (fps*10) == 0 :
             test_connection(self)
             self.index = 0
-        if self.index_nav % (fps*TIME_UPDATE_NAV) == 0 :
-            self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
-            self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
+        # if self.index_nav % (fps*TIME_UPDATE_NAV) == 0 :
+        #     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
+        #     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
 
     def event_window(self) :
         global main_loop

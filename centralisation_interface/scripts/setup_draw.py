@@ -713,145 +713,209 @@ def setup_draw(self) :
     )
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["navigation"].append(self.container_storage["navigation"]["Bouton Choix Page"].get_object("Système")) 
-
-    #--------------Container clignotant gauche--------------#
-    self.container_storage["navigation"]["Clignotant Gauche"] = Container(
-        label="Clignotant Gauche",
-        show_label=False,
-        position=(40, 331),
-        size=(97, 65),
-        show=False,
-        allignement="horizontal"
-    )
-    self.container_storage["navigation"]["Clignotant Gauche"].add_object(
-        Image(
-            label="Clignotant Gauche Allume",
-            image_path="clignotant/clignotant_gauche_allume",
-            show=False,
-            callback_action=None,
-            dark_light=False
-        ),
-        relative_position=(0,0)
-    )
-    self.container_storage["navigation"]["Clignotant Gauche"].add_object(
-        Image(
-            label="Clignotant Gauche eteint",
-            image_path="clignotant/clignotant_gauche_eteint",
-            show=True,
-            callback_action=None,
-            dark_light=False
-        ),
-        relative_position=(0,0)
-    )
-    #--------------Container clignotant droit--------------#
-    self.container_storage["navigation"]["Clignotant Droit"] = Container(
-        label="Clignotant Droit",
-        show_label=False,
-        position=(655, 331),
-        size=(97, 65),
-        show=False,
-        allignement="horizontal"
-    )
-    self.container_storage["navigation"]["Clignotant Droit"].add_object(
-        Image(
-            label="Clignotant Droit Allume",
-            image_path="clignotant/clignotant_droit_allume",
-            show=False,
-            callback_action=None,
-            dark_light=False
-        ),
-        relative_position=(0,0)
-    )
-    self.container_storage["navigation"]["Clignotant Droit"].add_object(
-        Image(
-            label="Clignotant Droit eteint",
-            image_path="clignotant/clignotant_droit_eteint",
-            show=True,
-            callback_action=None,
-            dark_light=False
-        ),
-        relative_position=(0,0)
-    )
-    #--------------Container gps--------------#
-    self.container_storage["navigation"]["Gps"] = Container(
-        label="Gps",
+    self.container_storage["navigation"]["Nav Radar"] = Container(
+        label="Nav Radar",
         show_label=False,
         position=(20, 20),
-        size=(760, 290),
+        size=(750, 360),
         show=False,
         allignement="horizontal"
     )
-    self.container_storage["navigation"]["Gps"].add_object(
-        Image(
-            label="Bouton Moins Nav",
-            image_path="systeme/normal_moins",
+
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Container(
+            label="radar",
+            show_label=False,
+            position=(20, 20),
+            size=(300, 350),
             show=True,
-            callback_action=callback_nav_moins,
-            dark_light=False,
-            self_Interface=self
+            allignement="horizontal"
         ),
         relative_position=None
     )
-    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Moins Nav")) 
-    self.container_storage["navigation"]["Gps"].add_object(
+    self.container_storage["navigation"]["Nav Radar"].add_object(
         Image(
-            label="Image Nav",
-            image_path="systeme/normal_moins", #image random pour pouvoir changer l'image plsu tard car celle ci n'est pas dans le répertoire assets/images
+            label="Radar Img",
+            image_path="navigation/radar",
             show=True,
             callback_action=None,
-            dark_light=False,
-            self_Interface=self
+            dark_light=False
         ),
-        relative_position=None
+        relative_position=(15,10)
     )
-    self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
-    self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
-    self.container_storage["navigation"]["Gps"].add_object(
+    self.container_storage["navigation"]["Nav Radar"].get_object("Radar Img").set_size((290, 340)) 
+    self.container_storage["navigation"]["Nav Radar"].add_object(
         Image(
-            label="Bouton Plus Nav",
-            image_path="systeme/normal_plus",
+            label="Obstacle Gauche Arc 1",
+            image_path="navigation/obstacle",
             show=True,
-            callback_action=callback_nav_plus,
-            dark_light=False,
-            self_Interface=self
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(90,87)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").set_size((25, 26)) 
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Container(
+            label="nav autre",
+            show_label=False,
+            position=(320, 20),
+            size=(420, 350),
+            show=True,
+            allignement="horizontal"
         ),
         relative_position=None
     )
-    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Plus Nav")) 
 
-    #--------------Container Vitesse--------------#
-    self.container_storage["navigation"]["Vitesse"] = Container(
-        label="Vitesse",
-        show_label=False,
-        position=(0, 245),
-        size=(800, 149),
-        show=False,
-        allignement="horizontal"
-    )
-    self.container_storage["navigation"]["Vitesse"].add_object(
-        Text(
-            label="Vitesse",
-            text="17",
-            font_name="7-segment-bold",
-            font_size=80,
-            color=dark_light_mode["text"][dark_light_mode["etat"]],
-            justify="left",
-            show=True
-        ),
-        relative_position=None
-    )
-    self.container_storage["navigation"]["Vitesse"].add_object(
-        Text(
-            label="Vitesse Unite",
-            text="km/h",
-            font_name="Roboto-Bold",
-            font_size=20,
-            color=dark_light_mode["text"][dark_light_mode["etat"]],
-            justify="left",
-            show=True
-        ),
-        relative_position=(470, 128)
-    )
+
+
+
+
+
+
+
+
+
+
+
+    # #--------------Container clignotant gauche--------------#
+    # self.container_storage["navigation"]["Clignotant Gauche"] = Container(
+    #     label="Clignotant Gauche",
+    #     show_label=False,
+    #     position=(40, 331),
+    #     size=(97, 65),
+    #     show=False,
+    #     allignement="horizontal"
+    # )
+    # self.container_storage["navigation"]["Clignotant Gauche"].add_object(
+    #     Image(
+    #         label="Clignotant Gauche Allume",
+    #         image_path="clignotant/clignotant_gauche_allume",
+    #         show=False,
+    #         callback_action=None,
+    #         dark_light=False
+    #     ),
+    #     relative_position=(0,0)
+    # )
+    # self.container_storage["navigation"]["Clignotant Gauche"].add_object(
+    #     Image(
+    #         label="Clignotant Gauche eteint",
+    #         image_path="clignotant/clignotant_gauche_eteint",
+    #         show=True,
+    #         callback_action=None,
+    #         dark_light=False
+    #     ),
+    #     relative_position=(0,0)
+    # )
+    # #--------------Container clignotant droit--------------#
+    # self.container_storage["navigation"]["Clignotant Droit"] = Container(
+    #     label="Clignotant Droit",
+    #     show_label=False,
+    #     position=(655, 331),
+    #     size=(97, 65),
+    #     show=False,
+    #     allignement="horizontal"
+    # )
+    # self.container_storage["navigation"]["Clignotant Droit"].add_object(
+    #     Image(
+    #         label="Clignotant Droit Allume",
+    #         image_path="clignotant/clignotant_droit_allume",
+    #         show=False,
+    #         callback_action=None,
+    #         dark_light=False
+    #     ),
+    #     relative_position=(0,0)
+    # )
+    # self.container_storage["navigation"]["Clignotant Droit"].add_object(
+    #     Image(
+    #         label="Clignotant Droit eteint",
+    #         image_path="clignotant/clignotant_droit_eteint",
+    #         show=True,
+    #         callback_action=None,
+    #         dark_light=False
+    #     ),
+    #     relative_position=(0,0)
+    # )
+    # #--------------Container gps--------------#
+    # self.container_storage["navigation"]["Gps"] = Container(
+    #     label="Gps",
+    #     show_label=False,
+    #     position=(20, 20),
+    #     size=(760, 290),
+    #     show=False,
+    #     allignement="horizontal"
+    # )
+    # self.container_storage["navigation"]["Gps"].add_object(
+    #     Image(
+    #         label="Bouton Moins Nav",
+    #         image_path="systeme/normal_moins",
+    #         show=True,
+    #         callback_action=callback_nav_moins,
+    #         dark_light=False,
+    #         self_Interface=self
+    #     ),
+    #     relative_position=None
+    # )
+    # self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Moins Nav")) 
+    # self.container_storage["navigation"]["Gps"].add_object(
+    #     Image(
+    #         label="Image Nav",
+    #         image_path="systeme/normal_moins", #image random pour pouvoir changer l'image plsu tard car celle ci n'est pas dans le répertoire assets/images
+    #         show=True,
+    #         callback_action=None,
+    #         dark_light=False,
+    #         self_Interface=self
+    #     ),
+    #     relative_position=None
+    # )
+    # self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
+    # self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
+    # self.container_storage["navigation"]["Gps"].add_object(
+    #     Image(
+    #         label="Bouton Plus Nav",
+    #         image_path="systeme/normal_plus",
+    #         show=True,
+    #         callback_action=callback_nav_plus,
+    #         dark_light=False,
+    #         self_Interface=self
+    #     ),
+    #     relative_position=None
+    # )
+    # self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Plus Nav")) 
+
+    # #--------------Container Vitesse--------------#
+    # self.container_storage["navigation"]["Vitesse"] = Container(
+    #     label="Vitesse",
+    #     show_label=False,
+    #     position=(0, 245),
+    #     size=(800, 149),
+    #     show=False,
+    #     allignement="horizontal"
+    # )
+    # self.container_storage["navigation"]["Vitesse"].add_object(
+    #     Text(
+    #         label="Vitesse",
+    #         text="17",
+    #         font_name="7-segment-bold",
+    #         font_size=80,
+    #         color=dark_light_mode["text"][dark_light_mode["etat"]],
+    #         justify="left",
+    #         show=True
+    #     ),
+    #     relative_position=None
+    # )
+    # self.container_storage["navigation"]["Vitesse"].add_object(
+    #     Text(
+    #         label="Vitesse Unite",
+    #         text="km/h",
+    #         font_name="Roboto-Bold",
+    #         font_size=20,
+    #         color=dark_light_mode["text"][dark_light_mode["etat"]],
+    #         justify="left",
+    #         show=True
+    #     ),
+    #     relative_position=(470, 128)
+    # )
 
 
 
