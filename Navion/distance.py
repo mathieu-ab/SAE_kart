@@ -13,7 +13,7 @@ coeffs = np.polyfit(measured_distances, real_distances, 2)
 poly_correction = np.poly1d(coeffs)
 
 def estimate_corrected_distance(current_height):
-    """Estimate distance using polynomial correction."""
+    """Estimate distance using polynomial correction (Result in cm)."""
     return poly_correction(current_height)
 
 while True:
@@ -34,10 +34,10 @@ while True:
             else:
                 position = "Right"
 
-            # Apply polynomial correction for distance estimation
+            # Apply polynomial correction for distance estimation (keeps value in cm)
             estimated_distance = estimate_corrected_distance(height)
             
-            print(f"Person detected at {position}, Distance: {estimated_distance:.2f}m (h={height})")
+            print(f"Person detected at {position}, Distance: {estimated_distance:.2f} cm (h={height})")
 
     except KeyboardInterrupt:
         print("\nStopping...")
