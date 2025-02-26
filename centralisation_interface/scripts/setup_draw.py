@@ -736,7 +736,7 @@ def setup_draw(self) :
     self.container_storage["navigation"]["Nav Radar"].add_object(
         Image(
             label="Radar Img",
-            image_path="navigation/radar",
+            image_path="navigation/radar2",
             show=True,
             callback_action=None,
             dark_light=False
