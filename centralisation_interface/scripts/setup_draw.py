@@ -743,7 +743,8 @@ def setup_draw(self) :
         ),
         relative_position=(15,10)
     )
-    self.container_storage["navigation"]["Nav Radar"].get_object("Radar Img").set_size((290, 340)) 
+    self.container_storage["navigation"]["Nav Radar"].get_object("Radar Img").set_size((290, 340))
+     
     self.container_storage["navigation"]["Nav Radar"].add_object(
         Image(
             label="Obstacle Gauche Arc 1",
@@ -752,9 +753,88 @@ def setup_draw(self) :
             callback_action=None,
             dark_light=False
         ),
-        relative_position=(90,87)
+        relative_position=(60,53)
     )
-    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").set_size((25, 26)) 
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").set_size((45, 46)) 
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc M",
+            image_path="navigation/bar",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(135,57)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc M").set_size((45, 7)) 
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc D",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(215,53)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc D").set_size((45, 46)) 
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc 2",
+            image_path="navigation/obstacle",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(45,35)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc 2").set_size((45, 46))
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc DD",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(230,35)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc DD").set_size((45, 46))
+    
+     
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc 3",
+            image_path="navigation/obstacle",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(25,17)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc 3").set_size((45, 46))
+    
+    self.container_storage["navigation"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc DDD",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(247,17)
+    )
+    self.container_storage["navigation"]["Nav Radar"].get_object("Obstacle Gauche Arc DDD").set_size((45, 46))
+     
+    
+    
+    
+    
     self.container_storage["navigation"]["Nav Radar"].add_object(
         Container(
             label="nav autre",
