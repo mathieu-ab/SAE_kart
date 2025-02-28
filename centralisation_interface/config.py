@@ -107,7 +107,7 @@ dark_light_mode = {"etat" : "dark",
 #Permet de switch de page directement avec des boutons physique
 PAGE_HANDLER = {"pages" : ["affichage", "navigation", "systeme"], "indice" : 0}
 #temps en secondes entre chaque update de la carte de navigation
-TIME_UPDATE_NAV = 3
+TIME_UPDATE_NAV = 1
 #touche ignoré pour écrire la destination
 IGNORED_KEYS = [
     "shift", "left shift",          # Shift
