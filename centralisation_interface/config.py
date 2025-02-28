@@ -1,10 +1,14 @@
 from module_import import *
 
-# CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
-CURRENT_PATH = "C:\\Users\\mathi\\Documents\\info\\Python\\projet\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+if sys.platform == "win32":
+    CURRENT_PATH = "C:\\Users\\mathi\\Documents\\info\\Python\\projet\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+    tactile = False
+else:
+    CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
+    tactile = True
 
 #pour définir si on utilise le programe en mode tablette (tactile) ou ordinateur (souris)
-tactile = False
+
 if tactile :
     MOUSEBUTTONUP = pygame.FINGERUP
     MOUSEBUTTONDOWN = pygame.FINGERDOWN
