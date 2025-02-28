@@ -256,7 +256,7 @@ def callback_destination(self_Interface) :
 
 def callback_key_press(self_Interface, key) :
     print(key)
-    if key == "backspace" :
+    if key == "delete" or key == "backspace":
         self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text = self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text[:-1]
     elif key == "space" :
         self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text+=" "

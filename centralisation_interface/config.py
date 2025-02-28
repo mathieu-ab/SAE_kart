@@ -130,7 +130,7 @@ IGNORED_KEYS = [
     "right",          # Right arrow
     "up",             # Up arrow
     "down",           # Down arrow
-    "delete",
+    "alt gr",
     "escape",
     "tab",
     "break",
