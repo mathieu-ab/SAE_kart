@@ -249,7 +249,7 @@ def callback_destination(self_Interface) :
     if sys.platform == "win32":
         subprocess.run('powershell Start-Process osk -Verb runAs', shell=True)  # Ouvre le clavier virtuel
     else:
-        subprocess.Popen(['matchbox-keyboard', '-geometry', '800x300+0+180'])
+        subprocess.Popen(['matchbox-keyboard', '--geometry', '800x300+0+180'])
     self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").show = True
     self_Interface.container_storage["navigation"]["Keyboard"].show = True
 
