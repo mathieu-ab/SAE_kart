@@ -8,8 +8,8 @@ import paho.mqtt.client as mqtt
 
 broker = "192.168.1.205"
 port = 1883
-zoom_topic = "GPS/zoom"
-destination_topic = "GPS/destination"
+zoom_topic = "gps/zoom"
+destination_topic = "gps/destination"
 zoom_level = 15
 destination_address = None
 destination_coords = None
