@@ -249,7 +249,7 @@ def callback_destination(self_Interface) :
     if sys.platform == "win32":
         subprocess.run('powershell Start-Process osk -Verb runAs', shell=True)  # Ouvre le clavier virtuel
     else:
-        subprocess.Popen(['matchbox-keyboard', '--geometry', '800x300+0+180'])
+        subprocess.Popen(['xvkbd'])
     self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").show = True
     self_Interface.container_storage["navigation"]["Keyboard"].show = True
 
@@ -266,6 +266,6 @@ def callback_key_press(self_Interface, key) :
         if sys.platform == "win32":
             subprocess.run('powershell Stop-Process -Name osk', shell=True)
         else :
-            subprocess.run('pkill matchbox-keyboard', shell=True)
+            subprocess.run(['pkill', 'xvkbd'])
     elif key not in IGNORED_KEYS :
         self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text+=key
