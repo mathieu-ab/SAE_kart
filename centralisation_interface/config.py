@@ -74,7 +74,8 @@ topics_non_retain = [
     "moteur/mode",
     "aide/clignotant",
     "aide/reg_lim",
-    "message/prevention"
+    "message/prevention",
+    "gps/destonation"
 ]
 
 # Déclaration globale du cache de polices
