@@ -78,6 +78,7 @@ class Interface :
     def start(self) :
         while main_loop :
             self.index+=1
+            self.index_nav+=1
             #captation des evenement de la fenêtre : si un clic est effectué, ou une touche appuyé
             self.event_window()
             #Limitation de vitesse de la boucle
