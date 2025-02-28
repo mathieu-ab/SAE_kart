@@ -24,12 +24,14 @@ class Interface :
         #dictionnaire des listes qui va contenir tout les object qui sont cliquable
         self.clickable_object = {
             "affichage" : [],
+            "aide" : [],
             "navigation" : [],
             "systeme" : []
         }
         #dictionnaire des listes qui va contenir tout les object à afficher
         self.container_storage = {
             "affichage" : {},
+            "aide" : {},
             "navigation" : {},
             "systeme" : {}
         }
@@ -114,13 +116,15 @@ class Interface :
         #event du clavier/de la fenêtre
         keys = pygame.key.get_pressed() #on récupère tout les touches du clavier (keys[] = True si la touche est préssé)
         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
-            if event.type == pygame.QUIT or keys[pygame.K_ESCAPE] :   #Si on ferme la fenêtre, on sort de la boucle principal
+            if event.type == pygame.QUIT :   #Si on ferme la fenêtre, on sort de la boucle principal
                 if self.current_page == "eg" :
                     self.current_page  ="affichage"
                 else :
                     main_loop = False
             if self.current_page == "eg" :
                 return
+            if event.type == pygame.KEYDOWN:
+                callback_key_press(self, pygame.key.name(event.key))
             if event.type == MOUSEBUTTONDOWN : #appui
                 if tactile:
                     # Convertir les coordonnées tactiles en pixels
