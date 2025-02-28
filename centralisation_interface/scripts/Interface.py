@@ -50,8 +50,8 @@ class Interface :
 
         #variable importé des autre partie du projet SAE
         #une valeur par defaut est mise en attendant d'avoir des vrai informations
-        self.vitesse = 17
-        self.vitesse_consigne = 17
+        self.vitesse = 0
+        self.vitesse_consigne = 0
         self.temperature_batterie = 20
         self.temperature_moteur = 20
         self.eg_value = 0
