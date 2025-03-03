@@ -74,5 +74,7 @@ class Image :
         self.image_path = new_img_path
 
     def set_size(self, size) :
+        old_size = self.size
         self.image = pygame.transform.smoothscale(self.image, size)
+        self.size = size
     

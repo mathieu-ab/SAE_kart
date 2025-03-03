@@ -24,12 +24,14 @@ class Interface :
         #dictionnaire des listes qui va contenir tout les object qui sont cliquable
         self.clickable_object = {
             "affichage" : [],
+            "aide" : [],
             "navigation" : [],
             "systeme" : []
         }
         #dictionnaire des listes qui va contenir tout les object à afficher
         self.container_storage = {
             "affichage" : {},
+            "aide" : {},
             "navigation" : {},
             "systeme" : {}
         }
@@ -48,8 +50,8 @@ class Interface :
 
         #variable importé des autre partie du projet SAE
         #une valeur par defaut est mise en attendant d'avoir des vrai informations
-        self.vitesse = 17
-        self.vitesse_consigne = 17
+        self.vitesse = 0
+        self.vitesse_consigne = 0
         self.temperature_batterie = 20
         self.temperature_moteur = 20
         self.eg_value = 0
@@ -76,6 +78,7 @@ class Interface :
     def start(self) :
         while main_loop :
             self.index+=1
+            self.index_nav+=1
             #captation des evenement de la fenêtre : si un clic est effectué, ou une touche appuyé
             self.event_window()
             #Limitation de vitesse de la boucle
@@ -105,22 +108,28 @@ class Interface :
         if self.index % (fps*10) == 0 :
             test_connection(self)
             self.index = 0
-        # if self.index_nav % (fps*TIME_UPDATE_NAV) == 0 :
-        #     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
-        #     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
+        if self.index_nav % (fps*TIME_UPDATE_NAV) == 0 :
+            try :
+                self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
+                self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
+                self.index_nav = 1
+            except :
+                pass
 
     def event_window(self) :
         global main_loop
         #event du clavier/de la fenêtre
         keys = pygame.key.get_pressed() #on récupère tout les touches du clavier (keys[] = True si la touche est préssé)
         for event in pygame.event.get():   #On parcours la liste de tous les événements reçus
-            if event.type == pygame.QUIT or keys[pygame.K_ESCAPE] :   #Si on ferme la fenêtre, on sort de la boucle principal
+            if event.type == pygame.QUIT :   #Si on ferme la fenêtre, on sort de la boucle principal
                 if self.current_page == "eg" :
                     self.current_page  ="affichage"
                 else :
                     main_loop = False
             if self.current_page == "eg" :
                 return
+            if event.type == pygame.KEYDOWN:
+                callback_key_press(self, pygame.key.name(event.key))
             if event.type == MOUSEBUTTONDOWN : #appui
                 if tactile:
                     # Convertir les coordonnées tactiles en pixels
