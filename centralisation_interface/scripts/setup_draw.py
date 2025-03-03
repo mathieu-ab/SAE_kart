@@ -138,10 +138,10 @@ def setup_draw(self) :
             label="Affichage",
             text="Affichage",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/affichage_",
             state="pressed",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
@@ -153,13 +153,31 @@ def setup_draw(self) :
     self.clickable_object["affichage"].append(self.container_storage["affichage"]["Bouton Choix Page"].get_object("Affichage")) 
     self.container_storage["affichage"]["Bouton Choix Page"].add_object(
         Button(
+            label="Aide",
+            text="Aide",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/system_",
+            state="normal",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_aide_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["affichage"].append(self.container_storage["affichage"]["Bouton Choix Page"].get_object("Aide")) 
+    self.container_storage["affichage"]["Bouton Choix Page"].add_object(
+        Button(
             label="Navigation",
             text="Navigation",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/navigation_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
@@ -174,10 +192,10 @@ def setup_draw(self) :
             label="Système",
             text="Système",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/system_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
@@ -625,6 +643,243 @@ def setup_draw(self) :
 
 
 
+#__________________________________________________________________________________________#
+#------------------------------------Aide--------------------------------------------#
+#__________________________________________________________________________________________#
+
+    #--------------Container Background--------------#
+    self.container_storage["aide"]["Background"] = Container(
+        label="Background",
+        show_label=False,
+        position=(-10, -10),
+        size=(820, 500),
+        show=False,
+        allignement="horizontal"
+    )
+    self.container_storage["aide"]["Background"].add_object(
+        Shape(
+            label="Background Rectangle",
+            shape="rectangle",
+            size=(820, 500),
+            color=dark_light_mode["background"][dark_light_mode["etat"]],
+            border_radius=0,
+            show=True
+        ),
+        relative_position=(0, 0)
+    )
+    #--------------Container Bouton Choix Page--------------#
+    self.container_storage["aide"]["Bouton Choix Page"] = Container(
+        label="Bouton Choix Page",
+        show_label=False,
+        position=(0, 396),
+        size=(800, 84),
+        show=False,
+        allignement="horizontal"
+    )
+    self.container_storage["aide"]["Bouton Choix Page"].add_object(
+        Button(
+            label="Affichage",
+            text="Affichage",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/affichage_",
+            state="normal",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_affichage_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["aide"].append(self.container_storage["aide"]["Bouton Choix Page"].get_object("Affichage")) 
+    self.container_storage["aide"]["Bouton Choix Page"].add_object(
+        Button(
+            label="Aide",
+            text="Aide",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/system_",
+            state="pressed",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_aide_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["aide"].append(self.container_storage["aide"]["Bouton Choix Page"].get_object("Aide")) 
+    self.container_storage["aide"]["Bouton Choix Page"].add_object(
+        Button(
+            label="Navigation",
+            text="Navigation",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/navigation_",
+            state="normal",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_navigation_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["aide"].append(self.container_storage["aide"]["Bouton Choix Page"].get_object("Navigation")) 
+    self.container_storage["aide"]["Bouton Choix Page"].add_object(
+        Button(
+            label="Système",
+            text="Système",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/system_",
+            state="normal",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_systeme_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["aide"].append(self.container_storage["aide"]["Bouton Choix Page"].get_object("Système")) 
+
+    self.container_storage["aide"]["Nav Radar"] = Container(
+        label="Nav Radar",
+        show_label=False,
+        position=(20, 20),
+        size=(750, 360),
+        show=False,
+        allignement="horizontal"
+    )
+
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Container(
+            label="radar",
+            show_label=False,
+            position=(20, 20),
+            size=(300, 350),
+            show=True,
+            allignement="horizontal"
+        ),
+        relative_position=None
+    )
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Radar Img",
+            image_path="navigation/radar2",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(15,10)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Radar Img").set_size((290, 340))
+     
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc 1",
+            image_path="navigation/obstacle",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(60,53)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").set_size((45, 46)) 
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc M",
+            image_path="navigation/bar",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(135,57)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc M").set_size((45, 7)) 
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc D",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(215,53)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc D").set_size((45, 46)) 
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc 2",
+            image_path="navigation/obstacle",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(45,35)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 2").set_size((45, 46))
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc DD",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(230,35)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DD").set_size((45, 46))
+    
+     
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc 3",
+            image_path="navigation/obstacle",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(25,17)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 3").set_size((45, 46))
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Obstacle Gauche Arc DDD",
+            image_path="navigation/obstacler",
+            show=True,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(247,17)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DDD").set_size((45, 46))
+     
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Container(
+            label="nav autre",
+            show_label=False,
+            position=(320, 20),
+            size=(420, 350),
+            show=True,
+            allignement="horizontal"
+        ),
+        relative_position=None
+    )
+
 
 #__________________________________________________________________________________________#
 #------------------------------------Navigation--------------------------------------------#
@@ -664,10 +919,10 @@ def setup_draw(self) :
             label="Affichage",
             text="Affichage",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/affichage_",
-            state="pressed",
-            size=(247,68),
+            state="normal",
+            size=(182,68),
             dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
@@ -679,13 +934,31 @@ def setup_draw(self) :
     self.clickable_object["navigation"].append(self.container_storage["navigation"]["Bouton Choix Page"].get_object("Affichage")) 
     self.container_storage["navigation"]["Bouton Choix Page"].add_object(
         Button(
+            label="Aide",
+            text="Aide",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/system_",
+            state="pressed",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_aide_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Bouton Choix Page"].get_object("Aide")) 
+    self.container_storage["navigation"]["Bouton Choix Page"].add_object(
+        Button(
             label="Navigation",
             text="Navigation",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/navigation_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
@@ -700,10 +973,10 @@ def setup_draw(self) :
             label="Système",
             text="Système",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/system_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
@@ -713,6 +986,9 @@ def setup_draw(self) :
     )
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["navigation"].append(self.container_storage["navigation"]["Bouton Choix Page"].get_object("Système")) 
+
+
+
 
     #--------------Container clignotant gauche--------------#
     self.container_storage["navigation"]["Clignotant Gauche"] = Container(
@@ -782,6 +1058,17 @@ def setup_draw(self) :
         allignement="horizontal"
     )
     self.container_storage["navigation"]["Gps"].add_object(
+        Container(
+            label="Option Nav",
+            show_label=False,
+            position=(20, 20),
+            size=(280, 290),
+            show=True,
+            allignement="vertical"
+        ),
+        relative_position=None
+    )
+    self.container_storage["navigation"]["Gps"].get_object("Option Nav").add_object(
         Image(
             label="Bouton Moins Nav",
             image_path="systeme/normal_moins",
@@ -792,7 +1079,38 @@ def setup_draw(self) :
         ),
         relative_position=None
     )
-    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Moins Nav")) 
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Option Nav").get_object("Bouton Moins Nav")) 
+    self.container_storage["navigation"]["Gps"].get_object("Option Nav").add_object(
+        Image(
+            label="Bouton Plus Nav",
+            image_path="systeme/normal_plus",
+            show=True,
+            callback_action=callback_nav_plus,
+            dark_light=False,
+            self_Interface=self
+        ),
+        relative_position=None
+    )
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Option Nav").get_object("Bouton Plus Nav")) 
+    self.container_storage["navigation"]["Gps"].get_object("Option Nav").add_object(
+        Button(
+            label="Destination",
+            text="Destination",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"navigation/destination_",
+            state="normal",
+            size=(200,68),
+            dark_light=True,
+            callback_action=callback_destination,
+            auto_change_state=True,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Option Nav").get_object("Destination")) 
+
     self.container_storage["navigation"]["Gps"].add_object(
         Image(
             label="Image Nav",
@@ -806,19 +1124,9 @@ def setup_draw(self) :
     )
     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_absolute_path(CURRENT_PATH[:-25]+"/GPS/map.png")
     self.container_storage["navigation"]["Gps"].get_object("Image Nav").set_size((435,290))
-    self.container_storage["navigation"]["Gps"].add_object(
-        Image(
-            label="Bouton Plus Nav",
-            image_path="systeme/normal_plus",
-            show=True,
-            callback_action=callback_nav_plus,
-            dark_light=False,
-            self_Interface=self
-        ),
-        relative_position=None
-    )
-    self.clickable_object["navigation"].append(self.container_storage["navigation"]["Gps"].get_object("Bouton Plus Nav")) 
+    self.container_storage["navigation"]["Gps"].reCalcule_position()
 
+    
     #--------------Container Vitesse--------------#
     self.container_storage["navigation"]["Vitesse"] = Container(
         label="Vitesse",
@@ -852,8 +1160,29 @@ def setup_draw(self) :
         ),
         relative_position=(470, 128)
     )
-
-
+    #clavier virtuel
+    self.container_storage["navigation"]["Keyboard"] = Container(
+        label="Keyboard",
+        show_label=False,
+        position=(-10, -10), 
+        size=(820, 500),
+        show=False,
+        allignement="vertical"
+    )
+    #texte écrit par le clavier
+    self.container_storage["navigation"]["Keyboard"].add_object(
+        Text(
+            label="Text keyboard",
+            text="Troyes",
+            font_name="Roboto-Bold",
+            font_size=37,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=False
+        ),
+        relative_position=None
+    )
+    self.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").set_position((30, 40))
 
 
 #__________________________________________________________________________________________#
@@ -894,10 +1223,10 @@ def setup_draw(self) :
             label="Affichage",
             text="Affichage",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/affichage_",
-            state="pressed",
-            size=(247,68),
+            state="normal",
+            size=(182,68),
             dark_light=True,
             callback_action=callback_affichage_button,
             auto_change_state=False,
@@ -909,13 +1238,31 @@ def setup_draw(self) :
     self.clickable_object["systeme"].append(self.container_storage["systeme"]["Bouton Choix Page"].get_object("Affichage")) 
     self.container_storage["systeme"]["Bouton Choix Page"].add_object(
         Button(
+            label="Aide",
+            text="Aide",
+            font_name="Roboto-Bold",
+            font_size=25,
+            icon_path=f"affichage/system_",
+            state="pressed",
+            size=(182,68),
+            dark_light=True,
+            callback_action=callback_aide_button,
+            auto_change_state=False,
+            self_Interface = self
+        ),
+        relative_position=None
+    )
+    #ajout de l'objet bouton au objet clickable
+    self.clickable_object["systeme"].append(self.container_storage["systeme"]["Bouton Choix Page"].get_object("Aide")) 
+    self.container_storage["systeme"]["Bouton Choix Page"].add_object(
+        Button(
             label="Navigation",
             text="Navigation",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/navigation_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_navigation_button,
             auto_change_state=False,
@@ -930,10 +1277,10 @@ def setup_draw(self) :
             label="Système",
             text="Système",
             font_name="Roboto-Bold",
-            font_size=35,
+            font_size=25,
             icon_path=f"affichage/system_",
             state="normal",
-            size=(247,68),
+            size=(182,68),
             dark_light=True,
             callback_action=callback_systeme_button,
             auto_change_state=False,
@@ -943,6 +1290,7 @@ def setup_draw(self) :
     )
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["systeme"].append(self.container_storage["systeme"]["Bouton Choix Page"].get_object("Système")) 
+
     
     #--------------Container Aide Conduite--------------#
     self.container_storage["systeme"]["Aide Conduite"] = Container(

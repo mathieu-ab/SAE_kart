@@ -20,6 +20,9 @@ from .callbacks import (
     callback_cameras_recule,
     callback_nav_plus,
     callback_nav_moins,
+    callback_aide_button,
+    callback_destination,
+    callback_key_press,
 )
 from .mqtt_callback import (
     update_bouton_page,
