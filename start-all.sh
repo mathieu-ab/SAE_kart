@@ -17,8 +17,14 @@ echo "Démarrage des scripts..."
 start_script() {
     local script="$1"
     echo "Démarrage de $script..."
-    $script &  # Lance le script en arrière-plan
-    PIDS[$script]=$!  # Stocke le PID du processus
+
+    if [[ $script == *.py ]]; then
+        python3 "$script" &  # Lancer les scripts Python avec python3
+    else
+        "$script" &  # Lancer les autres scripts normalement
+    fi
+    
+    PIDS[$script]=$!  # Stocker le PID du processus
 }
 
 # Démarrer tous les scripts
@@ -32,7 +38,7 @@ while true; do
 
     for script in "${!PIDS[@]}"; do
         pid=${PIDS[$script]}
-        if ! kill -0 $pid 2>/dev/null; then  # Vérifie si le processus existe encore
+        if ! kill -0 $pid 2>/dev/null; then  # Vérifie si le processus est toujours actif
             echo "Attention : $script s'est arrêté ! Redémarrage..."
             start_script "$script"
         fi
