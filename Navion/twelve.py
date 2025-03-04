@@ -14,7 +14,7 @@ time.sleep(1)
 distances = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 2.5, 2.0, 1.8, 1.5, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
 
 # Fichier CSV pour sauvegarde
-csv_filename = "distance_data2.csv"
+csv_filename = "distance_data7.csv"
 
 # Fonction pour capturer les 10 dernières valeurs et en faire la moyenne
 def capture_last_data(buffer):
