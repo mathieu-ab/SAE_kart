@@ -1,7 +1,6 @@
 import serial
 import time
 import csv
-import keyboard  # Importation de la bibliothèque pour détecter les touches
 
 # Configuration du port série
 ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
@@ -14,7 +13,7 @@ time.sleep(1)
 distances = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 2.5, 2.0, 1.8, 1.5, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
 
 # Fichier CSV pour sauvegarde
-csv_filename = "distance_data0.csv"
+csv_filename = "distance_data.csv"
 
 # Fonction pour capturer plusieurs valeurs et en faire la moyenne
 def capture_data(samples=20):
@@ -53,12 +52,13 @@ with open(csv_filename, mode='w', newline='') as file:
     writer.writerow(["Distance (m)", "w", "h", "x", "y"])  # En-tête du fichier
 
     for distance in distances:
-        print(f"Place-toi à {distance}m. Les données s'affichent en continu. Appuie sur 'espace' pour capturer...")
+        print(f"Place-toi à {distance}m. Les données s'affichent en continu. Appuie sur 'Entrée' pour capturer...")
         while True:
             line = ser.readline().decode('utf-8', errors='ignore').strip()
             if line:
                 print(line)  # Affichage en continu
-            if keyboard.is_pressed("space"):  # Capture lorsque 'espace' est pressé
+            user_input = input("Appuie sur Entrée pour capturer les données...")
+            if user_input == "":  # Capture lorsque Entrée est pressée
                 print(f"Capture des données pour {distance}m...")
                 data = capture_data()
                 if data:
