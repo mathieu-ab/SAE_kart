@@ -26,10 +26,13 @@ class MQTTSubscriber:
 
 # Exemple d'utilisation
 def main():
-    broker_address = "192.168.1.13"  # Adresse du broker MQTT
-    topics = [
-        "bouton/side"
-    ]
+    broker_address = "localhost"  # Adresse du broker MQTT
+    topics = []
+    while True :
+        topic = input("Nom du topic pour s'abonner (e pour quitter) : ")
+        if topic == "e" :
+            break
+        topics.append(topic)
 
     subscriber = MQTTSubscriber(broker_address, topics)
     subscriber.start()

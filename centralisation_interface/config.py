@@ -42,6 +42,7 @@ topics = [
     "moteur/mode/control",              #reçois
                                   #
     # "gps/zoom"                  #envoi
+    # "gps/destination"           #envoi
     "gps/position",               #--reçois           
     "gps/direction",              #--reçois
     "gps/vitesse",                #--reçois
