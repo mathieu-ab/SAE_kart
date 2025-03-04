@@ -9,15 +9,15 @@ SCRIPTS=(
     "testGPS5.py"
 )
 
-echo "Arrêt des processus en cours..."
+echo "Arrêt définitif des processus..."
 
-# Boucle sur chaque script et tente de le tuer proprement
+# Tuer tous les processus liés aux scripts
 for script in "${SCRIPTS[@]}"; do
-    pids=$(pgrep -f "$script")  # Trouve les PID correspondant au script
+    pids=$(pgrep -f "$script")
     if [ -n "$pids" ]; then
         echo "Arrêt de $script (PID: $pids)..."
         kill $pids
-        sleep 1  # Attendre un peu pour que les processus se terminent
+        sleep 1
         pids_restants=$(pgrep -f "$script")
         if [ -n "$pids_restants" ]; then
             echo "Forçage de l'arrêt de $script..."
@@ -28,4 +28,4 @@ for script in "${SCRIPTS[@]}"; do
     fi
 done
 
-echo "Tous les processus ont été arrêtés."
+echo "Tous les processus ont été arrêtés définitivement."
