@@ -17,3 +17,4 @@ sleep 2
 
 # Lancer l’interface graphique
 xinit /bin/bash -c "python3 '$PYTHON_SCRIPT1'; pkill X" -- :0 &
+wait
