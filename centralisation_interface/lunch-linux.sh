@@ -6,7 +6,7 @@ PYTHON_SCRIPT2="/home/kartuser/SAE_kart/BMS/testBMS.py"
 PYTHON_SCRIPT3="/home/kartuser/SAE_kart/gestion_gpio/gestion_boutons/gestion_boutons.py"
 PYTHON_SCRIPT4="/home/kartuser/SAE_kart/gestion_gpio/gestion_charge/gestion_charge.py"
 PYTHON_SCRIPT5="/home/kartuser/SAE_kart/connection_wifi/connect_wifi.py"
-SCRIPT6="/home/kartuser/KARTSERIAL.py"
+SCRIPT6="/home/kartuser/KARTSERIAL"
 PYTHON_SCRIPT7="/home/kartuser/SAE_kart/GPS/testGPS5.py"
 
 
@@ -17,11 +17,11 @@ SCRIPT2_PID=$!
 python3 "$PYTHON_SCRIPT3" &
 SCRIPT3_PID=$!
 
-python3 "$PYTHON_SCRIPT4" &
-SCRIPT4_PID=$!
+# python3 "$PYTHON_SCRIPT4" &
+# SCRIPT4_PID=$!
 
-python3 "$PYTHON_SCRIPT5" &
-SCRIPT5_PID=$!
+# python3 "$PYTHON_SCRIPT5" &
+# SCRIPT5_PID=$!
 
 "$SCRIPT6" &
 SCRIPT6_PID=$!
@@ -32,8 +32,8 @@ SCRIPT7_PID=$!
 echo "Scripts lancés avec les PID :"
 echo "Script 2 PID: $SCRIPT2_PID"
 echo "Script 3 PID: $SCRIPT3_PID"
-echo "Script 4 PID: $SCRIPT4_PID"
-echo "Script 5 PID: $SCRIPT5_PID"
+# echo "Script 4 PID: $SCRIPT4_PID"
+# echo "Script 5 PID: $SCRIPT5_PID"
 echo "Script 6 PID: $SCRIPT6_PID"
 echo "Script 7 PID: $SCRIPT7_PID"
 
@@ -45,8 +45,8 @@ wait # Attendre la fin du processus `xinit`
 echo "Arrêt des scripts en arrière-plan..."
 kill $SCRIPT2_PID 2>/dev/null
 kill $SCRIPT3_PID 2>/dev/null
-kill $SCRIPT4_PID 2>/dev/null
-kill $SCRIPT5_PID 2>/dev/null
+# kill $SCRIPT4_PID 2>/dev/null
+# kill $SCRIPT5_PID 2>/dev/null
 kill $SCRIPT6_PID 2>/dev/null
 kill $SCRIPT7_PID 2>/dev/null
 echo "Scripts arrêtés."

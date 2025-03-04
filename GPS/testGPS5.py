@@ -34,7 +34,7 @@ def on_message(client, userdata, msg):
 
 client = mqtt.Client()
 client.on_message = on_message
-client.connect(broker, port, 60)
+client.connect(broker, port)
 client.subscribe(zoom_topic)
 client.subscribe(destination_topic)
 client.loop_start()

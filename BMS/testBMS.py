@@ -1,4 +1,4 @@
- This script reads the data from a JK BMS over USB-TTL and formats
+# This script reads the data from a JK BMS over USB-TTL and formats
 # Credit to https://github.com/PurpleAlien/jk-bms_grafana
 
 # Instructions:
