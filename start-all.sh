@@ -12,7 +12,6 @@ SCRIPTS=(
 declare -A PIDS  # Tableau associatif pour stocker les PIDs
 
 echo "Démarrage des scripts..."
-xinit /usr/bin/python3 "$script" -- :0 &
 
 # Fonction pour démarrer un script et stocker son PID
 start_script() {
@@ -21,8 +20,7 @@ start_script() {
 
     if [[ "$script" == *"main.py" ]]; then
         # Lancer le script GUI avec xinit
-        echo .
-          
+        xinit /usr/bin/python3 "$script" -- :0 &  
     elif [[ "$script" == *.py ]]; then
         # Lancer les autres scripts Python normalement
         python3 "$script" &  
