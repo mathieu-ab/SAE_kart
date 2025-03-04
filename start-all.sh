@@ -18,10 +18,15 @@ start_script() {
     local script="$1"
     echo "Démarrage de $script..."
 
-    if [[ $script == *.py ]]; then
-        python3 "$script" &  # Lancer les scripts Python avec python3
+    if [[ "$script" == *"main.py" ]]; then
+        # Lancer le script GUI avec xinit
+        xinit /usr/bin/python3 "$script" -- :0 &  
+    elif [[ "$script" == *.py ]]; then
+        # Lancer les autres scripts Python normalement
+        python3 "$script" &  
     else
-        "$script" &  # Lancer les autres scripts normalement
+        # Lancer les autres scripts normalement
+        "$script" &  
     fi
     
     PIDS[$script]=$!  # Stocker le PID du processus
