@@ -14,7 +14,7 @@ time.sleep(1)
 distances = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 2.5, 2.0, 1.8, 1.5, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
 
 # Fichier CSV pour sauvegarde
-csv_filename = "distance_data.csv"
+csv_filename = "distance_data2.csv"
 
 # Fonction pour capturer les 10 dernières valeurs et en faire la moyenne
 def capture_last_data(buffer):
@@ -56,11 +56,10 @@ with open(csv_filename, mode='w', newline='') as file:
         while True:
             line = ser.readline().decode('utf-8', errors='ignore').strip()
             if line:
-                print(line)  # Affichage en continu
+                print(line)  # Affichage en continu des données reçues
                 last_lines.append(line)  # Stocke la dernière ligne lue
             
-            user_input = input("Appuie sur Entrée pour capturer les données...")
-            if user_input == "":  # Capture lorsque Entrée est pressée
+            if input() == "":  # Capture lorsque Entrée est pressée
                 print(f"Capture des dernières données pour {distance}m...")
                 data = capture_last_data(last_lines)
                 if data:
