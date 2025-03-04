@@ -62,11 +62,10 @@ def byteArrayToHEX(byte_array):
 
 # See https://diysolarforum.com/resources/jk-bms-documentation-on-protocols-provided-by-hankzor.259/ for protocol specification documents   
 def main():
-    broker = "192.168.1.88"
+    broker = "localhost"
     port = 1883
     client = mqtt.Client()    
-    client.username_pw_set("mqtt_mat","user")
-    client.connect(broker,port,60)
+    client.connect(broker,port)
 
     
     cmd = bytearray.fromhex('4E 57 00 13 00 00 00 00 03 03 00 85 00 00 00 00 68')
