@@ -1,6 +1,7 @@
 import serial
 import time
 import csv
+from collections import deque
 
 # Configuration du port série
 ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
@@ -13,29 +14,26 @@ time.sleep(1)
 distances = [3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 2.5, 2.0, 1.8, 1.5, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2]
 
 # Fichier CSV pour sauvegarde
-csv_filename = "distance_data0.csv"
+csv_filename = "distance_data.csv"
 
-# Fonction pour capturer plusieurs valeurs et en faire la moyenne
-def capture_data(samples=20):
+# Fonction pour capturer les 10 dernières valeurs et en faire la moyenne
+def capture_last_data(buffer):
     w_values, h_values, x_values, y_values = [], [], [], []
     
-    for _ in range(samples):
-        line = ser.readline().decode('utf-8', errors='ignore').strip()
-        if line:
-            parts = line.split()
-            if len(parts) >= 5:
-                try:
-                    _, confidence, x, y, w, h = parts[-6:]
-                    confidence = int(confidence.split(":")[1])  # Extraction du pourcentage
-                    x, y, w, h = map(int, [x, y, w, h])
-                    
-                    w_values.append(w)
-                    h_values.append(h)
-                    x_values.append(x)
-                    y_values.append(y)
-                except ValueError:
-                    pass  # Ignorer les erreurs de conversion
-        time.sleep(0.1)  # Petite pause entre les lectures
+    for line in buffer:
+        parts = line.split()
+        if len(parts) >= 5:
+            try:
+                _, confidence, x, y, w, h = parts[-6:]
+                confidence = int(confidence.split(":")[1])  # Extraction du pourcentage
+                x, y, w, h = map(int, [x, y, w, h])
+                
+                w_values.append(w)
+                h_values.append(h)
+                x_values.append(x)
+                y_values.append(y)
+            except ValueError:
+                pass  # Ignorer les erreurs de conversion
     
     # Calcul de la moyenne
     if w_values and h_values:
@@ -53,14 +51,18 @@ with open(csv_filename, mode='w', newline='') as file:
 
     for distance in distances:
         print(f"Place-toi à {distance}m. Les données s'affichent en continu. Appuie sur 'Entrée' pour capturer...")
+        last_lines = deque(maxlen=10)  # Stocke les 10 dernières lignes
+        
         while True:
             line = ser.readline().decode('utf-8', errors='ignore').strip()
             if line:
                 print(line)  # Affichage en continu
+                last_lines.append(line)  # Stocke la dernière ligne lue
+            
             user_input = input("Appuie sur Entrée pour capturer les données...")
             if user_input == "":  # Capture lorsque Entrée est pressée
-                print(f"Capture des données pour {distance}m...")
-                data = capture_data()
+                print(f"Capture des dernières données pour {distance}m...")
+                data = capture_last_data(last_lines)
                 if data:
                     w_mean, h_mean, x_mean, y_mean = data
                     writer.writerow([distance, w_mean, h_mean, x_mean, y_mean])
