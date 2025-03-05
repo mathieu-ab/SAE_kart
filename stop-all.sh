@@ -10,6 +10,8 @@ SCRIPTS=(
 
 MAIN_SCRIPT="main.py"
 
+SCRIPT_START="start-all.sh"
+
 echo "Arrêt définitif des processus..."
 
 # Arrêter le serveur X s'il a été démarré par xinit
@@ -36,6 +38,19 @@ if [ -n "$pids" ]; then
     pids_restants=$(pgrep -f "$MAIN_SCRIPT")
     if [ -n "$pids_restants" ]; then
         echo "Forçage de l'arrêt de main.py..."
+        kill -9 $pids_restants
+    fi
+fi
+
+# Tuer start-all.sh
+pids=$(pgrep -f "$SCRIPT_START")
+if [ -n "$pids" ]; then
+    echo "Arrêt de main.py (PID: $pids)..."
+    kill $pids
+    sleep 1  
+    pids_restants=$(pgrep -f "$SCRIPT_START")
+    if [ -n "$pids_restants" ]; then
+        echo "Forçage de l'arrêt de start-all.sh..."
         kill -9 $pids_restants
     fi
 fi
