@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Arrêter le service via systemctl
-echo "Arrêt du service start-all..."
-sudo systemctl stop start-all.service
+echo "Arrêt du service kart..."
+sudo systemctl stop kart.service
 
 # Vérifier si le service est toujours en cours d'exécution
-if systemctl is-active --quiet start-all.service; then
-    echo "Forçage de l'arrêt de start-all..."
-    sudo systemctl kill start-all.service
+if systemctl is-active --quiet kart.service; then
+    echo "Forçage de l'arrêt de kart..."
+    sudo systemctl kill kart.service
 else
-    echo "start-all est arrêté."
+    echo "kart est arrêté."
 fi
 
 # Liste des scripts à arrêter
