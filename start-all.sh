@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo $$ > /tmp/start-all.pid
+
 # Déclaration des scripts à exécuter
 SCRIPTS=(
     "/home/kartuser/SAE_kart/BMS/testBMS.py"

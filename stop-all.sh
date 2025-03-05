@@ -10,7 +10,7 @@ SCRIPTS=(
 
 MAIN_SCRIPT="main.py"
 
-SCRIPT_START="start-all.sh"
+SCRIPT_START="/tmp/start-all.pid"
 
 echo "Arrêt définitif des processus..."
 
@@ -42,17 +42,22 @@ if [ -n "$pids" ]; then
     fi
 fi
 
-# Tuer start-all.sh
-pids=$(pgrep -f "$SCRIPT_START")
-if [ -n "$pids" ]; then
-    echo "Arrêt de main.py (PID: $pids)..."
-    kill $pids
-    sleep 1  
-    pids_restants=$(pgrep -f "$SCRIPT_START")
-    if [ -n "$pids_restants" ]; then
-        echo "Forçage de l'arrêt de start-all.sh..."
-        kill -9 $pids_restants
+# Vérifier si le fichier PID existe
+if [ -f "$SCRIPT_START" ]; then
+    pids=$(cat "$SCRIPT_START")
+    if [ -n "$pids" ]; then
+        echo "Arrêt de start-all.sh (PID: $pids)..."
+        kill $pids
+        sleep 1  
+        pids_restants=$(pgrep -f "start-all.sh")
+        if [ -n "$pids_restants" ]; then
+            echo "Forçage de l'arrêt de start-all.sh..."
+            kill -9 $pids_restants
+        fi
     fi
+    rm "$SCRIPT_START"  # Nettoyage du fichier PID
+else
+    echo "start-all.sh n'est pas en cours d'exécution."
 fi
 
 # Tuer tous les autres scripts
