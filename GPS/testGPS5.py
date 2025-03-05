@@ -1,8 +1,6 @@
 import json
-import os
 import time
 import requests
-import pygame
 import serial
 import paho.mqtt.client as mqtt
 
@@ -94,7 +92,7 @@ def get_route(start_lat, start_lon, dest_lat, dest_lon):
     return None
 
 def get_google_map(lat, lon, route=None):
-    """map obtenir"""
+    """ Télécharge une carte Google Maps avec la position GPS """
     global zoom_level, destination_coords
     base_url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom={zoom_level}&size=600x400&maptype=roadmap&markers=color:red%7C{lat},{lon}&key={API_KEY}"
     
@@ -105,46 +103,28 @@ def get_google_map(lat, lon, route=None):
         base_url += f"&path=color:0x0000ff|weight:5|enc:{route}"
 
     response = requests.get(base_url)
-    with open('map.png', 'wb') as f:
+    with open('/home/kartuser/map.png', 'wb') as f:  # Chemin absolu pour éviter les erreurs
         f.write(response.content)
-    return 'map.png'
+    print("Image map.png mise à jour !")
 
-def display_map():
-    pygame.init()
-    screen = pygame.display.set_mode((600, 400))
-    pygame.display.set_caption("GPS Navigation")
-
-    running = True
-    while running:
+def update_map():
+    while True:
         try:
             latitude, longitude = get_gps_coordinates()
             print(f"GPS Location: LAT: {latitude}, LON: {longitude}")
             publish_gps(latitude, longitude)
-            
+
             route = None
             if destination_coords:
                 route = get_route(latitude, longitude, *destination_coords)
 
-            map_file = get_google_map(latitude, longitude, route)
-            print("Updated map with navigation route")
-
-            map_image = pygame.image.load(map_file)
-            screen.blit(map_image, (0, 0))
-            pygame.display.flip()
-
-            time.sleep(3)
+            get_google_map(latitude, longitude, route)
             
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    running = False
+            time.sleep(3)  # Mettre à jour la carte toutes les 3 secondes
 
         except Exception as e:
             print(f"Error: {str(e)}")
-            running = False
-
-    pygame.quit()
+            time.sleep(3)  # Attendre un peu avant de réessayer en cas d'erreur
 
 if __name__ == "__main__":
-    display_map()
+    update_map()
