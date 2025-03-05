@@ -41,8 +41,8 @@ topics = [
     # "moteur/mode",              #envoi
     "moteur/mode/control",              #reçois
                                   #
-    # "gps/zoom"                  #envoi
-    # "gps/destination"           #envoi
+    # "gps/zoom",                  #envoi
+    # "gps/destination",           #envoi
     "gps/position",               #--reçois           
     "gps/direction",              #--reçois
     "gps/vitesse",                #--reçois
@@ -72,14 +72,13 @@ topics = [
 ]
 #topics pour lesquel l'option retain sera désactivé (retain = dernier message sauvegardé sur le broker et envoyé au chaque nouvel connection)
 topics_non_retain = [
-    "charge/control",
-    "bouton/page",
-    "bouton/clignotant",
     "moteur/mode",
+    "gps/zoom",
+    "gps/destination",
+    "charge/status",
     "aide/clignotant",
     "aide/reg_lim",
-    "message/prevention",
-    "gps/destonation"
+    "aide/vitesse_consigne",
 ]
 
 # Déclaration globale du cache de polices
