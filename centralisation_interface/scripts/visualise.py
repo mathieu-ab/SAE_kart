@@ -1,9 +1,5 @@
 import serial
-import sys
-sys.path.append("/home/kartuser/SAE_kart/centralisation_interface/module_import.py")  # Replace with the actual path where `module_import.py` is
-
-from module_import import *  # Now try importing
-
+from setup_draw import setup_draw
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
