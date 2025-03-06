@@ -58,7 +58,7 @@ def update_ui(distance_category, interface):
         # Hide otherwise
         interface.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = False
 
-def start(interface) :
+def run(interface) :
     while True:
         try:
             # Read a line from JeVois
