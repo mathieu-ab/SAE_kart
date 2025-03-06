@@ -1,5 +1,6 @@
 import serial
-from setup_draw import setup_draw
+from module_import import *  # Now try importing
+
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
@@ -46,36 +47,37 @@ def classify_distance(distance):
     else:
         return "Near"
 
-def update_ui(distance_category):
+def update_ui(distance_category, interface):
     """
     Updates a single UI element based on the distance classification.
     """
     if distance_category == "Far":
         # Example: Show "Obstacle Gauche Arc 1" when far
-        self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = True
+        interface.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = True
     else:
         # Hide otherwise
-        self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = False
+        interface.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = False
 
-while True:
-    try:
-        # Read a line from JeVois
-        line = ser.readline().decode('utf-8', errors='ignore').strip()
+def run(interface) :
+    while True:
+        try:
+            # Read a line from JeVois
+            line = ser.readline().decode('utf-8', errors='ignore').strip()
 
-        if line.startswith("N2 person"):  
-            parts = line.split()
-            height = int(parts[5])  
+            if line.startswith("N2 person"):  
+                parts = line.split()
+                height = int(parts[5])  
 
-            # Estimate distance
-            estimated_distance = estimate_distance(height)
-            distance_category = classify_distance(estimated_distance)
+                # Estimate distance
+                estimated_distance = estimate_distance(height)
+                distance_category = classify_distance(estimated_distance)
 
-            # Print result
-            print(f"{distance_category}: {estimated_distance:.2f}m")
+                # Print result
+                print(f"{distance_category}: {estimated_distance:.2f}m")
 
-            # Update UI element visibility based on classification
-            update_ui(distance_category)
+                # Update UI element visibility based on classification
+                update_ui(distance_category, interface)
 
-    except Exception as e:
-        print(f"Error: {e}")
-        break
+        except Exception as e:
+            print(f"Error: {e}")
+            break
