@@ -94,7 +94,7 @@ def get_route(start_lat, start_lon, dest_lat, dest_lon):
 def get_google_map(lat, lon, route=None):
     """ Télécharge une carte Google Maps avec la position GPS """
     global zoom_level, destination_coords
-    base_url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom={zoom_level}&size=600x400&maptype=roadmap&markers=color:red%7C{lat},{lon}&key={API_KEY}"
+    base_url = f"https://maps.googleapis.com/maps/api/staticmap?center={lat},{lon}&zoom={zoom_level}&size=435x290&maptype=roadmap&markers=color:red%7C{lat},{lon}&key={API_KEY}"
     
     if destination_coords:
         base_url += f"&markers=color:blue%7C{destination_coords[0]},{destination_coords[1]}"
@@ -120,11 +120,9 @@ def update_map():
 
             get_google_map(latitude, longitude, route)
             
-            time.sleep(3)  # Mettre à jour la carte toutes les 3 secondes
 
         except Exception as e:
             print(f"Error: {str(e)}")
-            time.sleep(3)  # Attendre un peu avant de réessayer en cas d'erreur
 
 if __name__ == "__main__":
     update_map()
