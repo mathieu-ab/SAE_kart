@@ -79,6 +79,8 @@ topics_non_retain = [
     "aide/clignotant",
     "aide/reg_lim",
     "aide/vitesse_consigne",
+    "bms/temperature",
+    "moteur/temperature",
 ]
 
 # Déclaration globale du cache de polices
