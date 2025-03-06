@@ -3,7 +3,8 @@ from utils.utils import *
 from callbacks.callbacks import (
     callback_affichage_button,
     callback_navigation_button,
-    callback_systeme_button)
+    callback_systeme_button,
+    callback_aide_button)
 
 def update_clignotant(self) :
     if self.clignotant["allume"] != None  :
@@ -122,7 +123,7 @@ def update_endormissement(self, message) :
         print(e)
 
 def update_bouton_page(self, message) :
-    if message == "right" and PAGE_HANDLER["indice"] < 2 :
+    if message == "right" and PAGE_HANDLER["indice"] < 3 :
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)
     elif message == "left" and PAGE_HANDLER["indice"] > 0:
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]-1)
@@ -132,6 +133,8 @@ def update_bouton_page(self, message) :
         callback_affichage_button(self)
     elif self.current_page == "navigation" :
         callback_navigation_button(self)
+    elif self.current_page == "aide" :
+        callback_aide_button(self)
     elif self.current_page == "systeme" :
         callback_systeme_button(self)
 
@@ -259,3 +262,55 @@ def update_eg(self, msg_recieved) :
 #         self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self.vitesse_consigne
 #     except :
 #         print("Problème de conversion en int pour la vitesse de consigne control.")
+
+
+
+def update_1224h(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            self.format_heure = "24h"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch 24h").etat = True
+            self.mqtt_thread_handler.publish_message("aide/1224h/status", "ON")
+        else :
+            self.format_heure = "12h"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch 24h").etat = False
+            self.mqtt_thread_handler.publish_message("aide/1224h/status", "OFF")
+    except Exception as e:
+        print(e)
+
+def update_temperature_unite(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            self.temperature_unite = "°C"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch °C").etat = True
+            self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "ON")
+        else :
+            self.temperature_unite = "°F"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch °C").etat = False
+            self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "OFF")
+        temperature_batterie = self.temperature_batterie
+        temperature_moteur = self.temperature_moteur
+        self.mqtt_thread_handler.publish_message("moteur/temperature", f"{temperature_moteur}")
+        self.mqtt_thread_handler.publish_message("bms/temperature", f"{temperature_batterie}")
+    except Exception as e:
+        print(e)
+    
+def update_dark_liht(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            dark_light_mode["etat"] = "dark"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = True
+            self.mqtt_thread_handler.publish_message("aide/dark_light/status", "ON")
+        else :
+            dark_light_mode["etat"] = "light"
+            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = False
+            self.mqtt_thread_handler.publish_message("aide/dark_light/status", "OFF")
+        for page in self.container_storage :
+            for container in self[page].values() :
+                container.update_color()
+    except Exception as e:
+        print(e)
+    

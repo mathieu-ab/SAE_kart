@@ -44,6 +44,12 @@ class MQTTMessageHandler():
             update_endormissement(self.interface, msg_received)
         elif msg.topic == "aide/obstacle/control":
             update_obstacle(self.interface, msg_received)
+        elif msg.topic == "aide/1224h/control":
+            update_1224h(self.interface, msg_received)
+        elif msg.topic == "aide/temperature_unite/control":
+            update_dark_liht(self.interface, msg_received)
+        elif msg.topic == "aide/dark_light/control":
+            update_dark_liht(self.interface, msg_received)
         elif msg.topic == "bouton/page":
             update_bouton_page(self.interface, msg_received)
         elif msg.topic == "bouton/clignotant" : 
