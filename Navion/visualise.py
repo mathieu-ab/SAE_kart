@@ -75,7 +75,7 @@ while True:
             distance_category = classify_distance(estimated_distance)
 
             # Construct the MQTT message
-            message = f"{distance_category}: {estimated_distance:.2f}m"
+            message = f"{distance_category}"
             
             # Publish to MQTT topic
             mqtt_client.publish(MQTT_TOPIC, message)

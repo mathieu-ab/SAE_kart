@@ -58,6 +58,8 @@ class MQTTMessageHandler():
             update_mode_conduite(self.interface, msg_received)
         elif msg.topic == "eg" :
             update_eg(self.interface, msg_received)
+        elif msg.topic == "kart/distance" :
+            update_navigation(self.interface, msg_received)
 
 
     #méthode pour publier un message avec un topic
