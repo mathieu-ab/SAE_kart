@@ -270,11 +270,11 @@ def update_1224h(self, message) :
         new_state = message
         if new_state == "ON" :
             self.format_heure = "24h"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch 24h").etat = True
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch 24h").etat = True
             self.mqtt_thread_handler.publish_message("aide/1224h/status", "ON")
         else :
             self.format_heure = "12h"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch 24h").etat = False
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch 24h").etat = False
             self.mqtt_thread_handler.publish_message("aide/1224h/status", "OFF")
     except Exception as e:
         print(e)
@@ -284,11 +284,11 @@ def update_temperature_unite(self, message) :
         new_state = message
         if new_state == "ON" :
             self.temperature_unite = "°C"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch °C").etat = True
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch °C").etat = True
             self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "ON")
         else :
             self.temperature_unite = "°F"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch °C").etat = False
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch °C").etat = False
             self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "OFF")
         temperature_batterie = self.temperature_batterie
         temperature_moteur = self.temperature_moteur
@@ -302,12 +302,16 @@ def update_dark_liht(self, message) :
         new_state = message
         if new_state == "ON" :
             dark_light_mode["etat"] = "dark"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = True
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = True
             self.mqtt_thread_handler.publish_message("aide/dark_light/status", "ON")
         else :
             dark_light_mode["etat"] = "light"
-            self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = False
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = False
             self.mqtt_thread_handler.publish_message("aide/dark_light/status", "OFF")
+        self.container_storage["affichage"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["navigation"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["aide"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["systeme"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
         for page in self.container_storage :
             for container in self.container_storage[page].values() :
                 container.update_color()
