@@ -1,41 +1,49 @@
 import serial
 import time
 import numpy as np
+from sklearn.linear_model import LinearRegression
 
-# Données de référence (Hauteur en fonction de la Distance)
-hauteur_reference = np.array([1668, 1546, 1507, 1474, 1391, 1329, 1180, 1127, 952, 951, 950, 897, 777, 740, 511, 496, 447, 421, 418, 417])
+# Reference data: Distance (m) based on Width (w) and Height (h)
 distance_reference = np.array([0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8])
+width_reference = np.array([1987, 2069, 1975, 2091, 1518, 1371, 1174, 942, 532, 575, 498, 389, 409, 400, 272, 265, 266, 256, 257, 265])
+height_reference = np.array([1668, 1546, 1507, 1474, 1391, 1329, 1180, 1127, 952, 951, 950, 897, 777, 740, 511, 496, 447, 421, 418, 417])
 
-# Ajustement d'une régression linéaire
-coeffs = np.polyfit(hauteur_reference, distance_reference, 1)  # Ajustement linéaire
-def estimer_distance(h):
-    return np.polyval(coeffs, h)  # Calcul de la distance estimée
+# Preparing the regression model
+X_train = np.column_stack((width_reference, height_reference))  # Combine width and height as input features
+y_train = distance_reference  # Target: distance
 
-# Connexion au port série de JeVois
+model = LinearRegression()
+model.fit(X_train, y_train)  # Train the model
+
+# Function to estimate distance from width & height
+def estimate_distance(w, h):
+    return model.predict(np.array([[w, h]]))[0]
+
+# Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
-time.sleep(2)  # Attente de l'initialisation
+time.sleep(2)  # Allow JeVois to initialize
 
-# Activation de la sortie série complète
+# Enable serial output from JeVois
 ser.write(b"setpar serout All\n")
 time.sleep(1)
 
-print("Lecture des données en cours... Appuyez sur Ctrl+C pour arrêter.")
+print("Reading data... Press Ctrl+C to stop.")
 
-# Lecture et estimation de la distance
 while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
         if line:
             parts = line.split()
-            if len(parts) >= 5:  # Vérification que la ligne contient les valeurs attendues
+            if len(parts) >= 5:  # Ensure we have enough data
                 try:
-                    h = int(parts[4])  # Extraction de la hauteur
-                    distance_estimee = estimer_distance(h)
-                    print(f"Hauteur détectée: {h} pixels → Distance estimée: {distance_estimee:.2f} m")
+                    w = int(parts[3])  # Extract width
+                    h = int(parts[4])  # Extract height
+                    estimated_distance = estimate_distance(w, h)
+                    print(f"Width: {w} px, Height: {h} px → Estimated Distance: {estimated_distance:.2f} m")
                 except ValueError:
-                    print("Erreur de conversion des données reçues.")
+                    print("Error parsing received data.")
     except KeyboardInterrupt:
-        print("\nArrêt du programme.")
+        print("\nStopping program.")
         break
 
 ser.close()
