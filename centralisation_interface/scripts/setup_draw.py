@@ -773,7 +773,7 @@ def setup_draw(self) :
         Image(
             label="Radar Img",
             image_path="navigation/radar2",
-            show=False,
+            show=True,
             callback_action=None,
             dark_light=False
         ),
