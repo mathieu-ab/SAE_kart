@@ -65,8 +65,14 @@ topics = [
     "aide/ligne_blanche/control",#--reçois
     "aide/endormissement/control",#--reçois
     "aide/obstacle/control",      #--reçois
+    "aide/dark_light/control",    #--reçois
+    "aide/temperature_unite/control",#--reçois
+    "aide/1224h/status",         #envoi
+    "aide/dark_light/status",    #envoi
+    "aide/temperature_unite/status",#envoi
+    "aide/1224h/control",         #--reçois
     "bouton/page",                #--reçois
-    "bouton/clignotant",           #--reçois
+    "bouton/clignotant",          #--reçois
     "test/topic",
     "eg"
 ]
@@ -84,6 +90,9 @@ topics_non_retain = [
     "aide/ligne_blanche/status",
     "aide/endormissement/status",
     "aide/obstacle/status",
+    "aide/1224h/status",         
+    "aide/dark_light/status",    
+    "aide/temperature_unite/status",
 ]
 
 # Déclaration globale du cache de polices
