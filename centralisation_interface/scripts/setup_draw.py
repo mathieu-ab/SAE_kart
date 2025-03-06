@@ -773,7 +773,7 @@ def setup_draw(self) :
         Image(
             label="Radar Img",
             image_path="navigation/radar2",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -785,7 +785,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc 1",
             image_path="navigation/obstacle",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -797,7 +797,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc M",
             image_path="navigation/bar",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -809,7 +809,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc D",
             image_path="navigation/obstacler",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -821,7 +821,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc 2",
             image_path="navigation/obstacle",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -833,7 +833,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc DD",
             image_path="navigation/obstacler",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -847,7 +847,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc 3",
             image_path="navigation/obstacle",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -859,7 +859,7 @@ def setup_draw(self) :
         Image(
             label="Obstacle Gauche Arc DDD",
             image_path="navigation/obstacler",
-            show=True,
+            show=False,
             callback_action=None,
             dark_light=False
         ),
