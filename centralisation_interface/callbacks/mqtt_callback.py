@@ -309,7 +309,7 @@ def update_dark_liht(self, message) :
             self.container_storage["systeme"]["Aide Conduite"].get_object("Autre Parametre").get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = False
             self.mqtt_thread_handler.publish_message("aide/dark_light/status", "OFF")
         for page in self.container_storage :
-            for container in self[page].values() :
+            for container in self.container_storage[page].values() :
                 container.update_color()
     except Exception as e:
         print(e)

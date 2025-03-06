@@ -155,7 +155,7 @@ def callback_dark_liht_switch(state_switch, self_Interface) :
     self_Interface.container_storage["navigation"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     self_Interface.container_storage["systeme"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     for page in self_Interface.container_storage :
-        for container in self_Interface[page].values() :
+        for container in self_Interface.container_storage[page].values() :
             container.update_color()
     if state_switch :
         self_Interface.mqtt_thread_handler.publish_message("aide/dark_light/control", "ON")
