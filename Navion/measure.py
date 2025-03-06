@@ -3,11 +3,16 @@ import time
 
 # Coefficients from MATLAB regression equation
 a = -0.0054741  # Slope (coefficient directeur)
-b = 9.0531     # Intercept (ordonnée à l'origine)
+b = 9.0531      # Intercept (ordonnée à l'origine)
+
+# Correction factor from experimental data
+correction_factor = 1.91  
 
 # Function to estimate distance using the corrected equation
 def estimer_distance(h):
-    return a * h + b  # Applying the regression equation
+    distance_raw = a * h + b  # Compute initial estimated distance
+    distance_corrected = distance_raw / correction_factor  # Apply correction factor
+    return distance_corrected
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
