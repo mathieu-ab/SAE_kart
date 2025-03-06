@@ -119,6 +119,8 @@ def update_map():
                 route = get_route(latitude, longitude, *destination_coords)
 
             get_google_map(latitude, longitude, route)
+
+            time.sleep(2)
             
 
         except Exception as e:
