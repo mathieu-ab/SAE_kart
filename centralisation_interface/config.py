@@ -59,9 +59,9 @@ topics = [
     # "aide/reg_lim",             #envoi
     # "aide/vitesse_consigne",    #envoi
     "aide/vitesse_consigne/control",    #reçois
-    # "aide/ligne_blanche/status",#envoi
-    # "aide/endormissement/status",#envoi
-    # "aide/obstacle/status"      #envoi
+    "aide/ligne_blanche/status",#envoi/reçois
+    "aide/endormissement/status",#envoi/reçois
+    "aide/obstacle/status"      #envoi/reçois
     "aide/ligne_blanche/control", #--reçois
     "aide/endormissement/control",#--reçois
     "aide/obstacle/control",      #--reçois
@@ -79,6 +79,8 @@ topics_non_retain = [
     "aide/clignotant",
     "aide/reg_lim",
     "aide/vitesse_consigne",
+    "bms/temperature",
+    "moteur/temperature",
 ]
 
 # Déclaration globale du cache de polices
