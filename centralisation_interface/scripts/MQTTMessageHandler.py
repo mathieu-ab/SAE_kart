@@ -38,11 +38,11 @@ class MQTTMessageHandler():
             update_charge_control(self.interface, msg_received)
         elif msg.topic == "message/prevention":
             update_message_prevention(self.interface, msg_received)
-        elif msg.topic == "aide/ligne_blanche/control":
+        elif msg.topic == "aide/ligne_blanche/status":
             update_ligne_blanche(self.interface, msg_received)
-        elif msg.topic == "aide/endormissement/control":
+        elif msg.topic == "aide/endormissement/status":
             update_endormissement(self.interface, msg_received)
-        elif msg.topic == "aide/obstacle/control":
+        elif msg.topic == "aide/obstacle/status":
             update_obstacle(self.interface, msg_received)
         elif msg.topic == "bouton/page":
             update_bouton_page(self.interface, msg_received)
