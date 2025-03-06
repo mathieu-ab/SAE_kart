@@ -104,21 +104,21 @@ def callback_cameras_recule() :
 
 def callback_detection_ligne_switch(etat, self_Interface) :
     if etat :
-        self_Interface.mqtt_thread_handler.publish_message("aide/ligne_blanche/status", "ON")
+        self_Interface.mqtt_thread_handler.publish_message("aide/ligne_blanche/control", "ON")
     else :
-        self_Interface.mqtt_thread_handler.publish_message("aide/ligne_blanche/status", "OFF")
+        self_Interface.mqtt_thread_handler.publish_message("aide/ligne_blanche/control", "OFF")
 
 def callback_detection_obstacle_switch(etat, self_Interface) :
     if etat :
-        self_Interface.mqtt_thread_handler.publish_message("aide/obstacle/status", "ON")
+        self_Interface.mqtt_thread_handler.publish_message("aide/obstacle/control", "ON")
     else :
-        self_Interface.mqtt_thread_handler.publish_message("aide/obstacle/status", "OFF")
+        self_Interface.mqtt_thread_handler.publish_message("aide/obstacle/control", "OFF")
 
 def callback_endormissement_switch(etat, self_Interface) :
     if etat :
-        self_Interface.mqtt_thread_handler.publish_message("aide/endormissement/status", "ON")
+        self_Interface.mqtt_thread_handler.publish_message("aide/endormissement/control", "ON")
     else :
-        self_Interface.mqtt_thread_handler.publish_message("aide/endormissement/status", "OFF")
+        self_Interface.mqtt_thread_handler.publish_message("aide/endormissement/control", "OFF")
 
 
 
