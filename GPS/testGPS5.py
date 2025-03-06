@@ -103,7 +103,7 @@ def get_google_map(lat, lon, route=None):
         base_url += f"&path=color:0x0000ff|weight:5|enc:{route}"
 
     response = requests.get(base_url)
-    with open('/home/kartuser/map.png', 'wb') as f:  # Chemin absolu pour éviter les erreurs
+    with open('/home/kartuser/SAE_kart/GPS/map.png', 'wb') as f:  # Chemin absolu pour éviter les erreurs
         f.write(response.content)
     print("Image map.png mise à jour !")
 
