@@ -1,9 +1,10 @@
-from module_import import subprocess
-from config import dark_light_mode, VITESSE_MAX
+from module_import import subprocess, sys, os
+from config import dark_light_mode, VITESSE_MAX, IGNORED_KEYS
 
 def callback_affichage_button(self_Interface) :
     self_Interface.current_page = "affichage"
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Affichage").state = "pressed"
+    self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Aide").state = "normal"
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Navigation").state = "normal"
     self_Interface.container_storage["affichage"]["Bouton Choix Page"].get_object("Système").state = "normal"
     #easter egg
@@ -29,17 +30,26 @@ def callback_affichage_button(self_Interface) :
     
     
 
+def callback_aide_button(self_Interface) :
+    self_Interface.current_page = "aide"
+    self_Interface.container_storage["aide"]["Bouton Choix Page"].get_object("Affichage").state = "normal"
+    self_Interface.container_storage["aide"]["Bouton Choix Page"].get_object("Aide").state = "pressed"
+    self_Interface.container_storage["aide"]["Bouton Choix Page"].get_object("Navigation").state = "normal"
+    self_Interface.container_storage["aide"]["Bouton Choix Page"].get_object("Système").state = "normal"
 
 
 def callback_navigation_button(self_Interface) :
     self_Interface.current_page = "navigation"
     self_Interface.container_storage["navigation"]["Bouton Choix Page"].get_object("Affichage").state = "normal"
+    self_Interface.container_storage["navigation"]["Bouton Choix Page"].get_object("Aide").state = "normal"
     self_Interface.container_storage["navigation"]["Bouton Choix Page"].get_object("Navigation").state = "pressed"
     self_Interface.container_storage["navigation"]["Bouton Choix Page"].get_object("Système").state = "normal"
+
 
 def callback_systeme_button(self_Interface) :
     self_Interface.current_page = "systeme"
     self_Interface.container_storage["systeme"]["Bouton Choix Page"].get_object("Affichage").state = "normal"
+    self_Interface.container_storage["systeme"]["Bouton Choix Page"].get_object("Aide").state = "normal"
     self_Interface.container_storage["systeme"]["Bouton Choix Page"].get_object("Navigation").state = "normal"
     self_Interface.container_storage["systeme"]["Bouton Choix Page"].get_object("Système").state = "pressed"
 
@@ -169,6 +179,26 @@ def callback_reg_lim_plus(self_Interface, etat) :
     elif etat == "release_outside" :
         image_object.change_image("systeme/normal_plus")
 
+def callback_nav_moins(self_Interface, etat) :
+    image_object = self_Interface.container_storage["navigation"]["Gps"].get_object("Option Nav").get_object("Bouton Moins Nav")
+    if etat == "release" :
+        image_object.change_image("systeme/normal_moins")
+        self_Interface.mqtt_thread_handler.publish_message("gps/zoom", f"dezoom")
+    elif etat == "click" :
+        image_object.change_image("systeme/pressed_moins")
+    elif etat == "release_outside" :
+        image_object.change_image("systeme/normal_moins")
+
+def callback_nav_plus(self_Interface, etat) :
+    image_object = self_Interface.container_storage["navigation"]["Gps"].get_object("Option Nav").get_object("Bouton Plus Nav")
+    if etat == "release" :
+        image_object.change_image("systeme/normal_plus")
+        self_Interface.mqtt_thread_handler.publish_message("gps/zoom", f"zoom")
+    elif etat == "click" :
+        image_object.change_image("systeme/pressed_plus")
+    elif etat == "release_outside" :
+        image_object.change_image("systeme/normal_plus")
+
 
 def callback_reg_switch(self_Interface, etat) :
     if etat == "click" :
@@ -214,3 +244,30 @@ def callback_lim_switch(self_Interface, etat) :
         self_Interface.mqtt_thread_handler.publish_message("aide/vitesse_consigne", f"{self_Interface.vitesse}")
         self_Interface.vitesse_consigne = self_Interface.vitesse
         self_Interface.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self_Interface.vitesse_consigne
+
+def callback_destination(self_Interface) :
+    if sys.platform == "win32":
+        subprocess.run('powershell Start-Process osk -Verb runAs', shell=True)  # Ouvre le clavier virtuel
+    else:
+        subprocess.run(['setxkbmap', 'fr'])
+        subprocess.Popen(['xvkbd', '-geometry', '800x300+0+180', '-compact'], stderr=subprocess.DEVNULL)
+    self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").show = True
+    self_Interface.container_storage["navigation"]["Keyboard"].show = True
+
+def callback_key_press(self_Interface, key) :
+    print(key)
+    if key == "delete" or key == "backspace":
+        self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text = self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text[:-1]
+    elif key == "space" :
+        self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text+=" "
+    elif key == "return" :
+        self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").show = False
+        self_Interface.container_storage["navigation"]["Keyboard"].show = False
+        self_Interface.mqtt_thread_handler.publish_message("gps/destination", self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text)
+        self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text = ""
+        if sys.platform == "win32":
+            subprocess.run('powershell Stop-Process -Name osk', shell=True)
+        else :
+            subprocess.run(['pkill', 'xvkbd'])
+    elif key not in IGNORED_KEYS :
+        self_Interface.container_storage["navigation"]["Keyboard"].get_object("Text keyboard").text+=key
