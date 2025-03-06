@@ -317,4 +317,13 @@ def update_dark_liht(self, message) :
                 container.update_color()
     except Exception as e:
         print(e)
-    
+        
+def update_navigation(self,message) :
+    try :
+        if message == "Far":
+            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = True
+        else:
+        # Hide otherwise
+            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = False
+    except Exception as e:
+        print(e)
