@@ -2,8 +2,8 @@ import serial
 import time
 
 # Coefficients from MATLAB regression equation
-a = -0.0058559  # Slope (coefficient directeur)
-b = 9.5212     # Intercept (ordonnée à l'origine)
+a = -0.0054741  # Slope (coefficient directeur)
+b = 9.0531     # Intercept (ordonnée à l'origine)
 
 # Function to estimate distance using the corrected equation
 def estimer_distance(h):
