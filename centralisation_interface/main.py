@@ -35,7 +35,7 @@
 
 
 from module_import import *
-from scripts import Interface, MQTTMessageHandler
+from scripts import Interface, MQTTMessageHandler, visualise
 from config import topics
 
 
@@ -47,6 +47,9 @@ if __name__ == "__main__" :
     # Création et initialisation du gestionnaire de messages MQTT
     mqtt_thread_handler = MQTTMessageHandler(topics, interface)
     interface.mqtt_thread_handler = mqtt_thread_handler # Lier le gestionnaire MQTT à l'interface
+        # Création et initialisation du gestionnaire de messages MQTT
+    visualise_thread = threading.Thread(target=visualise.start)
+    visualise_thread.start(interface)
     # Démarrage de l'interface utilisateur
     interface.start()
     #Sortie du programme
