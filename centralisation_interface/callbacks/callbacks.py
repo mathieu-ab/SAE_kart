@@ -153,6 +153,7 @@ def callback_dark_liht_switch(state_switch, self_Interface) :
         dark_light_mode["etat"] = "light"
     self_Interface.container_storage["affichage"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     self_Interface.container_storage["navigation"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+    self_Interface.container_storage["aide"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     self_Interface.container_storage["systeme"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     for page in self_Interface.container_storage :
         for container in self_Interface.container_storage[page].values() :
