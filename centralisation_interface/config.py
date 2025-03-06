@@ -1,7 +1,7 @@
 from module_import import *
 
 if sys.platform == "win32":
-    CURRENT_PATH = "C:\\Users\\mathi\\Documents\\info\\Python\\projet\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+    CURRENT_PATH = "C:\\Users\\LEGION\\Desktop\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
     tactile = False
 else:
     CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
