@@ -44,23 +44,23 @@ def classify_distance(distance):
         return "Medium"
     else:
         return "Near"
+def run(interface) :
+    while True:
+        try:
+            # Read a line from JeVois
+            line = ser.readline().decode('utf-8', errors='ignore').strip()
 
-while True:
-    try:
-        # Read a line from JeVois
-        line = ser.readline().decode('utf-8', errors='ignore').strip()
+            if line.startswith("N2 person"):  # Process only person detections
+                parts = line.split()
+                height = int(parts[5])  # Extract bounding box height
 
-        if line.startswith("N2 person"):  # Process only person detections
-            parts = line.split()
-            height = int(parts[5])  # Extract bounding box height
+                # Estimate distance
+                estimated_distance = estimate_distance(height)
+                distance_category = classify_distance(estimated_distance)
 
-            # Estimate distance
-            estimated_distance = estimate_distance(height)
-            distance_category = classify_distance(estimated_distance)
+                # Print result directly on Raspberry Pi
+                print(f"{distance_category}: {estimated_distance:.2f}m")
 
-            # Print result directly on Raspberry Pi
-            print(f"{distance_category}: {estimated_distance:.2f}m")
-
-    except Exception as e:
-        print(f"Error: {e}")
-        break
+        except Exception as e:
+            print(f"Error: {e}")
+            break
