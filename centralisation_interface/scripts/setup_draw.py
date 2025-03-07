@@ -779,7 +779,7 @@ def setup_draw(self) :
         ),
         relative_position=(15,10)
     )
-    self.container_storage["aide"]["Nav Radar"].get_object("Radar Img").set_size((290, 340))
+    self.container_storage["aide"]["Nav Radar"].get_object("Radar Img").set_size((290, 340)) # 275 for optimal
      
     self.container_storage["aide"]["Nav Radar"].add_object(
         Image(
