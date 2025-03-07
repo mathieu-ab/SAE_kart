@@ -25,11 +25,15 @@ while True:
 
         if line.startswith("N2 person"):  # Process only person detections
             parts = line.split()
-            confidence = int(parts[1])  # Confidence level
-            x_center = int(parts[2])  # Extract x_center
-            y_center = int(parts[3])  # Extract y_center
-            width = int(parts[4])  # Extract width
-            height = int(parts[5])  # Extract height
+            try:
+                confidence = int(parts[1].split(":")[1])  # Extract confidence after 'person:'
+                x_center = int(parts[2])  # Extract x_center
+                y_center = int(parts[3])  # Extract y_center
+                width = int(parts[4])  # Extract width
+                height = int(parts[5])  # Extract height
+            except (IndexError, ValueError) as e:
+                print(f"Parsing error: {e}, skipping line: {line}")
+                continue
 
             matched_id = None
             for obj_id, (prev_x, prev_y, frames) in tracked_objects.items():
