@@ -69,14 +69,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                     # Estimate distance
                     estimated_distance = estimate_distance(height)
                     distance_category = "Far" if estimated_distance >= 3.0 else "Medium" if estimated_distance >= 1.5 else "Near"
-                    distance_data = f"{distance_category} {position}\n"
                     
-                    # Send data to connected PC
-                    conn.sendall(distance_data.encode())
+                    message = f"{distance_category} {position}\n"
                     
-                    # Publish to MQTT
-                    mqtt_client.publish(MQTT_TOPIC, distance_data.strip())
-                    print(f"Published: {distance_data.strip()}")
+                    # Publish to MQTT topic
+                    mqtt_client.publish(MQTT_TOPIC, message)
+
+                    # Print result
+                    print(f"Published: {message}")
 
             except Exception as e:
                 print(f"Error: {e}")
