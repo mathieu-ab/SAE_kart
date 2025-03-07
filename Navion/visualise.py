@@ -20,7 +20,6 @@ time.sleep(2)  # Allow JeVois to initialize
 ser.write(b"setpar serout All\n")
 time.sleep(1)  # Short delay after sending the command
 
-
 # Reference values for known distances
 REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
 REF_HEIGHT_2M40 = 1075  # Approximate height at 2.4m
@@ -67,14 +66,23 @@ while True:
 
         if line.startswith("N2 person"):  
             parts = line.split()
-            height = int(parts[5])  
+            x_center = int(parts[2])  # Extract x_center for position
+            height = int(parts[5])  # Extract bounding box height
+
+            # Determine position
+            if x_center < -750:
+                position = "Left"
+            elif -750 <= x_center <= 325:
+                position = "Center"
+            else:
+                position = "Right"
 
             # Estimate distance
             estimated_distance = estimate_distance(height)
             distance_category = classify_distance(estimated_distance)
 
-            # Construct the MQTT message
-            message = f"{distance_category}: {estimated_distance:.2f}m"
+            # Construct the MQTT message (send category + position)
+            message = f"{distance_category},{position}"
             
             # Publish to MQTT topic
             mqtt_client.publish(MQTT_TOPIC, message)
@@ -84,7 +92,7 @@ while True:
 
     except Exception as e:
         print(f"Error: {e}")
-    break
+        break
 
 print("Connection closed.")
 ser.close()
