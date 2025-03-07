@@ -1,5 +1,15 @@
 import serial
 import socket
+import paho.mqtt.client as mqtt  # Import MQTT library
+
+# MQTT Broker Configuration
+MQTT_BROKER = "mqtt.eclipseprojects.io"
+MQTT_PORT = 1883
+MQTT_TOPIC = "kart/distance"
+
+# Initialize MQTT client
+mqtt_client = mqtt.Client()
+mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
@@ -22,12 +32,11 @@ def estimate_distance(current_height):
     if current_height <= 0:
         return "Unknown"
 
-    # Use the reference height closest to the detected value
-    if current_height >= REF_HEIGHT_1M40:  # Closer than 1.4m
+    if current_height >= REF_HEIGHT_1M40:
         return REF_DISTANCE_1M40 * REF_HEIGHT_1M40 / current_height
-    elif current_height >= REF_HEIGHT_2M40:  # Between 1.4m and 2.4m
+    elif current_height >= REF_HEIGHT_2M40:
         return REF_DISTANCE_2M40 * REF_HEIGHT_2M40 / current_height
-    else:  # Greater than 2.4m (farther away)
+    else:
         return REF_DISTANCE_3M40 * REF_HEIGHT_3M40 / current_height
 
 # Start TCP server
@@ -46,8 +55,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                 
                 if line.startswith("N2 person"):  # Process only person detections
                     parts = line.split()
-                    x_center = int(parts[2])  # Extract x_center for position
-                    height = int(parts[5])  # Extract bounding box height
+                    x_center = int(parts[2])
+                    height = int(parts[5])
 
                     # Determine position
                     if x_center < -750:
@@ -64,6 +73,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                     
                     # Send data to connected PC
                     conn.sendall(distance_data.encode())
+                    
+                    # Publish to MQTT
+                    mqtt_client.publish(MQTT_TOPIC, distance_data.strip())
+                    print(f"Published: {distance_data.strip()}")
 
             except Exception as e:
                 print(f"Error: {e}")
