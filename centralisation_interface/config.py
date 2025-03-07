@@ -73,7 +73,7 @@ topics = [
     "aide/1224h/control",         #--reçois
     "bouton/page",                #--reçois
     "bouton/clignotant",          #--reçois
-    "test/topic",                 #--reçois
+    #"test/topic",                 #--reçois
     "eg",                         #--reçois
     "kart/distance",              #--reçois
 ]
