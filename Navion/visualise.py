@@ -6,7 +6,8 @@ import time
 # MQTT Broker Configuration
 MQTT_BROKER = "localhost"
 MQTT_PORT = 1883
-MQTT_TOPIC = "kart/distance"
+MQTT_TOPIC_DISTANCE = "kart/distance"
+MQTT_TOPIC_SPEED = "autonomie/vitesse"
 
 # Initialize MQTT client
 mqtt_client = mqtt.Client()
@@ -37,7 +38,7 @@ DISTANCE_THRESHOLDS = {
 }
 
 # Speed constraints
-V_MAX = 100  # Maximum speed percentage
+V_MAX = 20  # Maximum speed value
 D_MAX = 10   # Maximum detection range
 D_STOP = 2   # Stop distance threshold
 
@@ -96,14 +97,17 @@ while True:
             distance_category = classify_distance(estimated_distance)
             speed = calculate_speed(estimated_distance)
 
-            # Construct the MQTT message (send category, position, and speed)
-            message = f"{distance_category} {position} Speed: {speed:.2f}%"
+            # Construct the MQTT messages
+            distance_message = f"{distance_category} {position}"
+            speed_message = f"{speed:.2f}"
             
-            # Publish to MQTT topic
-            mqtt_client.publish(MQTT_TOPIC, message)
+            # Publish to MQTT topics
+            mqtt_client.publish(MQTT_TOPIC_DISTANCE, distance_message)
+            mqtt_client.publish(MQTT_TOPIC_SPEED, speed_message)
 
-            # Print result
-            print(f"Published: {message}")
+            # Print results
+            print(f"Published Distance: {distance_message}")
+            print(f"Published Speed: {speed_message}")
 
     except Exception as e:
         print(f"Error: {e}")
