@@ -1,7 +1,13 @@
 import serial
+import time
 
 # Open serial connection to JeVois
-ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+time.sleep(2)  # Allow JeVois to initialize
+
+# Send command to enable serial output
+ser.write(b"setpar serout All\n")
+time.sleep(1)  # Short delay after sending the command
 
 def classify_position(x_center):
     """Classify object position based on x_center value."""
