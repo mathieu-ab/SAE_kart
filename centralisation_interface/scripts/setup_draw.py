@@ -514,8 +514,6 @@ def setup_draw(self) :
         ),
         relative_position=(182, 100)
     )
-
-
     
     #--------------Container clignotant gauche--------------#
     self.container_storage["affichage"]["Clignotant Gauche"] = Container(
