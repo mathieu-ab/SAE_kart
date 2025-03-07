@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo $$ > /tmp/start-all.pid
 
 # Déclaration des scripts à exécuter
 SCRIPTS=(
