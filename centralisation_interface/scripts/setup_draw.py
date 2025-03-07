@@ -803,7 +803,31 @@ def setup_draw(self) :
         ),
         relative_position=(135,57)
     )
-    self.container_storage["aide"]["Nav Radar"].get_object("Near Center").set_size((45, 7)) 
+    self.container_storage["aide"]["Nav Radar"].get_object("Near Center").set_size((45, 7))
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Medium Center",
+            image_path="navigation/bar",
+            show=False,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(135,35)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Medium Center").set_size((45, 7))
+    
+    self.container_storage["aide"]["Nav Radar"].add_object(
+        Image(
+            label="Far Center",
+            image_path="navigation/bar",
+            show=False,
+            callback_action=None,
+            dark_light=False
+        ),
+        relative_position=(135,14)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Far Center").set_size((45, 7)) 
     
     self.container_storage["aide"]["Nav Radar"].add_object(
         Image(

@@ -31,8 +31,8 @@ REF_DISTANCE_3M40 = 3.4  # meters
 
 # Distance thresholds
 DISTANCE_THRESHOLDS = {
-    "far": 3.0,   
-    "medium": 1.5,  
+    "far": 7.50,   
+    "medium": 3.65,  
     "near": 0.0  
 }
 
