@@ -322,28 +322,28 @@ def update_navigation(self, message):
     try:
         # Hide all indicators initially
         radar = self.container_storage["aide"]["Nav Radar"]
-        radar.get_object("Near Left").show = False
-        radar.get_object("Near Center").show = False
-        radar.get_object("Near Right").show = False
-        radar.get_object("Medium Left").show = False
-        radar.get_object("Medium Right").show = False
-        radar.get_object("Far Left").show = False
-        radar.get_object("Far Right").show = False
+        radar.get_object("Near,Left").show = False
+        radar.get_object("Near,Center").show = False
+        radar.get_object("Near,Right").show = False
+        radar.get_object("Medium,Left").show = False
+        radar.get_object("Medium,Right").show = False
+        radar.get_object("Far,Left").show = False
+        radar.get_object("Far,Right").show = False
         
         # Show only the relevant indicator based on message
-        if message == "Near Left":
-            radar.get_object("Near Left").show = True
-        elif message == "Near Center":
-            radar.get_object("Near Center").show = True
-        elif message == "Near Right":
-            radar.get_object("Near Right").show = True
-        elif message == "Medium Left":
-            radar.get_object("Medium Left").show = True
-        elif message == "Medium Right":
-            radar.get_object("Medium Right").show = True
-        elif message == "Far Left":
-            radar.get_object("Far Left").show = True
-        elif message == "Far Right":
-            radar.get_object("Far Right").show = True
+        if message == "Near,Left":
+            radar.get_object("Near,Left").show = True
+        elif message == "Near,Center":
+            radar.get_object("Near,Center").show = True
+        elif message == "Near,Right":
+            radar.get_object("Near,Right").show = True
+        elif message == "Medium,Left":
+            radar.get_object("Medium,Left").show = True
+        elif message == "Medium,Right":
+            radar.get_object("Medium,Right").show = True
+        elif message == "Far,Left":
+            radar.get_object("Far,Left").show = True
+        elif message == "Far,Right":
+            radar.get_object("Far,Right").show = True
     except Exception as e:
         print(e)
