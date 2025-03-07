@@ -892,7 +892,7 @@ def setup_draw(self) :
     
     self.container_storage["aide"]["Nav Radar"].add_object(
         Container(
-            label="nav autre",
+            label="Vitesse",
             show_label=False,
             position=(320, 20),
             size=(420, 350),
@@ -900,7 +900,35 @@ def setup_draw(self) :
             allignement="horizontal"
         ),
         relative_position=None
+    
     )
+    
+    self.container_storage["aide"]["Nav Radar"].get_object("Vitesse").add_object(
+        Text(
+            label="vitesse",
+            text="17",
+            font_name="7-segment-bold",
+            font_size=80,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=(235,100)
+    )
+    self.container_storage["aide"]["Nav Radar"].get_object("Vitesse").add_object(
+        Text(
+            label="Vitesse Unite",
+            text="km/h",
+            font_name="Roboto-Bold",
+            font_size=20,
+            color=dark_light_mode["text"][dark_light_mode["etat"]],
+            justify="left",
+            show=True
+        ),
+        relative_position=(235,100)
+    )
+
+    
 
 
 #__________________________________________________________________________________________#
