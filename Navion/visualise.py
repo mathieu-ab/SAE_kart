@@ -1,6 +1,7 @@
 import serial
 import socket
 import paho.mqtt.client as mqtt  # Import MQTT library
+import time
 
 # MQTT Broker Configuration
 MQTT_BROKER = "localhost"
@@ -13,6 +14,12 @@ mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+time.sleep(2)  # Allow JeVois to initialize
+
+# Send command to enable serial output
+ser.write(b"setpar serout All\n")
+time.sleep(1)  # Short delay after sending the command
+
 
 # Reference values for known distances
 REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
