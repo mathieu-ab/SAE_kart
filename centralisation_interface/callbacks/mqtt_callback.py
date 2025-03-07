@@ -318,23 +318,32 @@ def update_dark_liht(self, message) :
     except Exception as e:
         print(e)
         
-def update_navigation(self,message) :
-    try :
-        if message == "Far":
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc M").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc D").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 2").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DD").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 3").show = True
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DDD").show = True
-        else:
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc M").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc D").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 2").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DD").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 3").show = False
-            self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc DDD").show = False
+def update_navigation(self, message):
+    try:
+        # Hide all indicators initially
+        radar = self.container_storage["aide"]["Nav Radar"]
+        radar.get_object("Near Left").show = False
+        radar.get_object("Near Center").show = False
+        radar.get_object("Near Right").show = False
+        radar.get_object("Medium Left").show = False
+        radar.get_object("Medium Right").show = False
+        radar.get_object("Far Left").show = False
+        radar.get_object("Far Right").show = False
+        
+        # Show only the relevant indicator based on message
+        if message == "Near Left":
+            radar.get_object("Near Left").show = True
+        elif message == "Near Center":
+            radar.get_object("Near Center").show = True
+        elif message == "Near Right":
+            radar.get_object("Near Right").show = True
+        elif message == "Medium Left":
+            radar.get_object("Medium Left").show = True
+        elif message == "Medium Right":
+            radar.get_object("Medium Right").show = True
+        elif message == "Far Left":
+            radar.get_object("Far Left").show = True
+        elif message == "Far Right":
+            radar.get_object("Far Right").show = True
     except Exception as e:
         print(e)
