@@ -36,6 +36,11 @@ DISTANCE_THRESHOLDS = {
     "near": 0.0  
 }
 
+# Speed constraints
+V_MAX = 100  # Maximum speed percentage
+D_MAX = 10   # Maximum detection range
+D_STOP = 2   # Stop distance threshold
+
 def estimate_distance(current_height):
     """Estimate distance using proportional scaling (cross-multiplication)."""
     if current_height <= 0:
@@ -59,6 +64,15 @@ def classify_distance(distance):
     else:
         return "Near"
 
+def calculate_speed(distance):
+    """Calculate speed based on distance using a linear equation."""
+    if distance is None or distance <= D_STOP:
+        return 0  # Stop at 2m
+    elif distance >= D_MAX:
+        return V_MAX  # Full speed at 10m
+    else:
+        return V_MAX * (distance - D_STOP) / (D_MAX - D_STOP)  # Linear scaling
+
 while True:
     try:
         # Read a line from JeVois
@@ -80,9 +94,10 @@ while True:
             # Estimate distance
             estimated_distance = estimate_distance(height)
             distance_category = classify_distance(estimated_distance)
+            speed = calculate_speed(estimated_distance)
 
-            # Construct the MQTT message (send category + position)
-            message = f"{distance_category} {position}"
+            # Construct the MQTT message (send category, position, and speed)
+            message = f"{distance_category} {position} Speed: {speed:.2f}%"
             
             # Publish to MQTT topic
             mqtt_client.publish(MQTT_TOPIC, message)
