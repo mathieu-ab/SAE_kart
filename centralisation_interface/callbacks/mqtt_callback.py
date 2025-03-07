@@ -320,7 +320,6 @@ def update_dark_liht(self, message) :
         
 def update_navigation(self, message):
     try:
-        print("ok1", message)
         # Hide all indicators initially
         radar = self.container_storage["aide"]["Nav Radar"]
         radar.get_object("Near Left").show = False
@@ -331,12 +330,10 @@ def update_navigation(self, message):
         radar.get_object("Far Left").show = False
         radar.get_object("Far Right").show = False
         
-        
         # Show only the relevant indicator based on message
         if message == "Near Left":
             radar.get_object("Near Left").show = True
         elif message == "Near Center":
-            print("ok2", radar)
             radar.get_object("Near Center").show = True
         elif message == "Near Right":
             radar.get_object("Near Right").show = True
