@@ -43,4 +43,5 @@ from .mqtt_callback import (
     update_1224h,
     update_dark_liht,
     update_temperature_unite,
+    update_navigation,
 )
