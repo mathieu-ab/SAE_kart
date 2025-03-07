@@ -352,10 +352,10 @@ def update_navigation(self, message):
     except Exception as e:
         print(e)
         
-    def update_vitesseauto(self, message) :
-        try :
-                vitesse = int(float(message))
-                self.container_storage["aide"]["Nav Radar"].get_object("Vitesse").get_object("vitesse").text = str(vitesse)
-                self.vitesse = vitesse
-        except Exception as e:
-            print(e)
+def update_vitesseauto(self, message) :
+    try :
+            vitesse = int(float(message))
+            self.container_storage["aide"]["Nav Radar"].get_object("Vitesse").get_object("vitesse").text = str(vitesse)
+            self.vitesse = vitesse
+    except Exception as e:
+        print(e)
