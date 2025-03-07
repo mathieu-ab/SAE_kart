@@ -11,6 +11,7 @@ time.sleep(1)  # Short delay after sending the command
 
 # Tracking system for multiple objects
 tracked_objects = {}  # Stores {ID: (x_center, y_center, frame_count)}
+available_ids = []  # List of reusable IDs
 next_id = 1  # Unique ID counter
 FRAME_THRESHOLD = 5  # Number of frames before an object is removed
 X_THRESHOLD = 50  # Maximum movement in x_center to consider the same object
@@ -44,9 +45,14 @@ while True:
             if matched_id:
                 tracked_objects[matched_id] = (x_center, y_center, FRAME_THRESHOLD)  # Reset frame count
             else:
-                tracked_objects[next_id] = (x_center, y_center, FRAME_THRESHOLD)
-                matched_id = next_id
-                next_id += 1
+                # Reuse an available ID if possible
+                if available_ids:
+                    matched_id = available_ids.pop(0)
+                else:
+                    matched_id = next_id
+                    next_id += 1
+
+                tracked_objects[matched_id] = (x_center, y_center, FRAME_THRESHOLD)
 
             print(f"Object ID {matched_id} -> X: {x_center}, Y: {y_center}, Confidence: {confidence}")
 
@@ -61,7 +67,8 @@ while True:
 
         for obj_id in to_remove:
             del tracked_objects[obj_id]
-            print(f"Object ID {obj_id} removed from tracking.")
+            available_ids.append(obj_id)  # Reuse this ID in the future
+            print(f"Object ID {obj_id} removed and now available for reuse.")
 
     except KeyboardInterrupt:
         break
