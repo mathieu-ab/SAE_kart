@@ -320,6 +320,7 @@ def update_dark_liht(self, message) :
         
 def update_navigation(self,message) :
     try :
+        print("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", message)
         if message == "Far":
             self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc 1").show = True
             self.container_storage["aide"]["Nav Radar"].get_object("Obstacle Gauche Arc M").show = True
