@@ -19,6 +19,7 @@ SCRIPTS=(
     "gestion_boutons.py"
     "KARTSERIAL"
     "testGPS5.py"
+    "visualise.py"
 )
 
 # Arrêter le serveur X

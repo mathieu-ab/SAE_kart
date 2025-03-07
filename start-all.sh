@@ -6,8 +6,9 @@ echo $$ > /tmp/start-all.pid
 SCRIPTS=(
     "/home/kartuser/SAE_kart/BMS/testBMS.py"
     "/home/kartuser/SAE_kart/gestion_gpio/gestion_boutons/gestion_boutons.py"
-    "/home/kartuser/KARTSERIAL"
+    "/home/kartuser/SAE_kart/KARTSERIAL"
     "/home/kartuser/SAE_kart/GPS/testGPS5.py"
+    "/home/kartuser/SAE_kart/Navion/visualise.py"
 )
 
 MAIN_SCRIPT="/home/kartuser/SAE_kart/centralisation_interface/main.py"
