@@ -1,3 +1,5 @@
+import time
+import threading
 from config import *
 from utils.utils import *
 from callbacks.callbacks import (
@@ -318,36 +320,35 @@ def update_dark_liht(self, message) :
     except Exception as e:
         print(e)
         
+def blink_indicator(indicator, duration=0.5):
+    """Blink the given indicator continuously."""
+    while True:
+        try:
+            indicator.show = not indicator.show  # Toggle visibility
+            time.sleep(duration)
+        except Exception as e:
+            print(e)
+            break
+
+        
 def update_navigation(self, message):
     try:
         # Hide all indicators initially
         radar = self.container_storage["aide"]["Nav Radar"]
-        radar.get_object("Near Left").show = False
-        radar.get_object("Near Center").show = False
-        radar.get_object("Near Right").show = False
-        radar.get_object("Medium Left").show = False
-        radar.get_object("Medium Right").show = False
-        radar.get_object("Far Left").show = False
-        radar.get_object("Far Right").show = False
+        indicators = [
+            "Near Left", "Near Center", "Near Right", 
+            "Medium Left", "Medium Center", "Medium Right", 
+            "Far Left", "Far Center", "Far Right"
+        ]
         
-        # Show only the relevant indicator based on message
-        if message == "Near Left":
-            radar.get_object("Near Left").show = True
-        elif message == "Near Center":
-            radar.get_object("Near Center").show = True
-        elif message == "Near Right":
-            radar.get_object("Near Right").show = True
-        elif message == "Medium Left":
-            radar.get_object("Medium Left").show = True
-        elif message == "Medium Right":
-            radar.get_object("Medium Right").show = True
-        elif message == "Medium Center":
-            radar.get_object("Medium Center").show = True
-        elif message == "Far Left":
-            radar.get_object("Far Left").show = True
-        elif message == "Far Right":
-            radar.get_object("Far Right").show = True
-        elif message == "Far Center":
-            radar.get_object("Far Center").show = True
+        # Stop previous blinking threads if any
+        for indicator_name in indicators:
+            radar.get_object(indicator_name).show = False
+        
+        # Determine which indicator should blink
+        if message in indicators:
+            indicator = radar.get_object(message)
+            threading.Thread(target=blink_indicator, args=(indicator,), daemon=True).start()
     except Exception as e:
         print(e)
+        
