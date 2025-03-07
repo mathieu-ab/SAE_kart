@@ -35,7 +35,7 @@
 
 
 from module_import import *
-from scripts import Interface, MQTTMessageHandler, visualise
+from scripts import Interface, MQTTMessageHandler
 from config import topics
 
 
