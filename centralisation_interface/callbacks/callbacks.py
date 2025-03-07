@@ -127,6 +127,10 @@ def callback_1224h_switch(state_switch, self_Interface) :
         self_Interface.format_heure = "24h"
     else :
         self_Interface.format_heure = "12h"
+    if state_switch :
+        self_Interface.mqtt_thread_handler.publish_message("aide/1224h/control", "ON")
+    else :
+        self_Interface.mqtt_thread_handler.publish_message("aide/1224h/control", "OFF")
 
 def callback_temperature_unite_switch(state_switch, self_Interface) :
     if state_switch :
@@ -137,6 +141,10 @@ def callback_temperature_unite_switch(state_switch, self_Interface) :
     temperature_moteur = self_Interface.temperature_moteur
     self_Interface.mqtt_thread_handler.publish_message("moteur/temperature", f"{temperature_moteur}")
     self_Interface.mqtt_thread_handler.publish_message("bms/temperature", f"{temperature_batterie}")
+    if state_switch :
+        self_Interface.mqtt_thread_handler.publish_message("aide/temperature_unite/control", "ON")
+    else :
+        self_Interface.mqtt_thread_handler.publish_message("aide/temperature_unite/control", "OFF")
 
 def callback_dark_liht_switch(state_switch, self_Interface) :
     if state_switch :
@@ -145,13 +153,15 @@ def callback_dark_liht_switch(state_switch, self_Interface) :
         dark_light_mode["etat"] = "light"
     self_Interface.container_storage["affichage"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     self_Interface.container_storage["navigation"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+    self_Interface.container_storage["aide"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
     self_Interface.container_storage["systeme"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
-    for container in self_Interface.container_storage["affichage"].values() :
+    for page in self_Interface.container_storage :
+        for container in self_Interface.container_storage[page].values() :
             container.update_color()
-    for container in self_Interface.container_storage["navigation"].values() :
-            container.update_color()
-    for container in self_Interface.container_storage["systeme"].values() :
-            container.update_color()
+    if state_switch :
+        self_Interface.mqtt_thread_handler.publish_message("aide/dark_light/control", "ON")
+    else :
+        self_Interface.mqtt_thread_handler.publish_message("aide/dark_light/control", "OFF")
 
 def callback_reg_lim_moins(self_Interface, etat) :
     image_object = self_Interface.container_storage["systeme"]["Regulateur"].get_object("Bouton Moins")

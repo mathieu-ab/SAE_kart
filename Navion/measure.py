@@ -3,11 +3,19 @@ import time
 
 # Coefficients from MATLAB regression equation
 a = -0.0054741  # Slope (coefficient directeur)
-b = 9.0531     # Intercept (ordonnée à l'origine)
+b = 9.0531      # Intercept (ordonnée à l'origine)
 
-# Function to estimate distance using the corrected equation
+# Coefficients from the correction factor equation
+a_corr = -0.00233  # Slope for correction factor
+b_corr = 2.63156   # Intercept for correction factor
+
+# Function to estimate raw distance using regression equation
 def estimer_distance(h):
     return a * h + b  # Applying the regression equation
+
+# Function to compute dynamic correction factor
+def correction_factor(h):
+    return a_corr * h + b_corr  # Computes correction factor based on height
 
 # Open serial connection to JeVois
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
@@ -27,9 +35,12 @@ while True:
             parts = line.split()
             if len(parts) >= 5:  # Ensure the line contains enough data
                 try:
-                    h = int(parts[4])  # Extract height
-                    distance_estimee = estimer_distance(h)
-                    print(f"Hauteur détectée: {h} pixels → Distance corrigée: {distance_estimee:.2f} m")
+                    h = int(parts[4])  # Extract detected height
+                    raw_distance = estimer_distance(h)  # Compute initial distance
+                    factor = correction_factor(h)  # Compute dynamic correction factor
+                    corrected_distance = raw_distance / factor  # Apply correction
+
+                    print(f"Hauteur détectée: {h} pixels → Distance corrigée: {corrected_distance:.2f} m")
                 except ValueError:
                     print("Erreur de conversion des données reçues.")
     except KeyboardInterrupt:

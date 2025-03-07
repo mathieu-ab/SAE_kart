@@ -1,7 +1,7 @@
 from module_import import *
 
 if sys.platform == "win32":
-    CURRENT_PATH = "C:\\Users\\mathi\\Documents\\info\\Python\\projet\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+    CURRENT_PATH = "C:\\Users\\LEGION\\Desktop\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
     tactile = False
 else:
     CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
@@ -65,10 +65,17 @@ topics = [
     "aide/ligne_blanche/control",#--reçois
     "aide/endormissement/control",#--reçois
     "aide/obstacle/control",      #--reçois
+    "aide/dark_light/control",    #--reçois
+    "aide/temperature_unite/control",#--reçois
+    "aide/1224h/status",         #envoi
+    "aide/dark_light/status",    #envoi
+    "aide/temperature_unite/status",#envoi
+    "aide/1224h/control",         #--reçois
     "bouton/page",                #--reçois
-    "bouton/clignotant",           #--reçois
-    "test/topic",
-    "eg"
+    "bouton/clignotant",          #--reçois
+    #"test/topic",                 #--reçois
+    "eg",                         #--reçois
+    "kart/distance",              #--reçois
 ]
 #topics pour lesquel l'option retain sera désactivé (retain = dernier message sauvegardé sur le broker et envoyé au chaque nouvel connection)
 topics_non_retain = [
@@ -84,6 +91,9 @@ topics_non_retain = [
     "aide/ligne_blanche/status",
     "aide/endormissement/status",
     "aide/obstacle/status",
+    "aide/1224h/status",         
+    "aide/dark_light/status",    
+    "aide/temperature_unite/status",
 ]
 
 # Déclaration globale du cache de polices

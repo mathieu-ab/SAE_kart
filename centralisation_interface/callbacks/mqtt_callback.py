@@ -1,9 +1,12 @@
+import time
+import threading
 from config import *
 from utils.utils import *
 from callbacks.callbacks import (
     callback_affichage_button,
     callback_navigation_button,
-    callback_systeme_button)
+    callback_systeme_button,
+    callback_aide_button)
 
 def update_clignotant(self) :
     if self.clignotant["allume"] != None  :
@@ -122,7 +125,7 @@ def update_endormissement(self, message) :
         print(e)
 
 def update_bouton_page(self, message) :
-    if message == "right" and PAGE_HANDLER["indice"] < 2 :
+    if message == "right" and PAGE_HANDLER["indice"] < 3 :
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)
     elif message == "left" and PAGE_HANDLER["indice"] > 0:
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]-1)
@@ -132,6 +135,8 @@ def update_bouton_page(self, message) :
         callback_affichage_button(self)
     elif self.current_page == "navigation" :
         callback_navigation_button(self)
+    elif self.current_page == "aide" :
+        callback_aide_button(self)
     elif self.current_page == "systeme" :
         callback_systeme_button(self)
 
@@ -259,3 +264,91 @@ def update_eg(self, msg_recieved) :
 #         self.container_storage["systeme"]["Regulateur"].get_object("Vitesse Consigne").text = self.vitesse_consigne
 #     except :
 #         print("Problème de conversion en int pour la vitesse de consigne control.")
+
+
+
+def update_1224h(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            self.format_heure = "24h"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch 24h").etat = True
+            self.mqtt_thread_handler.publish_message("aide/1224h/status", "ON")
+        else :
+            self.format_heure = "12h"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch 24h").etat = False
+            self.mqtt_thread_handler.publish_message("aide/1224h/status", "OFF")
+    except Exception as e:
+        print(e)
+
+def update_temperature_unite(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            self.temperature_unite = "°C"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch °C").etat = True
+            self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "ON")
+        else :
+            self.temperature_unite = "°F"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch °C").etat = False
+            self.mqtt_thread_handler.publish_message("aide/temperature_unite/status", "OFF")
+        temperature_batterie = self.temperature_batterie
+        temperature_moteur = self.temperature_moteur
+        self.mqtt_thread_handler.publish_message("moteur/temperature", f"{temperature_moteur}")
+        self.mqtt_thread_handler.publish_message("bms/temperature", f"{temperature_batterie}")
+    except Exception as e:
+        print(e)
+    
+def update_dark_liht(self, message) :
+    try :
+        new_state = message
+        if new_state == "ON" :
+            dark_light_mode["etat"] = "dark"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = True
+            self.mqtt_thread_handler.publish_message("aide/dark_light/status", "ON")
+        else :
+            dark_light_mode["etat"] = "light"
+            self.container_storage["systeme"]["Autre Parametre"].get_object("Autre Parametre Switch").get_object("Switch dark mode").etat = False
+            self.mqtt_thread_handler.publish_message("aide/dark_light/status", "OFF")
+        self.container_storage["affichage"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["navigation"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["aide"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        self.container_storage["systeme"]["Background"].get_object("Background Rectangle").change_color(dark_light_mode["background"][dark_light_mode["etat"]])
+        for page in self.container_storage :
+            for container in self.container_storage[page].values() :
+                container.update_color()
+    except Exception as e:
+        print(e)
+        
+def blink_indicator(indicator, duration=0.5):
+    """Blink the given indicator continuously."""
+    while True:
+        try:
+            indicator.show = not indicator.show  # Toggle visibility
+            time.sleep(duration)
+        except Exception as e:
+            print(e)
+            break
+
+        
+def update_navigation(self, message):
+    try:
+        # Hide all indicators initially
+        radar = self.container_storage["aide"]["Nav Radar"]
+        indicators = [
+            "Near Left", "Near Center", "Near Right", 
+            "Medium Left", "Medium Center", "Medium Right", 
+            "Far Left", "Far Center", "Far Right"
+        ]
+        
+        # Stop previous blinking threads if any
+        for indicator_name in indicators:
+            radar.get_object(indicator_name).show = False
+        
+        # Determine which indicator should blink
+        if message in indicators:
+            indicator = radar.get_object(message)
+            threading.Thread(target=blink_indicator, args=(indicator,), daemon=True).start()
+    except Exception as e:
+        print(e)
+        

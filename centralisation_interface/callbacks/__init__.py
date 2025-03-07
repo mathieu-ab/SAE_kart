@@ -40,4 +40,8 @@ from .mqtt_callback import (
     update_mode_conduite,
     update_heure,
     update_eg,
+    update_1224h,
+    update_dark_liht,
+    update_temperature_unite,
+    update_navigation,
 )

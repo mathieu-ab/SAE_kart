@@ -44,6 +44,12 @@ class MQTTMessageHandler():
             update_endormissement(self.interface, msg_received)
         elif msg.topic == "aide/obstacle/control":
             update_obstacle(self.interface, msg_received)
+        elif msg.topic == "aide/1224h/control":
+            update_1224h(self.interface, msg_received)
+        elif msg.topic == "aide/temperature_unite/control":
+            update_temperature_unite(self.interface, msg_received)
+        elif msg.topic == "aide/dark_light/control":
+            update_dark_liht(self.interface, msg_received)
         elif msg.topic == "bouton/page":
             update_bouton_page(self.interface, msg_received)
         elif msg.topic == "bouton/clignotant" : 
@@ -52,6 +58,8 @@ class MQTTMessageHandler():
             update_mode_conduite(self.interface, msg_received)
         elif msg.topic == "eg" :
             update_eg(self.interface, msg_received)
+        elif msg.topic == "kart/distance" :
+            update_navigation(self.interface, msg_received)
 
 
     #méthode pour publier un message avec un topic
