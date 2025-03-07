@@ -3,7 +3,7 @@ import socket
 import paho.mqtt.client as mqtt  # Import MQTT library
 
 # MQTT Broker Configuration
-MQTT_BROKER = "mqtt.eclipseprojects.io"
+MQTT_BROKER = "localhost"
 MQTT_PORT = 1883
 MQTT_TOPIC = "kart/distance"
 
