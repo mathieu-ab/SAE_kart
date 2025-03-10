@@ -324,6 +324,8 @@ def update_navigation(self, message):
         radar = self.container_storage["aide"]["Nav Radar"]
         radar.get_object("Near Left").show = False
         radar.get_object("Near Center").show = False
+        radar.get_object("Medium Center").show = False
+        radar.get_object("Far Center").show = False
         radar.get_object("Near Right").show = False
         radar.get_object("Medium Left").show = False
         radar.get_object("Medium Right").show = False
