@@ -75,6 +75,7 @@ topics = [
     "bouton/clignotant",          #--reçois
     "test/topic",
     "eg",
+    "kart/distance",
     "autonomie/vitesse" #--reçois
 ]
 #topics pour lesquel l'option retain sera désactivé (retain = dernier message sauvegardé sur le broker et envoyé au chaque nouvel connection)
