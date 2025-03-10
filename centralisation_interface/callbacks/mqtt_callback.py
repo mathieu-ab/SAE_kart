@@ -351,6 +351,16 @@ def update_navigation(self, message):
             radar.get_object("Far Right").show = True
         elif message == "Far Center":
             radar.get_object("Far Center").show = True
+        elif message == "Clear":
+            radar.get_object("Near Left").show = False
+            radar.get_object("Near Center").show = False
+            radar.get_object("Medium Center").show = False
+            radar.get_object("Far Center").show = False
+            radar.get_object("Near Right").show = False
+            radar.get_object("Medium Left").show = False
+            radar.get_object("Medium Right").show = False
+            radar.get_object("Far Left").show = False
+            radar.get_object("Far Right").show = False
     except Exception as e:
         print(e)
         

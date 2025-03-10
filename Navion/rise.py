@@ -48,6 +48,10 @@ V_MAX = 20  # Maximum speed value
 D_MAX = 10   # Maximum detection range
 D_STOP = 2   # Stop distance threshold
 
+# Last detection timestamp
+last_detection_time = time.time()
+NO_OBJECT_TIMEOUT = 1  # 1 second threshold for "No Object" message
+
 def estimate_distance(current_height):
     """Estimate distance using proportional scaling (cross-multiplication)."""
     if current_height <= 0:
@@ -84,11 +88,16 @@ while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
         if not line:
+            # Check if no object detected for more than 1 second
+            if time.time() - last_detection_time > NO_OBJECT_TIMEOUT:
+                mqtt_client.publish(MQTT_TOPIC_DISTANCE, "Clear")
+                print("Published: Clear")
             continue
 
         print(f"Raw Detection: {line}")
 
         if line.startswith("N2 person"):  # Process only person detections
+            last_detection_time = time.time()  # Update last detection time
             parts = line.split()
             try:
                 confidence = int(parts[1].split(":")[1])  # Extract confidence after 'person:'
