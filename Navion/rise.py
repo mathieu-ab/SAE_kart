@@ -16,6 +16,27 @@ next_id = 1  # Unique ID counter
 FRAME_THRESHOLD = 5  # Number of frames before an object is removed
 X_THRESHOLD = 50  # Maximum movement in x_center to consider the same object
 
+# Reference values for known distances
+REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
+REF_HEIGHT_2M40 = 1075  # Approximate height at 2.4m
+REF_HEIGHT_3M40 = 1147  # Approximate height at 3.4m
+
+REF_DISTANCE_1M40 = 1.4  # meters
+REF_DISTANCE_2M40 = 2.4  # meters
+REF_DISTANCE_3M40 = 3.4  # meters
+
+def estimate_distance(current_height):
+    """Estimate distance using proportional scaling (cross-multiplication)."""
+    if current_height <= 0:
+        return "Unknown"
+
+    if current_height >= REF_HEIGHT_1M40:
+        return REF_DISTANCE_1M40 * REF_HEIGHT_1M40 / current_height
+    elif current_height >= REF_HEIGHT_2M40:
+        return REF_DISTANCE_2M40 * REF_HEIGHT_2M40 / current_height
+    else:
+        return REF_DISTANCE_3M40 * REF_HEIGHT_3M40 / current_height
+
 while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
@@ -29,32 +50,40 @@ while True:
             try:
                 confidence = int(parts[1].split(":")[1])  # Extract confidence after 'person:'
                 x_center = int(parts[2])  # Extract x_center
-                y_center = int(parts[3])  # Extract y_center
-                width = int(parts[4])  # Extract width
-                height = int(parts[5])  # Extract height
+                height = int(parts[5])  # Extract bounding box height
             except (IndexError, ValueError) as e:
                 print(f"Parsing error: {e}, skipping line: {line}")
                 continue
 
+            # Determine position
+            if x_center < -750:
+                position = "Left"
+            elif -750 <= x_center <= 325:
+                position = "Center"
+            else:
+                position = "Right"
+
+            # Estimate distance
+            estimated_distance = estimate_distance(height)
+
+            # Assign/reuse an ID for tracking
             matched_id = None
-            for obj_id, (prev_x, prev_y, frames) in tracked_objects.items():
+            for obj_id, (prev_x, _, frames) in tracked_objects.items():
                 if abs(prev_x - x_center) <= X_THRESHOLD:
                     matched_id = obj_id
                     break
 
             if matched_id:
-                tracked_objects[matched_id] = (x_center, y_center, FRAME_THRESHOLD)  # Reset frame count
+                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)  # Reset frame count
             else:
-                # Reuse an available ID if possible
                 if available_ids:
                     matched_id = available_ids.pop(0)
                 else:
                     matched_id = next_id
                     next_id += 1
+                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)
 
-                tracked_objects[matched_id] = (x_center, y_center, FRAME_THRESHOLD)
-
-            print(f"Object ID {matched_id} -> X: {x_center}, Y: {y_center}, Confidence: {confidence}")
+            print(f"Object ID {matched_id} -> Distance: {estimated_distance:.2f}m, Position: {position}")
 
         # Reduce frame count and remove old objects
         to_remove = []
