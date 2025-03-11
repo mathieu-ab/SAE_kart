@@ -100,7 +100,9 @@ while True:
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-    
+    num_faces_detected = len(rects)  # Compte le nombre de visages détectés
+    print(f"Nombre de visages détectés: {num_faces_detected}")  # Affiche le nombre de visages détectés
+
     for (x, y, w, h) in rects:
         rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
         shape = face_utils.shape_to_np(predictor(gray, rect))
