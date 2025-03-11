@@ -34,8 +34,8 @@ class MQTTMessageHandler():
             update_temperature_batterie(self.interface, msg_received)
         elif msg.topic == "bms/batterie":
             update_batterie(self.interface, msg_received)
-        elif msg.topic == "charge/control":
-            update_charge_control(self.interface, msg_received)
+        elif msg.topic == "charge/status":
+            update_charge_status(self.interface, msg_received)
         elif msg.topic == "message/prevention":
             update_message_prevention(self.interface, msg_received)
         elif msg.topic == "aide/ligne_blanche/control":

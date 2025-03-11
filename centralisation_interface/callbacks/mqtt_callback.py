@@ -72,17 +72,23 @@ def update_temperature_batterie(self, message) :
     except Exception as e:
         print(e)
 
-def update_charge_control(self, message) :
+def update_charge_status(self, message) :
     try :
-        new_state = message
-        if new_state == "ON" :
-            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "pressed"
-            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE ON"
-            self.mqtt_thread_handler.publish_message("charge/status", "ON")
-        else :
+        if message == "PLUGGED" :
+            self.container_storage["affichage"]["Activation Charge"].show = True
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "normal"
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
-            self.mqtt_thread_handler.publish_message("charge/status", "OFF")
+            self.container_storage["affichage"]["Activation Charge"].show = True
+            self.container_storage["affichage"]["Activation Charge"].get_object("Title_container_Activation Charge").show = True
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").show = True
+        elif message == "UNPLUGGED" :
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "disabled"
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
+            self.container_storage["affichage"]["Activation Charge"].show = False
+            self.container_storage["affichage"]["Activation Charge"].get_object("Title_container_Activation Charge").show = False
+            self.container_storage["affichage"]["Activation Charge"].get_object("Charge").show = False
+            
+
     except Exception as e:
         print(e)
 
@@ -147,11 +153,15 @@ def update_button_clignotant(self, message) :
 
 def update_message_prevention(self, message) :
     message_parts = message.split("|")
-    if len(message_parts) != 2:
+    if len(message_parts) not in [2, 3]:
         print(f"Longueur du message de prévention incorrecte ! Message : {message}")
         return
 
     message_text = message_parts[0]
+    if len(message_parts) == 3 and message_parts[2] in ["True", "False"]:
+        clignotement = True if message_parts[2] else False
+    else :
+        clignotement = False
     try:
         if message_parts[1] in ["None", "Stop"] :
             pass
@@ -164,41 +174,23 @@ def update_message_prevention(self, message) :
     if message_parts[1] == "Stop" :
             remove_prevention_message(self, message_text)
     else :
-        try :
-            index = prevention_queue.index(None)
-        except :
-            index = 0
-        prevention_queue[index] = message_text
+        index = len(prevention_queue)
+        prevention_queue.append([message_text, clignotement])
+        
         draw_prevention_message(self)
         if message_parts[1] != "None" :
             timer = threading.Timer(message_parts[1], remove_prevention_message, args=(self, message_text))
             timer.start()
 
 
-def draw_prevention_message(self_Interface) :
-    for i in range(len(prevention_queue)) :
-        if prevention_queue[i] == None :
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").text = ""
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").show = False
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} icon").show = False
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} Rectangle").show = False
-        else :
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").text = prevention_queue[i]
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").show = True
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} icon").show = True
-            self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} Rectangle").show = True
-
 def remove_prevention_message(self, msg) : 
     global prevention_queue
     try :
-        index = prevention_queue.index(msg)
+        index = [prevention_queue[i][0] for i in range(len(prevention_queue))].index(msg)
     except :
         print(f"Le message {msg} n'est pas présent dans les message affiché ou a déjà été supprimé")
         return
-    prevention_queue[index] = None
-    non_none = [x for x in prevention_queue if x is not None]
-    none = [x for x in prevention_queue if x is None]
-    prevention_queue = non_none + none
+    prevention_queue.pop(index)
     draw_prevention_message(self)
 
 

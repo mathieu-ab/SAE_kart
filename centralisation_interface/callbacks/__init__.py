@@ -31,7 +31,7 @@ from .mqtt_callback import (
     update_vitesse,
     update_temperature_moteur,
     update_temperature_batterie,
-    update_charge_control,
+    update_charge_status,
     update_ligne_blanche,
     update_obstacle,
     update_endormissement,

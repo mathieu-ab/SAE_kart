@@ -77,3 +77,19 @@ def test_convertion_Celsius_to_Fahrenheit(temperature_c, unite) :
         return int((temperature_c*1.8) + 32)
     else :
         return temperature_c
+    
+
+def draw_prevention_message(self_Interface) :
+    for k in range(3) :        
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {k}").get_object(f"Prevention {k} text").text = ""
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {k}").get_object(f"Prevention {k} text").show = False
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {k}").get_object(f"Prevention {k} icon").show = False
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {k}").get_object(f"Prevention {k} Rectangle").show = False
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} Rectangle").clignotement = False
+    for i in range(len(prevention_queue)) :
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").text = prevention_queue[i][0]
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} text").show = True
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} icon").show = True
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} Rectangle").show = True
+        self_Interface.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").get_object(f"Prevention {i} Rectangle").clignotement = prevention_queue[i][1]
+

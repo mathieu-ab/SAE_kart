@@ -48,11 +48,11 @@ def alarm():
     if alarm_status:
         c += 1
         alarm_status_help = True
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause !|None")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|None")
     elif alarm_status_help and alarm_status == False:
         alarm_status_help = False
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause !|Stop")
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause ! |10")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|Stop")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause ! |10")
     if alarm_status2:
         publisher.publish_message("message/prevention", "Vous drevez faire une pause !|10")
 
@@ -100,8 +100,6 @@ while True:
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-    num_faces_detected = len(rects)  # Compte le nombre de visages détectés
-    print(f"Nombre de visages détectés: {num_faces_detected}")  # Affiche le nombre de visages détectés
 
     for (x, y, w, h) in rects:
         rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
@@ -128,9 +126,9 @@ while True:
     elapsed_minutes = (time.time() // 60) - START_TIME_PROG
     if elapsed_minutes >= 120:  # 2 heures
         if (elapsed_minutes - 120) % 30 == 0:  # Toutes les 30 minutes après 2h
-            print("Attention, ça fait plus de 2h que vous conduisez. une pause s'impose")
+            publisher.publish_message("message/prevention", "2h de route, 5 minutes de pause !|Stop")
         else:
-            print("Attention, ça fait 2h que vous conduisez. une pause s'impose")
+            publisher.publish_message("message/prevention", "2h de route, 5 minutes de pause !|Stop")
 
 cap.release()  # Libérer la caméra
 cv2.destroyAllWindows()  # Fermer toutes les fenêtres d'affichage
