@@ -87,8 +87,6 @@ def update_charge_status(self, message) :
             self.container_storage["affichage"]["Activation Charge"].show = False
             self.container_storage["affichage"]["Activation Charge"].get_object("Title_container_Activation Charge").show = False
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").show = False
-            
-
     except Exception as e:
         print(e)
 
@@ -96,6 +94,18 @@ def update_ligne_blanche(self, message) :
     try :
         new_state = message
         if new_state == "ON" :
+            script_path = "/home/kartuser/SAE_kart/endormissement/endormissement.py"
+
+            # Vérifie si le script est déjà en cours d'exécution
+            check_process = f"pgrep -f '{script_path}'"
+            process = subprocess.run(check_process, shell=True, executable="/bin/bash", capture_output=True, text=True)
+
+            if process.stdout.strip():  
+                print(f"{script_path} est déjà en cours d'exécution.")
+            else:
+                print(f"Lancement de {script_path}...")
+                subprocess.Popen(["python3", script_path], cwd=os.path.dirname(script_path))
+
             self.container_storage["systeme"]["Aide Conduite"].get_object("Aide Conduite Switch").get_object("Switch Detection ligne blanche").etat = True
             self.mqtt_thread_handler.publish_message("aide/ligne_blanche/status", "ON")
         else :

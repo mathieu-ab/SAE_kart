@@ -103,10 +103,13 @@ class Interface :
             self.clignotant["index_clignotant"]+=1
         #clignotement message de prevention toute les 0.5 secondes
         if self.index % (fps//2) == 0 :
-            for index_msg in range(len(prevention_queue)) :
-                if self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {index_msg}").get_object(f"Prevention {index_msg} Rectangle").clignotement :
-                    col = (255, 137, 137) if (self.index % 2) == 0 else (251,44,44)
-                    self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {index_msg}").get_object(f"Prevention {index_msg} Rectangle").change_color(col)
+            for index_msg in range(min(len(prevention_queue), 3)) :
+                try : #si l'objet a été supprimé
+                    if self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {index_msg}").get_object(f"Prevention {index_msg} Rectangle").kwargs["clignotement"] :
+                        col = (255, 137, 137) if (self.index % 2) == 0 else (251,44,44)
+                        self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {index_msg}").get_object(f"Prevention {index_msg} Rectangle").change_color(col)
+                except :
+                    pass
         if self.index % (fps*5) == 0 and len(prevention_queue) > 3:
             temp = prevention_queue.pop(2)
             prevention_queue.append(temp)

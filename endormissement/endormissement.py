@@ -5,13 +5,13 @@ from imutils import face_utils
 from threading import Thread
 import numpy as np
 import argparse
-import imutils
 import math
 import time
 import dlib
 import cv2
 import os
-import sys
+
+
 
 class MQTTPublisher:
     def __init__(self, broker_address):
@@ -21,6 +21,8 @@ class MQTTPublisher:
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print("Connecté au broker MQTT avec succès.")
+            client.subscribe("aide/endormissement/control")
+            print("Abonné au topic aide/endormissement/control")
         else:
             print(f"Échec de la connexion, code de retour : {rc}")
 
@@ -28,9 +30,15 @@ class MQTTPublisher:
         self.client.publish(topic, message, retain=False)
         print(f"Message envoyé sur {topic}: {message}")
 
+    def on_message(self, client, userdata, msg):
+        msg_recieved =msg.payload.decode('utf-8')
+        if msg_recieved == "OFF" :
+            os._exit(1)
+
     def start(self):
         self.client.on_connect = self.on_connect
-        self.client.connect(self.broker_address, 1883, keepalive=60)
+        self.client.on_message = self.on_message
+        self.client.connect(self.broker_address)
         self.client.loop_start()
 
 publisher = MQTTPublisher("localhost")
@@ -94,7 +102,15 @@ picam2.start()
 
 while True:
     start_time = time.time()
-    frame = picam2.capture_array()
+    try :
+        frame = picam2.capture_array()
+    except :
+        print(f"Erreur caméra : {e}. Tentative de reconnexion...")
+        picam2.close()  # Ferme proprement
+        time.sleep(2)  # Petite pause avant de tenter la reconnexion
+        picam2 = Picamera2()  # Réinitialisation
+        picam2.start()  # Redémarrage
+        continue  # Recommence la boucle immédiatement
     
 
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
