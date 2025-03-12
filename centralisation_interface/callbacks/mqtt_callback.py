@@ -382,3 +382,4 @@ def update_charge_button_set(self, message) :
 def update_charge_button_state(self, message) :
     st = "pressed" if message == "ON" else "normal"
     self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = st
+    self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = f"CHARGE {message}"
