@@ -20,6 +20,7 @@ SCRIPTS=(
     "KARTSERIAL"
     "testGPS5.py"
     "visualise.py"
+    "test.py"
 )
 
 # Arrêter le serveur X
