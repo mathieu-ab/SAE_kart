@@ -5,13 +5,13 @@ from imutils import face_utils
 from threading import Thread
 import numpy as np
 import argparse
-import imutils
 import math
 import time
 import dlib
 import cv2
 import os
-import sys
+
+
 
 class MQTTPublisher:
     def __init__(self, broker_address):
@@ -21,6 +21,8 @@ class MQTTPublisher:
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print("Connecté au broker MQTT avec succès.")
+            client.subscribe("aide/endormissement/control")
+            print("Abonné au topic aide/endormissement/control")
         else:
             print(f"Échec de la connexion, code de retour : {rc}")
 
@@ -28,9 +30,15 @@ class MQTTPublisher:
         self.client.publish(topic, message, retain=False)
         print(f"Message envoyé sur {topic}: {message}")
 
+    def on_message(self, client, userdata, msg):
+        msg_recieved =msg.payload.decode('utf-8')
+        if msg_recieved == "OFF" :
+            os._exit(1)
+
     def start(self):
         self.client.on_connect = self.on_connect
-        self.client.connect(self.broker_address, 1883, keepalive=60)
+        self.client.on_message = self.on_message
+        self.client.connect(self.broker_address)
         self.client.loop_start()
 
 publisher = MQTTPublisher("localhost")
@@ -48,11 +56,11 @@ def alarm():
     if alarm_status:
         c += 1
         alarm_status_help = True
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause !|None")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|None")
     elif alarm_status_help and alarm_status == False:
         alarm_status_help = False
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause !|Stop")
-        publisher.publish_message("message/prevention", "Ne vous endormez pas au volant et faite une pause ! |10")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|Stop")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause ! |10")
     if alarm_status2:
         publisher.publish_message("message/prevention", "Vous drevez faire une pause !|10")
 
@@ -94,14 +102,20 @@ picam2.start()
 
 while True:
     start_time = time.time()
-    frame = picam2.capture_array()
+    try :
+        frame = picam2.capture_array()
+    except :
+        print(f"Erreur caméra : {e}. Tentative de reconnexion...")
+        picam2.close()  # Ferme proprement
+        time.sleep(2)  # Petite pause avant de tenter la reconnexion
+        picam2 = Picamera2()  # Réinitialisation
+        picam2.start()  # Redémarrage
+        continue  # Recommence la boucle immédiatement
     
 
     frame = cv2.resize(frame, (450, int(frame.shape[0] * 450 / frame.shape[1])))
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rects = detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-    num_faces_detected = len(rects)  # Compte le nombre de visages détectés
-    print(f"Nombre de visages détectés: {num_faces_detected}")  # Affiche le nombre de visages détectés
 
     for (x, y, w, h) in rects:
         rect = dlib.rectangle(int(x), int(y), int(x + w), int(y + h))
@@ -128,9 +142,9 @@ while True:
     elapsed_minutes = (time.time() // 60) - START_TIME_PROG
     if elapsed_minutes >= 120:  # 2 heures
         if (elapsed_minutes - 120) % 30 == 0:  # Toutes les 30 minutes après 2h
-            print("Attention, ça fait plus de 2h que vous conduisez. une pause s'impose")
+            publisher.publish_message("message/prevention", "2h de route, 5 minutes de pause !|Stop")
         else:
-            print("Attention, ça fait 2h que vous conduisez. une pause s'impose")
+            publisher.publish_message("message/prevention", "2h de route, 5 minutes de pause !|Stop")
 
 cap.release()  # Libérer la caméra
 cv2.destroyAllWindows()  # Fermer toutes les fenêtres d'affichage

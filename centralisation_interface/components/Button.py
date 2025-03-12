@@ -36,6 +36,7 @@ class Button :
         self.position_icon = (0,0)
         self.position_text = (0,0)
         self.size = size
+        self.show = True
         self.kwargs = kwargs
         self.callback_action = callback_action
         self.auto_change_state = auto_change_state
@@ -54,14 +55,15 @@ class Button :
 
     def draw(self, window) :
         #affiche un texte variable dans le temps
-        pygame.draw.rect(
-            window,
-            dark_light_mode["button"][dark_light_mode["etat"]][self.state],
-            self.pygame_rect,
-            border_radius=10)
-        if self.icon != None :
-            self.icon.draw(window)
-        self.text.draw(window)
+        if self.show :
+            pygame.draw.rect(
+                window,
+                dark_light_mode["button"][dark_light_mode["etat"]][self.state],
+                self.pygame_rect,
+                border_radius=10)
+            if self.icon != None :
+                self.icon.draw(window)
+            self.text.draw(window)
 
     def get_size(self) :
         return self.size
@@ -89,6 +91,8 @@ class Button :
         ))
 
     def on_release(self, mouse_position) :
+        if self.show == False :
+            return
         if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) :
             if self.callback_action != None and self.auto_change_state :
                 self.callback_action(**self.kwargs)
@@ -96,6 +100,8 @@ class Button :
             self.state = "normal"
         
     def on_click(self, mouse_position) :
+        if self.show == False :
+            return
         if (self.position[0] < mouse_position[0] < (self.position[0]+self.size[0])) and (self.position[1] < mouse_position[1] < (self.position[1]+self.size[1])) :
             if self.auto_change_state :
                 self.state = "pressed"

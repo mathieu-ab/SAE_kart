@@ -8,6 +8,8 @@ SCRIPTS=(
     "/home/kartuser/SAE_kart/KARTSERIAL"
     "/home/kartuser/SAE_kart/GPS/testGPS5.py"
     "/home/kartuser/SAE_kart/Navion/visualise.py"
+    "/home/kartuser/SAE_kart/endormissement/endormissement.py"
+    "/home/kartuser/SAE_kart/buzzer/test.py"
 )
 
 MAIN_SCRIPT="/home/kartuser/SAE_kart/centralisation_interface/main.py"

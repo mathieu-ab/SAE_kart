@@ -1,7 +1,7 @@
 from module_import import *
 
 if sys.platform == "win32":
-    CURRENT_PATH = "C:\\Users\\LEGION\\Desktop\\SAE_kart\\centralisation_interface" #chemin d'accés sur mon ordi pour les tests
+    CURRENT_PATH = "C:/Users/mathi/Documents/info/Python/projet/SAE_kart/centralisation_interface" #chemin d'accés sur mon ordi pour les tests
     tactile = False
 else:
     CURRENT_PATH = "/home/kartuser/SAE_kart/centralisation_interface" #chamin d'accés sur le kart
@@ -28,7 +28,7 @@ color_green_to_red.extend(list(Color("#fff001").range_to(Color("#ffae01"),15)))
 color_green_to_red.extend(list(Color("#ffae01").range_to(Color("#ff6101"),15)))
 color_green_to_red.extend(list(Color("#ff6101").range_to(Color("#ff0101"),15)))
 #queue des messages de prévention
-prevention_queue = [None, None, None]
+prevention_queue = []
 #vitesse maximal autorisé pour la vitesse de consigne du régulateur/limitateur
 VITESSE_MAX = 30
 #IP du broker situé sur le hotspot
@@ -50,8 +50,8 @@ topics = [
     "bms/batterie",               #--reçois
     "bms/temperature",            #--reçois
 
-    # "charge/status",            #envoi
-    "charge/control",             #--reçois
+    "charge/status",              #--reçois
+    # "charge/control",           #envoi
                                   #
     "message/prevention",         #--reçois
                                   #
@@ -83,7 +83,7 @@ topics_non_retain = [
     "moteur/mode",
     "gps/zoom",
     "gps/destination",
-    "charge/status",
+    "charge/control",
     "aide/clignotant",
     "aide/reg_lim",
     "aide/vitesse_consigne",

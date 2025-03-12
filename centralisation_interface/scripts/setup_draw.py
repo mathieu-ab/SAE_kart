@@ -605,10 +605,11 @@ def setup_draw(self) :
             Shape(
                 label=f"Prevention {i} Rectangle",
                 shape="rectangle",
-                size=(363, 30),
+                size=(403, 30),
                 color=(251,44,44),
                 border_radius=7,
-                show=False
+                show=False,
+                clignotement=False
             ),
             relative_position=(0,0)
         )
@@ -620,7 +621,7 @@ def setup_draw(self) :
                 callback_action=None,
                 dark_light=False
             ),
-            relative_position=None
+            relative_position=(5, 3)
         )
         self.container_storage["affichage"]["Prevention"].get_object(f"Prevention {i}").add_object(
             Text(
@@ -632,7 +633,7 @@ def setup_draw(self) :
                 justify="left",
                 show=False
             ),
-            relative_position=None
+            relative_position=(30, 3)
         )
 
 
