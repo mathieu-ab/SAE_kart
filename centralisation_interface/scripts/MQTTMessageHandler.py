@@ -38,6 +38,8 @@ class MQTTMessageHandler():
             update_charge_status(self.interface, msg_received)
         elif msg.topic == "charge/button/set" : 
             update_charge_button_set(self.interface, msg_received)
+        elif msg.topic == "charge/button/state" :  
+            update_charge_button_state(self.interface, msg_received)
         elif msg.topic == "message/prevention":
             update_message_prevention(self.interface, msg_received)
         elif msg.topic == "aide/ligne_blanche/control":

@@ -51,7 +51,7 @@ topics = [
     "bms/temperature",            #--reçois
 
     "charge/status",              #--reçois
-    # "charge/button/state",      #envoi
+    "charge/button/state",      #--reçois
     "charge/button/set",         #--reçois
                                   #
     "message/prevention",         #--reçois
