@@ -139,7 +139,7 @@ def update_endormissement(self, message) :
         print(e)
 
 def update_bouton_page(self, message) :
-    if message == "right" and PAGE_HANDLER["indice"] < 3 :
+    if message == "right" and PAGE_HANDLER["indice"] < 4 :
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]+1)
     elif message == "left" and PAGE_HANDLER["indice"] > 0:
         PAGE_HANDLER["indice"] = (PAGE_HANDLER["indice"]-1)
@@ -373,3 +373,6 @@ def update_vitesseauto(self, message) :
             self.vitesse = vitesse
     except Exception as e:
         print(e)
+
+def update_charge_button_set(self, message) :
+    self.mqtt_thread_handler.publish_message("charge/button/state", message)
