@@ -20,13 +20,6 @@ time.sleep(2)  # Allow JeVois to initialize
 ser.write(b"setpar serout All\n")
 time.sleep(1)  # Short delay after sending the command
 
-# Tracking system for multiple objects
-tracked_objects = {}  # Stores {ID: (x_center, y_center, frame_count)}
-available_ids = []  # List of reusable IDs
-next_id = 1  # Unique ID counter
-FRAME_THRESHOLD = 5  # Number of frames before an object is removed
-X_THRESHOLD = 50  # Maximum movement in x_center to consider the same object
-
 # Reference values for known distances
 REF_HEIGHT_1M40 = 1350  
 REF_HEIGHT_2M40 = 1075  
@@ -45,17 +38,19 @@ DISTANCE_THRESHOLDS = {
 
 # Speed constraints
 V_MAX = 20  
-D_MAX = 10  
-D_STOP = 2  
+D_MAX = 10   
+D_STOP = 2   
 
-# Last detection timestamp
-last_detection_time = time.time()
-NO_OBJECT_TIMEOUT = 1  # 1 second threshold for "Clear" message
+# Time window for grouping detections (in seconds)
+TIME_WINDOW = 0.1  # 100ms
+last_publish_time = time.time()
+frame_detections = []  # Buffer for detections in the same time window
 
 def estimate_distance(current_height):
     """Estimate distance using proportional scaling."""
     if current_height <= 0:
         return "Unknown"
+
     if current_height >= REF_HEIGHT_1M40:
         return REF_DISTANCE_1M40 * REF_HEIGHT_1M40 / current_height
     elif current_height >= REF_HEIGHT_2M40:
@@ -66,6 +61,7 @@ def estimate_distance(current_height):
 def classify_distance(distance):
     if distance is None:
         return "Unknown"
+
     if distance >= DISTANCE_THRESHOLDS["far"]:
         return "Far"
     elif DISTANCE_THRESHOLDS["medium"] <= distance < DISTANCE_THRESHOLDS["far"]:
@@ -85,18 +81,10 @@ def calculate_speed(distance):
 while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
-        
-        # Check if no detection for more than 1 second
         if not line:
-            if time.time() - last_detection_time > NO_OBJECT_TIMEOUT:
-                mqtt_client.publish(MQTT_TOPIC_DISTANCE, "Clear")
-                print("Published: Clear")
             continue
-        
-        print(f"Raw Detection: {line}")
 
         if line.startswith("N2 person"):  
-            last_detection_time = time.time()  # Update last detection time
             parts = line.split()
             try:
                 confidence = int(parts[1].split(":")[1])  
@@ -114,53 +102,27 @@ while True:
             else:
                 position = "Right"
 
-            # Estimate distance
+            # Estimate distance and speed
             estimated_distance = estimate_distance(height)
             distance_category = classify_distance(estimated_distance)
             speed = calculate_speed(estimated_distance)
 
-            # Assign/reuse an ID for tracking
-            matched_id = None
-            for obj_id, (prev_x, _, frames) in tracked_objects.items():
-                if abs(prev_x - x_center) <= X_THRESHOLD:
-                    matched_id = obj_id
-                    break
+            # Store detection in the current frame buffer
+            frame_detections.append(f"{distance_category} {position}")
 
-            if matched_id:
-                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)  
-            else:
-                if available_ids:
-                    matched_id = available_ids.pop(0)
-                else:
-                    matched_id = next_id
-                    next_id += 1
-                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)
+            # Check if it's time to publish detections
+            if time.time() - last_publish_time >= TIME_WINDOW:
+                if frame_detections:
+                    message = " | ".join(frame_detections)  
+                    mqtt_client.publish(MQTT_TOPIC_DISTANCE, message)
+                    mqtt_client.publish(MQTT_TOPIC_SPEED, f"{speed:.2f}")
 
-            # Construct the MQTT messages
-            distance_message = f"{distance_category} {position}"
-            speed_message = f"{speed:.2f}"
-            
-            # Publish to MQTT topics
-            mqtt_client.publish(MQTT_TOPIC_DISTANCE, distance_message)
-            mqtt_client.publish(MQTT_TOPIC_SPEED, speed_message)
+                    print(f"Published Distance: {message}")
+                    print(f"Published Speed: {speed:.2f}")
 
-            print(f"Object ID {matched_id} -> Distance: {estimated_distance:.2f}m, Position: {position}")
-            print(f"Published Distance: {distance_message}")
-            print(f"Published Speed: {speed_message}")
-
-        # Reduce frame count and remove old objects
-        to_remove = []
-        for obj_id in list(tracked_objects.keys()):
-            x, y, frames = tracked_objects[obj_id]
-            if frames > 0:
-                tracked_objects[obj_id] = (x, y, frames - 1)
-            else:
-                to_remove.append(obj_id)
-
-        for obj_id in to_remove:
-            del tracked_objects[obj_id]
-            available_ids.append(obj_id)  
-            print(f"Object ID {obj_id} removed and now available for reuse.")
+                    # Clear detections for the next frame
+                    frame_detections.clear()
+                    last_publish_time = time.time()
 
     except KeyboardInterrupt:
         break
