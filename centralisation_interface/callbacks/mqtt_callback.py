@@ -329,49 +329,32 @@ def update_dark_liht(self, message) :
         
 def update_navigation(self, message):
     try:
-        # Hide all indicators initially
         radar = self.container_storage["aide"]["Nav Radar"]
-        radar.get_object("Near Left").show = False
-        radar.get_object("Near Center").show = False
-        radar.get_object("Medium Center").show = False
-        radar.get_object("Far Center").show = False
-        radar.get_object("Near Right").show = False
-        radar.get_object("Medium Left").show = False
-        radar.get_object("Medium Right").show = False
-        radar.get_object("Far Left").show = False
-        radar.get_object("Far Right").show = False
-        
-        # Show only the relevant indicator based on message
-        if message == "Near Left":
-            radar.get_object("Near Left").show = True
-        elif message == "Near Center":
-            radar.get_object("Near Center").show = True
-        elif message == "Near Right":
-            radar.get_object("Near Right").show = True
-        elif message == "Medium Left":
-            radar.get_object("Medium Left").show = True
-        elif message == "Medium Right":
-            radar.get_object("Medium Right").show = True
-        elif message == "Medium Center":
-            radar.get_object("Medium Center").show = True
-        elif message == "Far Left":
-            radar.get_object("Far Left").show = True
-        elif message == "Far Right":
-            radar.get_object("Far Right").show = True
-        elif message == "Far Center":
-            radar.get_object("Far Center").show = True
-        elif message == "Clear":
-            radar.get_object("Near Left").show = False
-            radar.get_object("Near Center").show = False
-            radar.get_object("Medium Center").show = False
-            radar.get_object("Far Center").show = False
-            radar.get_object("Near Right").show = False
-            radar.get_object("Medium Left").show = False
-            radar.get_object("Medium Right").show = False
-            radar.get_object("Far Left").show = False
-            radar.get_object("Far Right").show = False
+
+        # Hide all indicators initially
+        indicators = [
+            "Near Left", "Near Center", "Near Right",
+            "Medium Left", "Medium Center", "Medium Right",
+            "Far Left", "Far Center", "Far Right"
+        ]
+        for indicator in indicators:
+            radar.get_object(indicator).show = False
+
+        # Handle "Clear" message (no objects detected)
+        if message == "Clear":
+            return  # All indicators remain hidden
+
+        # Process multiple detections if message contains "|"
+        detected_positions = message.split(" | ")
+
+        # Show only the relevant indicators
+        for pos in detected_positions:
+            if pos in indicators:
+                radar.get_object(pos).show = True
+
     except Exception as e:
         print(e)
+
         
 def update_vitesseauto(self, message) :
     try :
