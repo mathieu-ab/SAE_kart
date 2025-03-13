@@ -28,13 +28,13 @@ FRAME_THRESHOLD = 5  # Number of frames before an object is removed
 X_THRESHOLD = 50  # Maximum movement in x_center to consider the same object
 
 # Reference values for known distances
-REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
-REF_HEIGHT_2M40 = 1075  # Approximate height at 2.4m
-REF_HEIGHT_3M40 = 1147  # Approximate height at 3.4m
+REF_HEIGHT_1M40 = 1350  
+REF_HEIGHT_2M40 = 1075  
+REF_HEIGHT_3M40 = 1147  
 
-REF_DISTANCE_1M40 = 1.4  # meters
-REF_DISTANCE_2M40 = 2.4  # meters
-REF_DISTANCE_3M40 = 3.4  # meters
+REF_DISTANCE_1M40 = 1.4  
+REF_DISTANCE_2M40 = 2.4  
+REF_DISTANCE_3M40 = 3.4  
 
 # Distance thresholds
 DISTANCE_THRESHOLDS = {
@@ -44,15 +44,18 @@ DISTANCE_THRESHOLDS = {
 }
 
 # Speed constraints
-V_MAX = 20  # Maximum speed value
-D_MAX = 10   # Maximum detection range
-D_STOP = 2   # Stop distance threshold
+V_MAX = 20  
+D_MAX = 10  
+D_STOP = 2  
+
+# Last detection timestamp
+last_detection_time = time.time()
+NO_OBJECT_TIMEOUT = 1  # 1 second threshold for "Clear" message
 
 def estimate_distance(current_height):
-    """Estimate distance using proportional scaling (cross-multiplication)."""
+    """Estimate distance using proportional scaling."""
     if current_height <= 0:
         return "Unknown"
-
     if current_height >= REF_HEIGHT_1M40:
         return REF_DISTANCE_1M40 * REF_HEIGHT_1M40 / current_height
     elif current_height >= REF_HEIGHT_2M40:
@@ -63,7 +66,6 @@ def estimate_distance(current_height):
 def classify_distance(distance):
     if distance is None:
         return "Unknown"
-
     if distance >= DISTANCE_THRESHOLDS["far"]:
         return "Far"
     elif DISTANCE_THRESHOLDS["medium"] <= distance < DISTANCE_THRESHOLDS["far"]:
@@ -74,26 +76,32 @@ def classify_distance(distance):
 def calculate_speed(distance):
     """Calculate speed based on distance using a linear equation."""
     if distance is None or distance <= D_STOP:
-        return 0  # Stop at 2m
+        return 0  
     elif distance >= D_MAX:
-        return V_MAX  # Full speed at 10m
+        return V_MAX  
     else:
-        return V_MAX * (distance - D_STOP) / (D_MAX - D_STOP)  # Linear scaling
+        return V_MAX * (distance - D_STOP) / (D_MAX - D_STOP)  
 
 while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
+        
+        # Check if no detection for more than 1 second
         if not line:
+            if time.time() - last_detection_time > NO_OBJECT_TIMEOUT:
+                mqtt_client.publish(MQTT_TOPIC_DISTANCE, "Clear")
+                print("Published: Clear")
             continue
-
+        
         print(f"Raw Detection: {line}")
 
-        if line.startswith("N2 person"):  # Process only person detections
+        if line.startswith("N2 person"):  
+            last_detection_time = time.time()  # Update last detection time
             parts = line.split()
             try:
-                confidence = int(parts[1].split(":")[1])  # Extract confidence after 'person:'
-                x_center = int(parts[2])  # Extract x_center
-                height = int(parts[5])  # Extract bounding box height
+                confidence = int(parts[1].split(":")[1])  
+                x_center = int(parts[2])  
+                height = int(parts[5])  
             except (IndexError, ValueError) as e:
                 print(f"Parsing error: {e}, skipping line: {line}")
                 continue
@@ -119,7 +127,7 @@ while True:
                     break
 
             if matched_id:
-                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)  # Reset frame count
+                tracked_objects[matched_id] = (x_center, height, FRAME_THRESHOLD)  
             else:
                 if available_ids:
                     matched_id = available_ids.pop(0)
@@ -151,7 +159,7 @@ while True:
 
         for obj_id in to_remove:
             del tracked_objects[obj_id]
-            available_ids.append(obj_id)  # Reuse this ID in the future
+            available_ids.append(obj_id)  
             print(f"Object ID {obj_id} removed and now available for reuse.")
 
     except KeyboardInterrupt:
