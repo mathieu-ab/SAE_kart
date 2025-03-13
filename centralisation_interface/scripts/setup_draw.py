@@ -100,9 +100,10 @@ def setup_draw(self) :
         show_label=True,
         position=(401, 11),
         size=(147, 88),
-        show=True,
+        show=False,
         allignement="horizontal"
     )
+    self.container_storage["affichage"]["Activation Charge"].get_object("Title_container_Activation Charge").show = False
     self.container_storage["affichage"]["Activation Charge"].add_object(
         Button(
             label="Charge",
@@ -110,7 +111,7 @@ def setup_draw(self) :
             font_name="Roboto-Bold",
             font_size=18,
             icon_path=None,
-            state="normal",
+            state="disabled",
             size=(125,47),
             dark_light=False,
             callback_action=callback_charge_button,
@@ -119,6 +120,7 @@ def setup_draw(self) :
         ),
         relative_position=None
     )
+    self.container_storage["affichage"]["Activation Charge"].get_object("Charge").show = False
     #ajout de l'objet bouton au objet clickable
     self.clickable_object["affichage"].append(self.container_storage["affichage"]["Activation Charge"].get_object("Charge")) 
 
