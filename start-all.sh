@@ -10,6 +10,7 @@ SCRIPTS=(
     "/home/kartuser/SAE_kart/Navion/visualise.py"
     "/home/kartuser/SAE_kart/endormissement/endormissement.py"
     "/home/kartuser/SAE_kart/buzzer/test.py"
+    "/home/kartuser/SAE_kart/centralisation_interface/scripts/mqtt_button_handler.py"
 )
 
 MAIN_SCRIPT="/home/kartuser/SAE_kart/centralisation_interface/main.py"

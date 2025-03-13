@@ -45,4 +45,5 @@ from .mqtt_callback import (
     update_temperature_unite,
     update_navigation,
     update_vitesseauto,
+    update_charge_button_state,
 )

@@ -36,7 +36,7 @@ def main():
     time.sleep(1)
     publisher.publish_message("message/prevention", f"{randint(0, 100)} Vous drevez faire une|11")
     time.sleep(1)
-    publisher.publish_message("message/prevention", f"{randint(0, 100)} Somnolence détectée, prenez |None|True")
+    publisher.publish_message("message/prevention", f"{randint(0, 100)} Somnolence détectée,  |None|True")
         
 
         # time.sleep(0.5)  # Pause entre les envois

@@ -1052,9 +1052,9 @@ def setup_draw(self) :
     )
     self.container_storage["navigation"]["Clignotant Gauche"].add_object(
         Image(
-            label="Clignotant Gauche Allume",
-            image_path="clignotant/clignotant_gauche_allume",
-            show=False,
+            label="Clignotant Gauche eteint",
+            image_path="clignotant/clignotant_gauche_eteint",
+            show=True,
             callback_action=None,
             dark_light=False
         ),
@@ -1062,9 +1062,9 @@ def setup_draw(self) :
     )
     self.container_storage["navigation"]["Clignotant Gauche"].add_object(
         Image(
-            label="Clignotant Gauche eteint",
-            image_path="clignotant/clignotant_gauche_eteint",
-            show=True,
+            label="Clignotant Gauche Allume",
+            image_path="clignotant/clignotant_gauche_allume",
+            show=False,
             callback_action=None,
             dark_light=False
         ),
@@ -1081,9 +1081,9 @@ def setup_draw(self) :
     )
     self.container_storage["navigation"]["Clignotant Droit"].add_object(
         Image(
-            label="Clignotant Droit Allume",
-            image_path="clignotant/clignotant_droit_allume",
-            show=False,
+            label="Clignotant Droit eteint",
+            image_path="clignotant/clignotant_droit_eteint",
+            show=True,
             callback_action=None,
             dark_light=False
         ),
@@ -1091,9 +1091,9 @@ def setup_draw(self) :
     )
     self.container_storage["navigation"]["Clignotant Droit"].add_object(
         Image(
-            label="Clignotant Droit eteint",
-            image_path="clignotant/clignotant_droit_eteint",
-            show=True,
+            label="Clignotant Droit Allume",
+            image_path="clignotant/clignotant_droit_allume",
+            show=False,
             callback_action=None,
             dark_light=False
         ),
