@@ -87,7 +87,10 @@ while True:
         if line.startswith("N2 person"):  
             parts = line.split()
             try:
-                confidence = int(parts[1].split(":")[1])  
+                confidence = int(parts[1].split(":")[1])  # Extract confidence percentage
+                if confidence < 30:  # Ignore detections with confidence < 30%
+                    continue
+
                 x_center = int(parts[2])  
                 height = int(parts[5])  
             except (IndexError, ValueError) as e:
