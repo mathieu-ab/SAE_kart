@@ -13,7 +13,7 @@ mqtt_client = mqtt.Client()
 mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
 
 # Open serial connection to JeVois
-ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
 time.sleep(2)  # Allow JeVois to initialize
 
 # Send command to enable serial output
