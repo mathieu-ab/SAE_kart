@@ -374,10 +374,6 @@ def update_vitesseauto(self, message) :
     except Exception as e:
         print(e)
 
-def update_charge_button_set(self, message) :
-    st = "pressed" if message == "ON" else "normal"
-    self.mqtt_thread_handler.publish_message("charge/button/state", message)
-
 
 def update_charge_button_state(self, message) :
     st = "pressed" if message == "ON" else "normal"
