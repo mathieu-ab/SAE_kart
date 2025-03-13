@@ -11,20 +11,27 @@ def update_clignotant(self) :
         self.clignotant["etat"] = not self.clignotant["etat"] 
         self.clignotant["cligno"]+=1
         if self.clignotant["allume"] == "gauche" :
-            print(self.clignotant)
             if self.clignotant["etat"] == True :    
                 self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = True
                 self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
+                self.container_storage["navigation"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = True
+                self.container_storage["navigation"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
             else :
                 self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
                 self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
+                self.container_storage["navigation"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
+                self.container_storage["navigation"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
         if self.clignotant["allume"] == "droite" :
             if self.clignotant["etat"] == True :    
                 self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = True
                 self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
+                self.container_storage["navigation"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = True
+                self.container_storage["navigation"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
             else :
                 self.container_storage["affichage"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
                 self.container_storage["affichage"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
+                self.container_storage["navigation"]["Clignotant Droit"].get_object("Clignotant Droit Allume").show = False
+                self.container_storage["navigation"]["Clignotant Gauche"].get_object("Clignotant Gauche Allume").show = False
         if self.clignotant["cligno"] == 7 :
             self.clignotant["allume"] = None
             self.mqtt_thread_handler.publish_message("bouton/clignotant", "eteint")
