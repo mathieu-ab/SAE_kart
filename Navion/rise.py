@@ -14,12 +14,13 @@ while True:
     try:
         line = ser.readline().decode('utf-8', errors='ignore').strip()
         if line:
-            print(line)
+            print(f"Données reçues : {line}")
     except KeyboardInterrupt:
-        print("\nArrêt...")
+        print("\nArrêt du programme.")
         break
     except Exception as e:
-        print(e)
+        print(f"Erreur : {e}")
         break
 
+# Fermeture de la connexion série avant de quitter
 ser.close()
