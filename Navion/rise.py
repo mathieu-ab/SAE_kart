@@ -2,7 +2,7 @@ import serial
 import time
 
 # Ouverture de la connexion série avec la caméra JeVois
-ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB2', 115200, timeout=1)
 time.sleep(2)  # Délai pour permettre l'initialisation
 
 # Envoi de la commande pour activer la sortie série de JeVois
