@@ -37,7 +37,7 @@ with open(csv_filename, mode='w', newline='') as file:
     writer.writerow(["Distance (m)", "w", "h", "x", "y"])  # En-tête du fichier
 
     for distance in distances:
-        print(f"Place-toi à {distance}m. Les données s'affichent en continu. Appuie sur 'Entrée' pour capturer...")
+        print(f"Place-toi à {distance}m.'Entrée' pour capturer...")
         input()  # Attente d'une pression sur Entrée
         print(f"Capture des données pour {distance}m...")
         data = capture_data()
@@ -48,5 +48,5 @@ with open(csv_filename, mode='w', newline='') as file:
         else:
             print(f"Aucune donnée valide capturée pour {distance}m.")
 
-print("Capture terminée. Données enregistrées dans", csv_filename)
+print("Données enregistrées dans", csv_filename)
 ser.close()

@@ -2,7 +2,7 @@ import serial
 import socket
 
 # Open serial connection to JeVois
-ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
+ser = serial.Serial('/dev/ttyUSB2', 115200, timeout=1)
 
 # Reference values for known distances
 REF_HEIGHT_1M40 = 1350  # Approximate height at 1.4m
