@@ -168,36 +168,46 @@ def update_button_clignotant(self, message) :
     if message == "right" :
         self.clignotant = {"index_clignotant" : 1, "cligno" : 1, "etat" : False, "allume" : "droite", "start" : int(time())} 
 
-def update_message_prevention(self, message) :
+def update_message_prevention(self, message):
+    print(f"Message reçu dans update_message_prevention: {message}")
+    
     message_parts = message.split("|")
+    print(f"Parts après split: {message_parts}")  # Debugging
+    
     if len(message_parts) not in [2, 3]:
         print(f"Longueur du message de prévention incorrecte ! Message : {message}")
         return
 
     message_text = message_parts[0]
-    if len(message_parts) == 3 and message_parts[2] in ["True", "False"]:
-        clignotement = True if message_parts[2] else False
-    else :
-        clignotement = False
+
+    # Vérification du clignotement
+    clignotement = False
+    if len(message_parts) == 3:
+        if message_parts[2] in ["True", "False"]:
+            clignotement = message_parts[2] == "True"
+        else:
+            print(f"Erreur: Valeur inattendue pour clignotement: {message_parts[2]}")
+
+    # Vérification du temps
     try:
-        if message_parts[1] in ["None", "Stop"] :
-            pass
-        else :
+        if message_parts[1] not in ["None", "Stop"]:
             message_parts[1] = int(message_parts[1])
     except ValueError:
         print(f"Problème avec la fin du message : {message_parts[1]}")
         return
 
-    if message_parts[1] == "Stop" :
-            remove_prevention_message(self, message_text)
-    else :
-        index = len(prevention_queue)
+    print(f"Message traité: texte={message_text}, temps={message_parts[1]}, clignotement={clignotement}")
+
+    if message_parts[1] == "Stop":
+        remove_prevention_message(self, message_text)
+    else:
         prevention_queue.append([message_text, clignotement])
-        
         draw_prevention_message(self)
-        if message_parts[1] != "None" :
+        
+        if message_parts[1] != "None":
             timer = threading.Timer(message_parts[1], remove_prevention_message, args=(self, message_text))
             timer.start()
+
 
 
 def remove_prevention_message(self, msg) : 
