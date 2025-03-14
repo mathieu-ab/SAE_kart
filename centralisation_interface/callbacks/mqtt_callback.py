@@ -88,7 +88,7 @@ def update_charge_status(self, message) :
             self.container_storage["affichage"]["Activation Charge"].show = True
             self.container_storage["affichage"]["Activation Charge"].get_object("Title_container_Activation Charge").show = True
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").show = True
-        else :
+        elif message == "UNPLUGGED" :
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").state = "disabled"
             self.container_storage["affichage"]["Activation Charge"].get_object("Charge").text.text = "CHARGE OFF"
             self.container_storage["affichage"]["Activation Charge"].show = False
