@@ -56,13 +56,13 @@ def alarm():
     if alarm_status:
         c += 1
         alarm_status_help = True
-        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|None")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause|None")
     elif alarm_status_help and alarm_status == False:
         alarm_status_help = False
-        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause !|Stop")
-        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause ! |10")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause|Stop")
+        publisher.publish_message("message/prevention", "Somnolence détectée, prenez une pause|10")
     if alarm_status2:
-        publisher.publish_message("message/prevention", "Vous drevez faire une pause !|10")
+        publisher.publish_message("message/prevention", "Vous drevez faire une pause|10")
 
 def eye_aspect_ratio(eye):
     A = math.dist(eye[1], eye[5])

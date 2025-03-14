@@ -156,7 +156,7 @@ def setup_draw(self) :
     self.container_storage["affichage"]["Bouton Choix Page"].add_object(
         Button(
             label="Aide",
-            text="Aide",
+            text="Assistance",
             font_name="Roboto-Bold",
             font_size=25,
             icon_path=f"affichage/system_",
@@ -698,7 +698,7 @@ def setup_draw(self) :
     self.container_storage["aide"]["Bouton Choix Page"].add_object(
         Button(
             label="Aide",
-            text="Aide",
+            text="Assistance",
             font_name="Roboto-Bold",
             font_size=25,
             icon_path=f"affichage/system_",
@@ -916,7 +916,7 @@ def setup_draw(self) :
             justify="left",
             show=True
         ),
-        relative_position=(235,100)
+        relative_position=(160,50)
     )
     self.container_storage["aide"]["Nav Radar"].get_object("Vitesse").add_object(
         Text(
@@ -928,7 +928,7 @@ def setup_draw(self) :
             justify="left",
             show=True
         ),
-        relative_position=(235,100)
+        relative_position=(205,205)
     )
 
     
@@ -988,7 +988,7 @@ def setup_draw(self) :
     self.container_storage["navigation"]["Bouton Choix Page"].add_object(
         Button(
             label="Aide",
-            text="Aide",
+            text="Assistance",
             font_name="Roboto-Bold",
             font_size=25,
             icon_path=f"affichage/system_",
@@ -1292,7 +1292,7 @@ def setup_draw(self) :
     self.container_storage["systeme"]["Bouton Choix Page"].add_object(
         Button(
             label="Aide",
-            text="Aide",
+            text="Assistance",
             font_name="Roboto-Bold",
             font_size=25,
             icon_path=f"affichage/system_",
